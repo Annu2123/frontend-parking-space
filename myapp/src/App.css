@@ -1,0 +1,20 @@
+.modal-content {
+  border-radius: 0;
+}
+.navbar-brand img {
+  height: 50px;
+  width: auto;
+}
+
+
+.modal-content {
+  border-radius: 0;
+}
+.card {
+  margin-bottom: 20px;
+  border-radius: 20px; /* Adjust the border-radius to your desired value */
+}
+
+
+
+
