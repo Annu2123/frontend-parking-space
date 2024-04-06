@@ -10,6 +10,7 @@ import IndianStandardTime from './components/time'
 import Register from './components/register';
 import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
+import ParkingSpaceRegister from './components/owners/regiserSpace';
 // import {Typography, Button} from '@mui/material'
 function App() {
 
@@ -37,19 +38,20 @@ function App() {
     <div>
       {/* <BrowserRouter> */}
       {/* <MapComponent/> */}
-      <MapComponent2/>
+      {/* <MapComponent2/> */}
         {/* <Header /> */}
+        <ParkingSpaceRegister/>
        
         {/* <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
           <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
         </Routes>
         <ToastContainer/>
-      </BrowserRouter> */}
+      </BrowserRouter>  */}
 
-      {/* <Listing />
+          {/* <Listing /> */}
 
-      <ProductPage />
+      {/*<ProductPage />
       <ServiceLocator />
       <IndianStandardTime /> */}
 
