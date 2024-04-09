@@ -47,11 +47,30 @@ export default function ParkingSpaceRegister() {
       ]
     },
     validationSchema: validationSpaceRegisterSchema,
-    onSubmit: values => {
-        console.log(formik.errors)
-      console.log(values);
-
-      // You can handle form submission here
+    onSubmit: async(values,{resetForm}) => {
+          const formData={
+            title: '',
+      propertyType: '',
+      amenities: [],
+      street: '',
+      area: '',
+      city: '',
+      state: '',
+      photo: null,
+      description: '',
+      spaceTypes: [
+        {
+          Type: "Two Wheeler",
+          capacity: '',
+          amount: ''
+        },
+        {
+          Type: "Four Wheeler",
+          capacity: '',
+          amount: ''
+        }
+      ]
+          }
     }
   });
 
