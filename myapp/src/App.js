@@ -12,6 +12,11 @@ import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
 import ParkingSpaceRegister from './components/parkingSpace/registerParkingSpace';
 import Otp from './components/userAuthentication.js/otpverification';
+import Bookings from './components/payments/bookings';
+import Succes from './components/payments/success';
+import Cancel from './components/payments/cancel';
+import ListParkings from './components/parkingSpace/allParkingLIst';
+
 // import {Typography, Button} from '@mui/material'
 function App() {
 
@@ -37,20 +42,24 @@ function App() {
   }
   return (
     <div>
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
       {/* <MapComponent/> */}
        
-        <Header />
-         {/* <MapComponent2/> */}
-        {/* <ParkingSpaceRegister/> */}
-       
+        {/* <Header /> */}
+        {/* <Bookings/> */}
+         {/* <MapComponent2/>
+         <ListParkings/> */}
+        <ParkingSpaceRegister/>
+{/*        
         <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
           <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
           <Route path='/otp' element={<Otp/>}/>
+          <Route path='/success' element={<Succes/>}/>
+          <Route path='/cancel' element={<Cancel/>}/>
         </Routes>
         <ToastContainer/>
-      </BrowserRouter> 
+      </BrowserRouter>  */}
 
           {/* <Listing /> */}
 

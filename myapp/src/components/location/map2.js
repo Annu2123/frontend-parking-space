@@ -88,7 +88,7 @@ export default function MapComponent2(){
     // };
 
     return (
-    <div className="map-container">
+    <div className="container mt-2 mb-2 ">
 
         {/* Leaflet map */}
         {center[0] != 0 &&
@@ -109,7 +109,7 @@ export default function MapComponent2(){
 
                     {/* Display nearby services as markers */}
                     {services && services.map((space, index) => (
-                        <Marker key={index} position={space.coordinates
+                        <Marker key={index} position={space.address.coordinates
                         } icon={customMarker} >
                             <Popup>{space.title}</Popup>
                         </Marker>
