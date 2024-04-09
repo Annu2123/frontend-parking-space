@@ -1,16 +1,17 @@
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes,Link } from 'react-router-dom'
 import Header from './components/header';
 import Listing from './components/listParking';
 import ServiceLocator from './components/location';
-import LoginPage from './components/login';
-import ProductPage from './components/productPage';
+import LoginPage from './components/userAuthentication.js/login';
+import ProductPage from './components/parkingSpace/productPage';
 import IndianStandardTime from './components/time'
-import Register from './components/register';
+import Register from './components/userAuthentication.js/register';
 import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
-import ParkingSpaceRegister from './components/owners/regiserSpace';
+import ParkingSpaceRegister from './components/parkingSpace/registerParkingSpace';
+import Otp from './components/userAuthentication.js/otpverification';
 // import {Typography, Button} from '@mui/material'
 function App() {
 
@@ -36,23 +37,25 @@ function App() {
   }
   return (
     <div>
-      {/* <BrowserRouter> */}
+      <BrowserRouter>
       {/* <MapComponent/> */}
-      {/* <MapComponent2/> */}
-        {/* <Header /> */}
-        <ParkingSpaceRegister/>
        
-        {/* <Routes>
+        <Header />
+         {/* <MapComponent2/> */}
+        {/* <ParkingSpaceRegister/> */}
+       
+        <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
           <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
+          <Route path='/otp' element={<Otp/>}/>
         </Routes>
         <ToastContainer/>
-      </BrowserRouter>  */}
+      </BrowserRouter> 
 
           {/* <Listing /> */}
 
-      {/*<ProductPage />
-      <ServiceLocator />
+      {/* <ProductPage /> */}
+      {/* <ServiceLocator />
       <IndianStandardTime /> */}
 
     </div>

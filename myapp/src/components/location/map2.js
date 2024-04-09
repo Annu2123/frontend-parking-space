@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
 import axios from 'axios'; // For making HTTP requests
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
-import { Icon, popup } from 'leaflet'
+import { Icon} from 'leaflet'
 import './map.css'
 function reverseLatLon(arr) {
     return [arr[1], arr[0]]

@@ -21,7 +21,7 @@ const validationSpaceRegisterSchema = yup.object({
   ).min(1, 'At least one space type must be filled')
 });
 
-const ParkingSpaceRegister = () => {
+export default function ParkingSpaceRegister() {
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -89,7 +89,8 @@ const ParkingSpaceRegister = () => {
             isInvalid={formik.touched.propertyType && formik.errors.propertyType}
           >
             <option>Select property type</option> 
-            <option value="wifi">Wi-Fi</option>
+            <option value="flat">Gated flat</option>
+            <option value="houswe"></option>
             {/* Add options for property types */}
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.propertyType}</Form.Control.Feedback>
@@ -105,10 +106,10 @@ const ParkingSpaceRegister = () => {
             onFocus={() => formik.setFieldError('amenities', '')}
             isInvalid={formik.touched.amenities && formik.errors.amenities}
           >
-            <option value="wifi">Wi-Fi</option>
-            <option value="security">Security</option>
-            <option value="covered">Covered Parking</option>
-            {/* Add more options as needed */}
+            <option value="wifi">cover</option>
+            <option value="security">openDoor</option>
+            
+          
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.amenities}</Form.Control.Feedback>
         </Form.Group>
@@ -254,5 +255,3 @@ const ParkingSpaceRegister = () => {
     </Container>
   );
 };
-
-export default ParkingSpaceRegister;
