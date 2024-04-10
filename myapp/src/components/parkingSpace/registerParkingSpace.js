@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios'
+function reverseLatLon(arr) {
+  return [arr[1], arr[0]]
+}
 
 const validationSpaceRegisterSchema = yup.object({
   title: yup.string().required('Title is required'),
@@ -13,20 +17,23 @@ const validationSpaceRegisterSchema = yup.object({
   state: yup.string().required('State is required'),
   photo: yup.mixed().required('Photo is required'),
   description: yup.string().required('Description is required'),
-  spaceTypes: yup.array().of(
-    yup.object({
-      capacity: yup.number().required('Capacity is required').min(1, 'Minimum capacity is 1').max(50, 'Maximum capacity is 50'),
-      amount: yup.number().required('Amount per hour is required').max(100, 'Maximum amount is 100')
-    })
-  ).min(1, 'At least one space type must be filled')
+  // spaceTypes: yup.array().of(
+  //   yup.object({
+  //     capacity: yup.number().required('Capacity is required').min(1, 'Minimum capacity is 1').max(50, 'Maximum capacity is 50'),
+  //     amount: yup.number().required('Amount per hour is required').max(100, 'Maximum amount is 100')
+  //   })
+  // ).min(1, 'At least one space type must be filled')
 });
 
-export default function ParkingSpaceRegister() {
+export default function ParkingSpaceRegister(props) {
+const {parkingRegisterToast}=props
+const [cords,setCords]=useState([])
+  
   const formik = useFormik({
     initialValues: {
       title: '',
       propertyType: '',
-      amenities: [],
+      amenities:'',
       street: '',
       area: '',
       city: '',
@@ -49,27 +56,39 @@ export default function ParkingSpaceRegister() {
     validationSchema: validationSpaceRegisterSchema,
     onSubmit: async(values,{resetForm}) => {
           const formData={
-            title: '',
-      propertyType: '',
-      amenities: [],
-      street: '',
-      area: '',
-      city: '',
-      state: '',
-      photo: null,
-      description: '',
+            title:values.title,
+      propertyType:values.propertyType,
+      amenities: values.amenities,
+     Address:{ 
+      street:values.street,
+      area: values.area,
+      city:values.city,
+      state:values.state ,
+      coordinates:[cords]
+     },
+      images:values.photo,
+      description: values.description,
       spaceTypes: [
         {
           Type: "Two Wheeler",
-          capacity: '',
-          amount: ''
+          capacity:values.spaceTypes[0].capacity,
+          amount: values.spaceTypes[0].amount
         },
         {
           Type: "Four Wheeler",
-          capacity: '',
-          amount: ''
+          capacity:values.spaceTypes[1].capacity,
+          amount: values.spaceTypes[1].amount
         }
       ]
+          }
+          console.log("formData",formData)
+          try{
+            const response=await axios.post('http://localhost:3045/api/parkingSpace/Register',formData,{
+              headers:{'Authorization':localStorage.getItem('token')}
+            })
+            console.log(response.log)
+          }catch(err){
+            console.log(err)
           }
     }
   });
@@ -78,6 +97,24 @@ export default function ParkingSpaceRegister() {
     formik.setFieldValue(`spaceTypes[${index}].${fieldName}`, value);
   };
 
+  useEffect(()=>{
+   
+      (async()=>{
+        try {
+          const response = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${formik.area}&apiKey=4a35345ee9054b188d775bb6cef27b7c`);
+          const location = response.data.features[0].geometry.coordinates;
+          setCords(reverseLatLon(location))
+          //  console.log(reverseLatLon(location))
+        
+          console.log("coord",response.data)
+      } catch (error) {
+          console.error('Error converting address to location:', error);
+      }
+  
+      })()
+
+    
+  },[])
   return (
     <Container>
       <h2>Parking Space Registration</h2>
