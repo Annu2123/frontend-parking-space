@@ -8,6 +8,7 @@ import LoginPage from './components/userAuthentication.js/login';
 import ProductPage from './components/parkingSpace/productPage';
 import IndianStandardTime from './components/time'
 import Register from './components/userAuthentication.js/register';
+import ForgotPassword from './components/userAuthentication.js/settingPassword';
 import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
 import ParkingSpaceRegister from './components/parkingSpace/registerParkingSpace';
@@ -59,7 +60,9 @@ function App() {
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
          {/* <ListParkings/> */}
+
         <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/>
+
        
         <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
@@ -67,6 +70,7 @@ function App() {
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
           <Route path='/cancel' element={<Cancel/>}/>
+          <Route path='/forgotpassword' element={<ForgotPassword/>}/>
         </Routes>
         <ToastContainer/>
       </BrowserRouter> 
