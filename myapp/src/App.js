@@ -41,6 +41,16 @@ function App() {
       draggable: true
     })
   }
+
+  const parkingRegisterToast = ()=>{
+    toast.success('Successfully created parking Space', {
+      position:"top-right",
+      autoClose:2000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    })
+  }
   return (
     <div>
       <BrowserRouter>
@@ -50,7 +60,9 @@ function App() {
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
          {/* <ListParkings/> */}
-        {/* <ParkingSpaceRegister/> */}
+
+        <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/>
+
        
         <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>

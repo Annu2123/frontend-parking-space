@@ -93,7 +93,7 @@ export default function MapComponent2(){
         {/* Leaflet map */}
         {center[0] != 0 &&
             <MapContainer ref={mapRef}
-                center={center} zoom={13} style={{ height: '400px' }}>
+                center={center} zoom={15} style={{ height: '400px' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -110,7 +110,7 @@ export default function MapComponent2(){
                     {/* Display nearby services as markers */}
                     {services && services.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
-                        } icon={customMarker} >
+                        } icon={customMarker} draggable={true}>
                             <Popup>{space.title}</Popup>
                         </Marker>
                     ))}
