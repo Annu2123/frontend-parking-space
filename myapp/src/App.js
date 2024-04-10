@@ -42,15 +42,15 @@ function App() {
   }
   return (
     <div>
-      {/* <BrowserRouter> */}
+      <BrowserRouter>
       {/* <MapComponent/> */}
        
-        {/* <Header /> */}
+        <Header />
         {/* <Bookings/> */}
-         {/* <MapComponent2/>
-         <ListParkings/> */}
+         {/* <MapComponent2/> */}
+         {/* <ListParkings/> */}
         <ParkingSpaceRegister/>
-{/*        
+       
         <Routes>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
           <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
@@ -59,7 +59,7 @@ function App() {
           <Route path='/cancel' element={<Cancel/>}/>
         </Routes>
         <ToastContainer/>
-      </BrowserRouter>  */}
+      </BrowserRouter> 
 
           {/* <Listing /> */}
 
