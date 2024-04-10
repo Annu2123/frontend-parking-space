@@ -39,7 +39,7 @@ export default function LoginPage(props) {
             try {
                 const response = await axios.post('http://localhost:3045/api/users/login', formData)
                 resetForm()
-                console.log(response.data)
+                // console.log(response.data)
                 const data = response.data
                 localStorage.setItem('token', data.token)
                 loginToast()
