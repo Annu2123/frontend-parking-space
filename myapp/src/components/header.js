@@ -16,7 +16,7 @@ export default function Header() {
                     <ul className="navbar-nav ml-auto">
                         
                         <li className="nav-item">
-                            <Link to="/register" className="nav-link" href="#">Register</Link>
+                            <Link to="/register" className="nav-link">Register</Link>
                         </li>
                         {isEmpty(localStorage.getItem('token'))&& (
                         <li className="nav-item">

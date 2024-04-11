@@ -17,17 +17,17 @@ const validationSpaceRegisterSchema = yup.object({
   state: yup.string().required('State is required'),
   photo: yup.mixed().required('Photo is required'),
   description: yup.string().required('Description is required'),
-  // spaceTypes: yup.array().of(
-  //   yup.object({
-  //     capacity: yup.number().required('Capacity is required').min(1, 'Minimum capacity is 1').max(50, 'Maximum capacity is 50'),
-  //     amount: yup.number().required('Amount per hour is required').max(100, 'Maximum amount is 100')
-  //   })
-  // ).min(1, 'At least one space type must be filled')
+  spaceTypes: yup.array().of(
+    yup.object({
+      capacity: yup.number().required('Capacity is required').min(1, 'Minimum capacity is 1').max(50, 'Maximum capacity is 50'),
+      amount: yup.number().required('Amount per hour is required').max(100, 'Maximum amount is 100')
+    })
+  ).min(1, 'At least one space type must be filled')
 });
 
 export default function ParkingSpaceRegister(props) {
 const {parkingRegisterToast}=props
-const [cords,setCords]=useState([])
+
   
   const formik = useFormik({
     initialValues: {
@@ -38,12 +38,12 @@ const [cords,setCords]=useState([])
       area: '',
       city: '',
       state: '',
-      photo: null,
+      photo: '',
       description: '',
       spaceTypes: [
         {
           Type: "Two Wheeler",
-          capacity: '',
+          capacity:'',
           amount: ''
         },
         {
@@ -59,34 +59,30 @@ const [cords,setCords]=useState([])
             title:values.title,
       propertyType:values.propertyType,
       amenities: values.amenities,
-     Address:{ 
+     address:{ 
       street:values.street,
       area: values.area,
       city:values.city,
       state:values.state ,
-      coordinates:[cords]
+
      },
-      images:values.photo,
+      image:values.photo,
       description: values.description,
-      spaceTypes: [
-        {
-          Type: "Two Wheeler",
-          capacity:values.spaceTypes[0].capacity,
-          amount: values.spaceTypes[0].amount
-        },
-        {
-          Type: "Four Wheeler",
-          capacity:values.spaceTypes[1].capacity,
-          amount: values.spaceTypes[1].amount
-        }
-      ]
+      spaceTypes: formik.values.spaceTypes.map((spaceType) => ({
+        types: spaceType.Type,
+        capacity: Number(spaceType.capacity),
+        amount: Number(spaceType.amount)
+      }))
           }
           console.log("formData",formData)
           try{
             const response=await axios.post('http://localhost:3045/api/parkingSpace/Register',formData,{
-              headers:{'Authorization':localStorage.getItem('token')}
+              headers:{'Authorization':localStorage.getItem('token'),
+              'Content-Type': 'multipart/form-data'
+            }
             })
-            console.log(response.log)
+            console.log(response.data)
+            
           }catch(err){
             console.log(err)
           }
@@ -97,24 +93,24 @@ const [cords,setCords]=useState([])
     formik.setFieldValue(`spaceTypes[${index}].${fieldName}`, value);
   };
 
-  useEffect(()=>{
+  // useEffect(()=>{
    
-      (async()=>{
-        try {
-          const response = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${formik.area}&apiKey=4a35345ee9054b188d775bb6cef27b7c`);
-          const location = response.data.features[0].geometry.coordinates;
-          setCords(reverseLatLon(location))
-          //  console.log(reverseLatLon(location))
+  //     (async()=>{
+  //       try {
+  //         const response = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${formik.area}&apiKey=4a35345ee9054b188d775bb6cef27b7c`);
+  //         const location = response.data.features[0].geometry.coordinates;
+  //         setCords(reverseLatLon(location))
+  //         //  console.log(reverseLatLon(location))
         
-          console.log("coord",response.data)
-      } catch (error) {
-          console.error('Error converting address to location:', error);
-      }
+  //         console.log("coord",response.data)
+  //     } catch (error) {
+  //         console.error('Error converting address to location:', error);
+  //     }
   
-      })()
+  //     })()
 
     
-  },[])
+  // },[])
   return (
     <Container>
       <h2>Parking Space Registration</h2>
@@ -144,9 +140,9 @@ const [cords,setCords]=useState([])
             onFocus={() => formik.setFieldError('propertyType', '')}
             isInvalid={formik.touched.propertyType && formik.errors.propertyType}
           >
-            <option>Select property type</option> 
-            <option value="flat">Gated flat</option>
-            <option value="houswe"></option>
+            
+            <option value="independence_house">independence_house</option>
+            <option value="gated_apartment"> gated_apartment</option>
             {/* Add options for property types */}
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.propertyType}</Form.Control.Feedback>
@@ -162,8 +158,8 @@ const [cords,setCords]=useState([])
             onFocus={() => formik.setFieldError('amenities', '')}
             isInvalid={formik.touched.amenities && formik.errors.amenities}
           >
-            <option value="wifi">cover</option>
-            <option value="security">openDoor</option>
+            <option value="covered">covered</option>
+            <option value="opendoor">opendoor</option>
             
           
           </Form.Control>
