@@ -28,6 +28,7 @@
     "react-scripts": "5.0.1",
     "react-time-picker": "^6.6.0",
     "react-toastify": "^10.0.5",
+    "redux-thunk": "^3.1.0",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
