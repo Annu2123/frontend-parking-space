@@ -2,13 +2,14 @@ import { ToastContainer, toast } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter, Route, Routes,Link } from 'react-router-dom'
-import Header from './components/header';
+//  import Header from "./components/headers/header"
 import Listing from './components/listParking';
 import ServiceLocator from './components/location';
 import LoginPage from './components/userAuthentication.js/login';
 import ProductPage from './components/parkingSpace/productPage';
 import IndianStandardTime from './components/time'
 import Register from './components/userAuthentication.js/register';
+import ForgotPassword from './components/userAuthentication.js/settingPassword';
 import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
 import ParkingSpaceRegister from './components/parkingSpace/registerParkingSpace';
@@ -139,7 +140,6 @@ useEffect(() => {
       {/* <ProductPage /> */}
       {/* <ServiceLocator />
       <IndianStandardTime /> */}
-
     </div>
 
   );
