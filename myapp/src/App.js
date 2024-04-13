@@ -1,4 +1,5 @@
 import { ToastContainer, toast } from 'react-toastify'
+import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter, Route, Routes,Link } from 'react-router-dom'
 import Header from './components/header';
@@ -16,15 +17,72 @@ import Bookings from './components/payments/bookings';
 import Succes from './components/payments/success';
 import Cancel from './components/payments/cancel';
 import ListParkings from './components/parkingSpace/allParkingLIst';
-
+import Table from './components/dashboards/data-table';
+import { useEffect, useReducer, useState } from 'react';
+import { ParkingSpaceContext } from './contextApi/context';
+import axios from 'axios';
+import UserCantroll from './components/usersControll/users-controll';
+import Home from './components/home';
+function geoWithinSpace(state,action){
+  switch(action.type){
+    case "GET_PARKINGSPACE_RADIUS":{
+      return action.payload
+    }
+    default :{
+      return [...state]
+    }
+  }
+}
 // import {Typography, Button} from '@mui/material'
 function App() {
+  const [locationParking,latDispatch]=useReducer(geoWithinSpace,[])
+  const [center, setCenter] = useState([0, 0])
+  const [radius, setRadius] = useState(10)
+//   const [usersState,usersDispatch]=useReducer(usersReducer,{
 
-  
+//   isLoggedIn:false
+// })
+//find current lat and log
+useEffect(() => {
+
+  (async () => {
+
+      if (navigator.geolocation) {
+          console.log(true)
+          console.log(navigator.geolocation.getCurrentPosition((location) => {
+              console.log("dhwdh", location)
+              const { latitude, longitude } = location.coords
+              setCenter([latitude, longitude])
+          }))
+      }
+  })()
+}, [])
+  // useEffect(()=>{
+  //   if(localStorage.getItem('token')){
+  //     usersDispatch({
+  //       type:"SIGN_IN",
+  //       payload:true
+  //     })
+  //   }
+  // })
+ useEffect(()=>{
+  (async()=>{
+    try{
+      const response=await axios.get(`http://localhost:3045/api/parkingSpace/radius?lat=${center[0]}&log=${center[1]}&radius=${radius}`)
+      console.log("sdfer",response.data)
+      latDispatch(({type:"GET_PARKINGSPACE_RADIUS",payload:response.data}))
+    }catch(err){
+      console.log(err)
+    }
+  })()
+ },[center,radius])
+ const setHandleRadius=(r)=>{
+  setRadius(r)
+ }
   const loginToast = () => {
     toast.success('logged in succesfully', {
       position: "top-right",
-      autoClose: 12000,
+      autoClose: 2000,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true
@@ -51,28 +109,33 @@ function App() {
     })
   }
   return (
-    <div>
+    <div className=''>
       <BrowserRouter>
-      {/* <MapComponent/> */}
-       
+      <ParkingSpaceContext.Provider value={
+        {locationParking,
+          setHandleRadius,
+          center, setCenter,
+          setRadius,radius
+        }
+      }>
         <Header />
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
-         {/* <ListParkings/> */}
-        <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/>
-       
+        {/* <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/> */}
+        {/* <Table/> */}
         <Routes>
+          <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
+          <Route path='/usersControll' element={<UserCantroll/>}/>
           <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
-          <Route path='/cancel' element={<Cancel/>}/>
+          {/* <Route path='/cancel' element={<Cancel/>}/> */}
+          <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
         </Routes>
         <ToastContainer/>
+      </ParkingSpaceContext.Provider>
       </BrowserRouter> 
-
-          {/* <Listing /> */}
-
       {/* <ProductPage /> */}
       {/* <ServiceLocator />
       <IndianStandardTime /> */}
