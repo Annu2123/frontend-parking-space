@@ -43,6 +43,7 @@ export default function LoginPage(props) {
                 const data = response.data
                 localStorage.setItem('token', data.token)
                 loginToast()
+                navigate("/usersControll")
             } catch (err) {
                 if (err.response && err.response.data) {
                     const serverErrors = err.response.data.error || []

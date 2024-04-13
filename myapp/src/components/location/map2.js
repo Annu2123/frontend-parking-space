@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef ,useContext} from 'react';
 import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
+import { ParkingSpaceContext } from '../../contextApi/context';
 import axios from 'axios'; // For making HTTP requests
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
@@ -9,11 +10,9 @@ function reverseLatLon(arr) {
     return [arr[1], arr[0]]
 }
 export default function MapComponent2(){
-    const [address, setAddress] = useState(''); // State to store user's address
-    const [center, setCenter] = useState([0, 0]); // State to store center of the map
-    const [radius, setRadius] = useState(10); // State to store radius of the circle
-    const [services, setParkingServices] = useState([]); // State to store nearby services
-
+    const [address,setAddress]=useState("")
+    const {center,setCenter,radius,locationParking,setHandleRadius}=useContext(ParkingSpaceContext)
+console.log("parki",locationParking)
     const mapRef = useRef(null)
 
 
@@ -21,24 +20,6 @@ export default function MapComponent2(){
         iconUrl: pin,
         iconSize: [38, 38]
     })
-
-    useEffect(() => {
-
-        (async () => {
-
-            if (navigator.geolocation) {
-                console.log(true)
-                console.log(navigator.geolocation.getCurrentPosition((location) => {
-                    // console.log("lag",location.coords.longitude)
-                    // console.log("lan",location.coords.latitude)
-                    console.log("dhwdh", location)
-                    const { latitude, longitude } = location.coords
-                    setCenter([latitude, longitude])
-                }))
-            }
-
-        })()
-    }, [])
     // Function to handle address input change
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
@@ -65,35 +46,17 @@ export default function MapComponent2(){
         }
     }, [center]);
 
-    useEffect(() => {
-        if (center[0] != 0) {
-            (async () => {
-                try {
-                    const response = await axios.get(`http://localhost:3045/api/parkingSpace/radius?lat=${center[0]}&log=${center[1]}&radius=${radius}`)
-                    console.log("sds", response.data)
-                    setParkingServices(response.data)
-                    setAddress('')
-                } catch (err) {
-                    console.log(err)
-                }
-            })()
-
-        }
-
-    }, [center, radius])
-    // Function to find nearby services based on user's location
-    //const findNearbyServices = () => {
-    // Make API request to find nearby services based on center and radius
-    // Update services state with the response
-    // };
-
+   
+  const handleRadius=(r)=>{
+    setHandleRadius(r)
+  }
     return (
     <div className="container mt-2 mb-2 ">
 
-        {/* Leaflet map */}
+     {/* Leaflet map */}
         {center[0] != 0 &&
             <MapContainer ref={mapRef}
-                center={center} zoom={15} style={{ height: '400px' }}>
+                center={center} zoom={11} style={{ height: '400px' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -102,21 +65,14 @@ export default function MapComponent2(){
                     {/* Circle representing the radius */}
                     <Circle center={center} radius={radius * 1000} />
 
-                    {/* Marker for user's location */}
-                    {/* <Marker position={center}>
-                    <Popup>User's Location</Popup>
-                    </Marker> */}
-
                     {/* Display nearby services as markers */}
-                    {services && services.map((space, index) => (
+                    {locationParking && locationParking.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
                         } icon={customMarker} draggable={true}>
                             <Popup>{space.title}</Popup>
                         </Marker>
                     ))}
-
-            </MapContainer>
-
+           </MapContainer>
         }
 
             {/* Input for adjusting the radius */}
@@ -126,7 +82,7 @@ export default function MapComponent2(){
                 max="50"
                 step="1"
                 value={radius}
-                onChange={(e) => setRadius(parseInt(e.target.value))}
+                onChange={(e) => {handleRadius((parseInt(e.target.value)))}}
             />
             <span>{radius} km</span>
 
@@ -139,9 +95,8 @@ export default function MapComponent2(){
                 style={{ width: "40%", height: "10%" }}
 
             />
-
             <button onClick={convertAddressToLocation}>Get Location</button><br />
-            <p>parking space available in your location -{services.length}</p>
+            <p>parking space available in your location -{locationParking.length}</p>
 
      </div>
     );

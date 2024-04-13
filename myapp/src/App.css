@@ -14,6 +14,16 @@
   margin-bottom: 20px;
   border-radius: 20px; /* Adjust the border-radius to your desired value */
 }
+.owner-container{
+  display: flex ;   
+  /*//one by one */
+}
+.sidebaar{
+  min-height: 800px;
+}
+.content{
+  width: 100%;
+}
 
 
 

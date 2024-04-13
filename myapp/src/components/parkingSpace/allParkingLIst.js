@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
+import { Link } from "react-router-dom"
 export default function ListParkings(){
     const [parking,setParking]=useState([])
     useEffect(()=>{
@@ -19,7 +20,7 @@ export default function ListParkings(){
                 {parking.map((ele)=>{
                   return <div className="col-md-4">
                            
-                              
+                           <Link to="/spaceBookingPage">
                              <div className="card post-card" style={{ width: "18rem" }}>
                              <img src={`http://localhost:3045/uploads/${ele.image}`} className="card-img-top  img-fluid" alt="..." style={{width:"200px",height:"200px"}} />
                              <div className="card-body">
@@ -28,7 +29,7 @@ export default function ListParkings(){
                         
         
                              </div>
-                           </div>
+                           </div></Link>
                          </div>
                      
                       
