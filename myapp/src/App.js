@@ -17,7 +17,6 @@ import Bookings from './components/payments/bookings';
 import Succes from './components/payments/success';
 import Cancel from './components/payments/cancel';
 import ListParkings from './components/parkingSpace/allParkingLIst';
- admin-dashboard
 import Table from './components/dashboards/data-table';
 import { useEffect, useReducer, useState } from 'react';
 import { ParkingSpaceContext } from './contextApi/context';
