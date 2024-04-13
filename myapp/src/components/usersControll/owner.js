@@ -7,11 +7,7 @@ export default function Owner(){
     return (
        <div className="owner-container">
          <OwnerDashBoard/>
-        <div className="content">
-       <Routes>
-        <Route path="/cancel" element={<Customer/>}/>
-       </Routes>
-        </div>
+
         
        </div>
     )

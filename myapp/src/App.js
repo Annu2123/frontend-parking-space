@@ -4,13 +4,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter, Route, Routes,Link } from 'react-router-dom'
 //  import Header from "./components/headers/header"
 import Listing from './components/listParking';
-import ServiceLocator from './components/location';
+
 import LoginPage from './components/userAuthentication.js/login';
 import ProductPage from './components/parkingSpace/productPage';
 import IndianStandardTime from './components/time'
 import Register from './components/userAuthentication.js/register';
 import ForgotPassword from './components/userAuthentication.js/settingPassword';
-import MapComponent from './components/location/map';
 import MapComponent2 from './components/location/map2';
 import ParkingSpaceRegister from './components/parkingSpace/registerParkingSpace';
 import Otp from './components/userAuthentication.js/otpverification';
@@ -25,6 +24,7 @@ import { ParkingSpaceContext } from './contextApi/context';
 import axios from 'axios';
 import UserCantroll from './components/usersControll/users-controll';
 import Home from './components/home';
+import Header from './components/headers/header';
 function geoWithinSpace(state,action){
   switch(action.type){
     case "GET_PARKINGSPACE_RADIUS":{
@@ -35,7 +35,7 @@ function geoWithinSpace(state,action){
     }
   }
 }
-// import {Typography, Button} from '@mui/material'
+
 function App() {
   const [locationParking,latDispatch]=useReducer(geoWithinSpace,[])
   const [center, setCenter] = useState([0, 0])
@@ -143,16 +143,16 @@ function App() {
           setRadius,radius
         }
       }>
-        <Header />
+        <Header/>
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
         {/* <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/> */}
         {/* <Table/> */}
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/login' element={<LoginPage loginToast={loginToast}/>}></Route>
+          <Route path='/login' element={<LoginPage loginToast={loginToast}/>}/>
           <Route path='/usersControll' element={<UserCantroll/>}/>
-          <Route path='/register'element={<Register registerToast={registerToast}/>}></Route>
+          <Route path='/register'element={<Register registerToast={registerToast}/>}/>
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
