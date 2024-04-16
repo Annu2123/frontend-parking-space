@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import '../../App.css'
 export default function OwnerDashBoard(){
     return (
-        <div>
       <div className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebaar" style={{ width: "280px" }}>
         {/* <a href={"/"} className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
           <svg className="bi pe-none me-2" width="40" height="32"><use xlinkHref="#bootstrap"></use></svg>
@@ -13,26 +12,26 @@ export default function OwnerDashBoard(){
           <li className="nav-item" >
             < Link to="/cancel" className="nav-link  text-white">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#home"></use></svg>
-              Home
+              my account
             </Link>
           </li>
           <li >
             <Link to="/create-post" className="nav-link  text-white ">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#speedometer2"></use></svg>
-              Create Post
+              my space
             </Link>
           </li>
           <li>
-            <a className="nav-link text-white">
+            <Link to="/addparking" className="nav-link text-white">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#table"></use></svg>
-              Orders
-            </a>
+              add parking
+            </Link>
           </li>
           <li>
-            <a className="nav-link text-white">
+            <Link to="bookingList" className="nav-link text-white">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
               Products
-            </a>
+            </Link>
           </li>
           <li>
             <a className="nav-link text-white">
@@ -56,6 +55,6 @@ export default function OwnerDashBoard(){
           </ul>
         </div>
       </div>
-    </div>
+   
     )
 }

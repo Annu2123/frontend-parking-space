@@ -1,5 +1,5 @@
 
-.navbar-custom {
+/* .navbar-custom {
     background-color: #007bff;
   }
   .navbar-custom .navbar-brand,
@@ -7,13 +7,14 @@
     color: #fff;
     transition: color 0.3s ease-in-out;
   }
-  .navbar-custom .navbar-nav .nav-link:hover {
-    color: #ffc107; /* Change to your desired hover color */
-  }
-  @keyframes fadeIn {
+  .navbar-custom .navbar-nav .nav-link:hover { */
+    /* color: #ffc107; */
+     /* Change to your desired hover color */
+  /* } */
+  /* @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
   }
   .navbar-custom .navbar-nav .nav-link {
     animation: fadeIn 0.5s ease-out;
-  }
+  } */

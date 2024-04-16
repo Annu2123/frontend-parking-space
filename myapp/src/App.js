@@ -122,7 +122,6 @@ useEffect(() => {
         <Header/>
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
-        {/* <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/> */}
         {/* <Table/> */}
         <Routes>
           <Route path='/' element={<Home/>}/>
