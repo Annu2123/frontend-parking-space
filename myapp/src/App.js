@@ -134,7 +134,6 @@ useEffect(() => {
         <Header/>
         {/* <Bookings/> */}
          {/* <MapComponent2/> */}
-        {/* <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast}/> */}
         {/* <Table/> */}
         <Routes>
           <Route path='/' element={<Home/>}/>
@@ -144,6 +143,7 @@ useEffect(() => {
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
+
           <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
           <Route path='/myAccount' element={<MyAccount/>}/>
           <Route path='/account' element={<CustomerDetails/>}/>
@@ -151,6 +151,9 @@ useEffect(() => {
           <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
           <Route path='/bookings' element={<BookingsList/>}/>
           
+
+
+          <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
 
         </Routes>
         <ToastContainer/>
