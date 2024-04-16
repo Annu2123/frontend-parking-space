@@ -31,10 +31,10 @@ export default function CustomerDetails() {
                     <Card>
                         <Card.Header as="h2">Account Details</Card.Header>
                         <Card.Body>
-                            <Card.Text><strong>Name:</strong> {customer.name}</Card.Text>
-                            <Card.Text><strong>Email:</strong> {customer.email}</Card.Text>
-                            <Card.Text><strong>Phone:</strong> {customer.phone}</Card.Text>
-                            <Card.Text><strong>Role:</strong> {customer.role}</Card.Text>
+                            <Card.Text><strong>Name:</strong> { customer && customer.name}</Card.Text>
+                            <Card.Text><strong>Email:</strong> { customer && customer.email}</Card.Text>
+                            <Card.Text><strong>Phone:</strong> { customer && customer.phone}</Card.Text>
+                            <Card.Text><strong>Role:</strong> {customer && customer.role}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>

@@ -24,6 +24,15 @@ import axios from 'axios';
 import UserCantroll from './components/usersControll/users-controll';
 import Home from './components/home';
 import Header from './components/headers/header';
+import MyAccount from './components/customers/customerAccount';
+import CustomerDetails from './components/customers/customer-details';
+import CustomerVehicle from './components/customers/customerVehicle';
+import VehicleDetails from './components/customers/vehicleDetails';
+import BookingsList from './components/customers/bookingsList';
+import { startGetCustomer } from './actions/customerActions/customerProfile';
+import { startgetVehicles } from './actions/customerActions/customerVehicle'
+import { startGetBookings } from "./actions/customerActions/customerBookings" 
+import { useDispatch } from 'react-redux';
 function geoWithinSpace(state,action){
   switch(action.type){
     case "GET_PARKINGSPACE_RADIUS":{
@@ -39,13 +48,16 @@ function App() {
   const [locationParking,latDispatch]=useReducer(geoWithinSpace,[])
   const [center, setCenter] = useState([0, 0])
   const [radius, setRadius] = useState(10)
+  const dispatch=useDispatch()
 //   const [usersState,usersDispatch]=useReducer(usersReducer,{
 
 //   isLoggedIn:false
 // })
 //find current lat and log
 useEffect(() => {
-
+  dispatch(startGetCustomer());
+  dispatch(startgetVehicles());
+  dispatch(startGetBookings());
   (async () => {
 
       if (navigator.geolocation) {
@@ -131,8 +143,22 @@ useEffect(() => {
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
+
+          <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
+          <Route path='/myAccount' element={<MyAccount/>}/>
+          <Route path='/account' element={<CustomerDetails/>}/>
+          <Route path='/vehicles' element={<CustomerVehicle/>}/>
+          <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
+          <Route path='/bookings' element={<BookingsList/>}/>
+          
+
+
           <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
+
           <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
+=======
+
+
         </Routes>
         <ToastContainer/>
       </ParkingSpaceContext.Provider>

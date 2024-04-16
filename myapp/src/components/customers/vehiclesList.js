@@ -4,6 +4,7 @@ export default function VehiclesList(){
     const vehicles=useSelector((state)=>{
         return state.customer.vehicles
     })
+    console.log(vehicles,'vvv')
     return(
         <div>
             <h2>vehiclesList-{vehicles.length}</h2>
@@ -16,7 +17,7 @@ export default function VehiclesList(){
                     </tr>
                 </thead>
                 <tbody>
-                 {vehicles.map((ele,i)=>{
+                 {vehicles?.map((ele,i)=>{
                     return(
                         <tr key={ele._id}>
                             <td>{i+1}</td>

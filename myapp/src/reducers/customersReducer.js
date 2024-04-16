@@ -1,5 +1,7 @@
 import { CREATE_VEHICLE,REMOVE_VEHICLE,GET_VEHICLES} from "../actions/customerActions/customerVehicle"
-import { GET_CUSTOMER } from "../actions/customerActions/customerActions"
+import { GET_CUSTOMER } from "../actions/customerActions/customerProfile"
+import { GET_BOOKINGS } from "../actions/customerActions/customerBookings"
+import bookings from "../components/payments/bookings"
 const initialState={
     account:{},
     vehicles:[],
@@ -10,7 +12,6 @@ export default function customerReducer(state=initialState,action){
         case GET_VEHICLES:
             return {...state,vehicles:[...action.payload]}
         case REMOVE_VEHICLE:
-            console.log(action.payload,'reee')
             return{
                 ...state,vehicles:state.vehicles.filter((ele)=>{
                     return ele._id!=action.payload._id
@@ -21,9 +22,12 @@ export default function customerReducer(state=initialState,action){
                 ...state,vehicles:[...state.vehicles,action.payload]
             }
         case GET_CUSTOMER:
-            console.log(action.payload,'cuu')
             return{
                 ...state,account:action.payload
+            }
+        case GET_BOOKINGS:
+            return{
+                ...state,bookings:action.payload
             }
 
     }
