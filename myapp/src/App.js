@@ -132,6 +132,7 @@ useEffect(() => {
           <Route path='/success' element={<Succes/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
           <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
+          <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
         </Routes>
         <ToastContainer/>
       </ParkingSpaceContext.Provider>
