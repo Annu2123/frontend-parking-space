@@ -1,18 +1,11 @@
-// import { Link } from "react-router-dom"
-// export default function MyAccount(){
-//     return(
-//         <div>
-//         <h2>MyAccount</h2>
-//         <Link>Account</Link><br/>
-//         <Link to={"/bookings"}>My bookings</Link><br/>
-//         <Link to={"/Vehicles"}>My Vehicles</Link><br/>
-//         </div>
-//     )
-// }
+import { useEffect } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 export default function MyAccount() {
+    const data =useSelector((state)=>{
+        return state.custo
+    })
     return (
         <div className="container mt-4">
             <div className="row">
