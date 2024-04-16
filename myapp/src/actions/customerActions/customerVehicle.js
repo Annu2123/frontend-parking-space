@@ -8,7 +8,8 @@ return async(dispatch)=>{
  try{
   const result=await axios.post("http://localhost:3045/API/vehicle/register",formData,{
     headers:{
-      Authorization:localStorage.getItem("token")
+      Authorization:localStorage.getItem("token"),
+      'Content-Type': 'multipart/form-data'
     }
   })
   dispatch(createVehicle(result.data))
@@ -23,7 +24,7 @@ export const startgetVehicles=()=>{
             try{
               const response=await axios.get("http://localhost:3045/API/vehicles/list",{
                 headers:{
-                  Authorization:localStorage.getItem("token")
+                  Authorization:localStorage.getItem("token"),
                 }
               }) 
               dispatch(getVehicles(response.data))

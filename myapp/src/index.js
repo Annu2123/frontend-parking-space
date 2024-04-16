@@ -10,6 +10,7 @@ const store=configurStore()
 store.subscribe(()=>{
   console.log(store.getState())
 })
+console.log(store.getState())
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    

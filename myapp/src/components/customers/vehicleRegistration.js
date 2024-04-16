@@ -27,6 +27,7 @@ export default function VehiclesRegistration(){
             vehicleType:values.vehicleType,
             documents:values.documents
           }
+          console.log("formData",formData)
           dispatch(startCreateVehicle(formData,resetForm))
 
        }
@@ -93,10 +94,10 @@ export default function VehiclesRegistration(){
                     <Form.Control
                         size="lg"
                         type="file"
+                       accept=".pdf, .doc, .docx"
+                        onChange={(event) => formik.setFieldValue("documents", event.currentTarget.files[0])}
                         name="documents"
                         placeholder="vehicleDocuments"
-                        value={formik.values.documents}
-                        onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         onFocus={() => formik.setFieldError('vehicleNumber', '')}
                         isInvalid={formik.touched.documents && formik.errors.documents}

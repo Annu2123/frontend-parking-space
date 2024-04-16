@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import Owner from "./owner"
 import Admin from "./admin"
 import Customer from "./customer"
+// import Customer from "./customer"
 export default function UserCantroll(){
     const token=localStorage.getItem('token')
     const [role,setRole]=useState(null)

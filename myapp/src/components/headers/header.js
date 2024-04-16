@@ -64,7 +64,12 @@ export default function Header() {
                         <Nav.Link as={Link} to="/register">Register</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
                         </>
-                    ):(<Nav.Link onClick={handleLogout}>Logout</Nav.Link>)}
+                    ):(
+                        <>
+                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                    <Nav.Link as={Link} to="/myAccount">myAccount</Nav.Link>
+                    </>
+                    )}
                     <Nav.Link href="#">Service</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
