@@ -32,7 +32,10 @@ import BookingsList from './components/customers/bookingsList';
 import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings" 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import ParkingSpaceBooking from './components/OwnerDashboard/bookingList';
+import { startGetUserDetail } from './actions/users';
+import MySpace from './components/OwnerDashboard/mySpace';
 function geoWithinSpace(state,action){
   switch(action.type){
     case "GET_PARKINGSPACE_RADIUS":{
@@ -54,6 +57,9 @@ function App() {
 //   isLoggedIn:false
 // })
 //find current lat and log
+const user=useSelector((state)=>{
+  return state.users
+})
 useEffect(() => {
   dispatch(startGetCustomer());
   dispatch(startgetVehicles());
@@ -70,14 +76,11 @@ useEffect(() => {
       }
   })()
 }, [])
-  // useEffect(()=>{
-  //   if(localStorage.getItem('token')){
-  //     usersDispatch({
-  //       type:"SIGN_IN",
-  //       payload:true
-  //     })
-  //   }
-  // })
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      dispatch(startGetUserDetail())
+    }
+  },[dispatch])
  useEffect(()=>{
   (async()=>{
     try{
@@ -143,20 +146,20 @@ useEffect(() => {
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
-
+          <Route path='/parkingSpaceBooking' element={ <ParkingSpaceBooking/>}/>
           <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
           <Route path='/myAccount' element={<MyAccount/>}/>
           <Route path='/account' element={<CustomerDetails/>}/>
           <Route path='/vehicles' element={<CustomerVehicle/>}/>
           <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
           <Route path='/bookings' element={<BookingsList/>}/>
-          
+          <Route path='/myspace' element={<MySpace/>}/>
 
 
-          <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
+          <Route path='/spaceBookingPage/:id' element={user.users.role == 'customer' && <ProductPage/>}/> 
 
           <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
-=======
+
 
 
         </Routes>
