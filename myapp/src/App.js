@@ -32,10 +32,15 @@ import BookingsList from './components/customers/bookingsList';
 import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings" 
+
+import { useDispatch } from 'react-redux';
+import PaymentPage from './components/payments/bookings';
+
 import { useDispatch, useSelector } from 'react-redux';
 import ParkingSpaceBooking from './components/OwnerDashboard/bookingList';
 import { startGetUserDetail } from './actions/users';
 import MySpace from './components/OwnerDashboard/mySpace';
+
 function geoWithinSpace(state,action){
   switch(action.type){
     case "GET_PARKINGSPACE_RADIUS":{
@@ -153,10 +158,15 @@ useEffect(() => {
           <Route path='/vehicles' element={<CustomerVehicle/>}/>
           <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
           <Route path='/bookings' element={<BookingsList/>}/>
+
+          <Route path='/paymentPage/:id' element={<PaymentPage/>}/>
+          <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
+
           <Route path='/myspace' element={<MySpace/>}/>
 
 
           <Route path='/spaceBookingPage/:id' element={user.users.role == 'customer' && <ProductPage/>}/> 
+
 
           <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
 

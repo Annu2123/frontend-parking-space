@@ -4,7 +4,6 @@ export default function VehiclesList(){
     const vehicles=useSelector((state)=>{
         return state.customer.vehicles
     })
-    console.log(vehicles,'vvv')
     return(
         <div>
             <h2>vehiclesList-{vehicles.length}</h2>

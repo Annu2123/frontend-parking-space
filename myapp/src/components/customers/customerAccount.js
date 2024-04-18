@@ -3,9 +3,6 @@ import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 export default function MyAccount() {
-    const data =useSelector((state)=>{
-        return state.custo
-    })
     return (
         <div className="container mt-4">
             <div className="row">
