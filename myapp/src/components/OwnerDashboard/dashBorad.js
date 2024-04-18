@@ -28,16 +28,16 @@ export default function OwnerDashBoard(){
             </Link>
           </li>
           <li>
-            <Link to="bookingList" className="nav-link text-white">
+            <Link to="/parkingSpaceBooking" className="nav-link text-white">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
-              Products
+              Bookings
             </Link>
           </li>
           <li>
-            <a className="nav-link text-white">
+            <Link to="/dash" className="nav-link text-white">
               <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#people-circle"></use></svg>
               Customers
-            </a>
+            </Link>
           </li>
         </ul>
         <hr></hr>
