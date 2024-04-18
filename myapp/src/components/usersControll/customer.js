@@ -1,7 +1,8 @@
+import CustomerHeader from "../headers/customerHeader"
 export default function Customer(){
     return (
         <div>
-            <h1>customer dashboard</h1>
+         
         </div>
     )
 }

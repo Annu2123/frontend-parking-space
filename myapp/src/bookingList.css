@@ -1,0 +1,32 @@
+.bookings-list {
+    margin: 20px;
+}
+
+.card-header {
+    background-color: #343a40; /* Dark background for card header */
+    color: white;
+}
+
+.bg-success {
+    background-color: #28a745 !important; /* Bootstrap success color */
+}
+
+.bg-warning {
+    background-color: #ffc107 !important; /* Bootstrap warning color */
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+.btn-group span {
+    margin-right: 5px;
+}
+
+.btn-outline-secondary:disabled {
+    cursor: not-allowed;
+}

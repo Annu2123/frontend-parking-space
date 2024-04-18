@@ -33,6 +33,7 @@ import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings" 
 import { useDispatch } from 'react-redux';
+import PaymentPage from './components/payments/bookings';
 function geoWithinSpace(state,action){
   switch(action.type){
     case "GET_PARKINGSPACE_RADIUS":{
@@ -150,13 +151,11 @@ useEffect(() => {
           <Route path='/vehicles' element={<CustomerVehicle/>}/>
           <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
           <Route path='/bookings' element={<BookingsList/>}/>
-          
-
-
+          <Route path='/paymentPage/:id' element={<PaymentPage/>}/>
           <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
 
           <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
-=======
+
 
 
         </Routes>

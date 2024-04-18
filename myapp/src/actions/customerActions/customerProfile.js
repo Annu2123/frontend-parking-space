@@ -15,7 +15,6 @@ export const startGetCustomer=()=>{
     }
 }
 const getCustomer=(data)=>{
-    console.log(data,'data')
     return{
         type:GET_CUSTOMER,
         payload:data
