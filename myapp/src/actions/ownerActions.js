@@ -62,3 +62,27 @@ const setApprove=(data)=>{
         type:"SET_APPROVE",payload:data
     }
 }
+export const startAddParkingSpace=(formData,resetForm,navigate)=>{
+    return async(dispatch)=>{
+        try {
+            const response = await axios.post('http://localhost:3045/api/parkingSpace/Register', formData, {
+              headers: {
+                'Authorization': localStorage.getItem('token'),
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+           dispatch( setParkingAdd(response.data))
+           resetForm()
+           navigate('/myspace')
+          } catch (err) {
+            console.log(err)
+          } 
+    }
+}
+
+const setParkingAdd=(data)=>{
+    return {
+        type:"SET_PARKING_ADD",
+        payload:data
+    }
+}

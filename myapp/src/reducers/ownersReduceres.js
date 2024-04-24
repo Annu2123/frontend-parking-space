@@ -19,6 +19,9 @@ const ownersReducers=(state=initialState,action)=>{
         case "SET_PARKING_SPACE":{
             return {...state,parkingSpace:action.payload}
         }
+        case "SET_PARKING_ADD":{
+            return {...state,parkingSpace:[...state.parkingSpace,action.payload]}
+        }
         default :{
             return state
         }
