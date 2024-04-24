@@ -14,6 +14,17 @@ export const startGetUserDetail=()=>{
         }
     }
 }
+export const startSetUser=()=>{
+    return (dispatch)=>{
+        dispatch(setUserEmpty({}))
+    }
+}
+const setUserEmpty=(data)=>{
+    return {
+        type:"SET_USER_EMPTY",
+        payload:data
+    }
+}
 const setUser=(data)=>{
     return {
         type:"SET_USERS",

@@ -59,7 +59,7 @@ export default function ParkingSpaceBooking() {
   }
   return (
     <>
-      <table border="1">
+      <table border="1" style={{ paddingTop: '70px' }}>
         <thead>
           <tr>
             <th>customer Name</th>
@@ -79,7 +79,7 @@ export default function ParkingSpaceBooking() {
                 <td>{convertDate(ele.startDateTime)}</td>
                 <td>{dateConvert(ele.startDateTime)}</td>
                 <td>{convertTime(ele.endDateTime)}</td>
-                <td>{ele.vehicleId.vehicleName}</td>
+                {/* <td>{ele.vehicleId.vehicleName}</td> */}
                 <td>{ele.paymentStatus}</td>
                 <td>{ele.approveStatus ? (<p>booking approved</p>) : <button onClick={() => { handleClick(ele._id) }}>Accept</button>}</td>
               </tr>

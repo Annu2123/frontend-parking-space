@@ -1,13 +1,14 @@
-
-
-
-
-.sidebaar{
-  min-height: 800px;
-}
-.content{
+.footer {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  position: relative;
   width: 100%;
+  bottom: 0;
 }
+
+
 
 
 

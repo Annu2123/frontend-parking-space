@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { startGetParkingSpace } from "../../actions/ownerActions"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import EditSpace from "./editSpace"
+import { useNavigate } from "react-router-dom"
 export default function MySpace() {
     const dispatch = useDispatch()
+    const navigate=useNavigate()
     const [modal, setModal] = useState(false);
     const [editId, setEditId] = useState('')
     const toggle = () => setModal(!modal)
@@ -32,18 +34,21 @@ export default function MySpace() {
         setEditId(id)
         toggle()
     }
+    const handleAdd=()=>{
+         navigate('/addparking')
+    }
     return (
         <>
-            <div class="container text-center">
-                <h3 className="mt-6">Total Space-{parkingSpace.length}</h3>
+            <div class="container text-center" style={{ paddingTop: '60px' }}>
+                <h3 className="mt-4">Total Space-{parkingSpace.length}</h3>
                 <div class="row">
                     {parkingSpace && parkingSpace.map((ele) => {
-                        return <div class="col" onClick={()=>{handleCLick(ele._id)}} key={ele._id}>
+                        return <div class="col-md-4" onClick={()=>{handleCLick(ele._id)}} key={ele._id}>
                             <div class="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
                                 <span className={ele.approveStatus ? "badge text-bg-success" : "badge text-bg-danger"} style={{ position: "absolute", top: 0, right: 0 }}>
                                     {ele.approveStatus ? ("approve") : ("pending")}
                                 </span>
-                                <div class="card-body">
+                                <div class="card-body bg-light">
                                     <h5 class="card-title">{ele.title}</h5>
                                     <p class="card-text">{ele.address.city}</p>
                                     <p class="card-text">{ele.amenities}</p>
@@ -57,7 +62,7 @@ export default function MySpace() {
 
                 </div>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <button type="button" className="btn btn-primary">Add Space</button>
+                    <button type="button" className="btn btn-primary" onClick={handleAdd}>Add Space</button>
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>

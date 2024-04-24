@@ -57,6 +57,7 @@ const MapComponent = () => {
                 min="1"
                 max="50"
                 step="1"
+                className='justify-content-center'
                 value={radius}
                 onChange={(e) => setRadius(parseInt(e.target.value))}
             />
