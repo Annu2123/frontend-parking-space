@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { startSetUser } from '../../actions/users'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHomeUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
-// import logo from '../../images/logo.avif'
+import logo from '../../images/logo.avif'
 export default function Header() {
     const dispatch = useDispatch()
     const navigate = useNavigate()

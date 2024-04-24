@@ -7,7 +7,6 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log("booking",response.data)
             dispatch(setBooking(response.data))
         }catch(err){
             console.log(err)
@@ -23,7 +22,6 @@ export const startApproveBooking=(id)=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log(response.data)
             dispatch(setApprove(response.data))
         }catch(err){
             console.log(err)
@@ -39,29 +37,13 @@ export const startGetParkingSpace=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log('sdads',response.data)
             dispatch(setParking(response.data))
         }catch(err){
             console.log(err)
         }
     }
 }
-const setParking=(data)=>{
-    return {
-        type:"SET_PARKING_SPACE",
-        payload:data
-    }
-}
-const setBooking=(data)=>{
-    return {
-        type:"SET_BOOKINGS",payload:data
-    }
-}
-const setApprove=(data)=>{
-    return {
-        type:"SET_APPROVE",payload:data
-    }
-}
+
 export const startAddParkingSpace=(formData,resetForm,navigate)=>{
     return async(dispatch)=>{
         try {
@@ -84,5 +66,21 @@ const setParkingAdd=(data)=>{
     return {
         type:"SET_PARKING_ADD",
         payload:data
+    }
+}
+const setParking=(data)=>{
+    return {
+        type:"SET_PARKING_SPACE",
+        payload:data
+    }
+}
+const setBooking=(data)=>{
+    return {
+        type:"SET_BOOKINGS",payload:data
+    }
+}
+const setApprove=(data)=>{
+    return {
+        type:"SET_APPROVE",payload:data
     }
 }

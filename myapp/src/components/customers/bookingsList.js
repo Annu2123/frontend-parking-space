@@ -82,7 +82,7 @@ export default function BookingsList() {
                     const endTime = new Date(ele.endDateTime);
                     const formattedStartTime = new Intl.DateTimeFormat('en-GB', dateTimeOptions).format(startTime);
                     const formattedEndTime = new Intl.DateTimeFormat('en-GB', dateTimeOptions).format(endTime);
-                    const spaceType = ele.parkingSpaceId?.spaceTypes.find(e => e._id === ele.spaceTypesId);
+                    const spaceType = ele.parkingSpaceId.spaceTypes.find(e => e._id === ele.spaceTypesId);
                     const linkStyle = {
                         textDecoration: 'none',
                         color: ele.status === 'completed' && ele.paymentStatus === 'completed' ? 'green' : 'blue',
@@ -109,8 +109,8 @@ export default function BookingsList() {
                                         <strong>Parking Name:</strong> {ele.parkingSpaceId ? ele.parkingSpaceId.title : "N/A"}
                                     </p>
                                     <p className="card-text">
-                                        <strong>Start Time:</strong> {formattedStartTime}<br />
-                                        <strong>End Time:</strong> {formattedEndTime}
+                                        {/* <strong>Start Time:</strong> {formattedStartTime}<br />
+                                        <strong>End Time:</strong> {formattedEndTime} */}
                                     </p>
                                     <p className="card-text"><strong>Status:</strong> {ele.approveStatus ? 'Approved' : 'Waiting'}</p>
                                     <p className="card-text"><strong>Space Type:</strong> {spaceType ? spaceType.types : "N/A"}</p>

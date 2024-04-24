@@ -15,12 +15,7 @@ export const startGetBookings=()=>{
         }
     }
 }
-const getbookings=(data)=>{
-    return{
-        type:GET_BOOKINGS,
-        payload:data
-    }
-}
+
 export const startParkingSpaceBooking=(id, parkingType,formData,popUp)=>{
     return async(dispatch)=>{
         try {

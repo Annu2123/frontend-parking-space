@@ -1,18 +1,18 @@
-import { useEffect, useState, useRef ,useContext} from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
 import { ParkingSpaceContext } from '../../contextApi/context';
 import axios from 'axios'; // For making HTTP requests
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
-import { Icon} from 'leaflet'
+import { Icon } from 'leaflet'
 import './map.css'
 function reverseLatLon(arr) {
     return [arr[1], arr[0]]
 }
-export default function MapComponent2(){
-    const [address,setAddress]=useState("")
-    const {center,setCenter,radius,locationParking,setHandleRadius}=useContext(ParkingSpaceContext)
-console.log("parki",locationParking)
+export default function MapComponent2() {
+    const [address, setAddress] = useState("")
+    const { center, setCenter, radius, locationParking, setHandleRadius } = useContext(ParkingSpaceContext)
+    console.log("parki", locationParking)
     const mapRef = useRef(null)
 
 
@@ -46,17 +46,17 @@ console.log("parki",locationParking)
         }
     }, [center]);
 
-   
-  const handleRadius=(r)=>{
-    setHandleRadius(r)
-  }
-    return (
-    <div className="container mt-2 mb-2 ">
 
-     {/* Leaflet map */}
-        {center[0] != 0 &&
-            <MapContainer ref={mapRef}
-                center={center} zoom={11} style={{ height: '400px' }}>
+    const handleRadius = (r) => {
+        setHandleRadius(r)
+    }
+    return (
+        <div className="container mt-2 mb-2 " style={{ paddingTop: '70px' }}>
+
+            {/* Leaflet map */}
+            {center[0] != 0 &&
+                <MapContainer ref={mapRef}
+                    center={center} zoom={11} style={{ height: '400px' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -72,32 +72,47 @@ console.log("parki",locationParking)
                             <Popup>{space.title}</Popup>
                         </Marker>
                     ))}
-           </MapContainer>
-        }
+                </MapContainer>
+            }
 
             {/* Input for adjusting the radius */}
-            <input
-                type="range"
-                min="1"
-                max="50"
-                step="1"
-                value={radius}
-                onChange={(e) => {handleRadius((parseInt(e.target.value)))}}
-            />
-            <span>{radius} km</span>
-
-            {/* Input for entering address */}
-            <input
+            <div className="text-center">
+                <div className="row justify-content-center">
+                    <div className="col-auto mt-3">
+                        <input
+                            type="range"
+                            style={{width:'18rem'}}
+                            min="1"
+                            max="50"
+                            step="1"
+                            value={radius}
+                            onChange={(e) => { handleRadius(parseInt(e.target.value)) }}
+                        />
+                    </div>
+                    <div className="col-auto mt-2">
+                        <span>{radius} km</span>
+                    </div>
+                </div>
+                <div className="row justify-content-center">
+                <input
                 type="text"
+                className="form-control rounded-pill"
                 placeholder="Enter your address"
                 value={address}
                 onChange={handleAddressChange}
                 style={{ width: "40%", height: "10%" }}
+           />
+            <div className="col-auto">
+            <button type='button' className='btn btn-info' onClick={convertAddressToLocation}>Get Parking</button>
+                    </div>
+                    </div>
+            </div>
 
-            />
-            <button onClick={convertAddressToLocation}>Get Location</button><br />
-            <p>parking space available in your location -{locationParking.length}</p>
+            {/* Input for entering address */}
+           
+            <p className="text-center mt-4 mb-4">Parking spaces available in your location: <span className="badge bg-primary">{locationParking.length}</span></p>
 
-     </div>
+
+        </div>
     );
 }

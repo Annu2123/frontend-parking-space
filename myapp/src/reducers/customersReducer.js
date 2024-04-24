@@ -1,6 +1,7 @@
 import { CREATE_VEHICLE,REMOVE_VEHICLE,GET_VEHICLES,UPDATE_VEHICLE} from "../actions/customerActions/customerVehicle"
 import { GET_CUSTOMER } from "../actions/customerActions/customerProfile"
 import { GET_BOOKINGS } from "../actions/customerActions/customerBookings"
+import { SET_NEW_BOOKING } from "../actions/customerActions/customerBookings"
 import bookings from "../components/payments/bookings"
 import { SET_NEW_BOOKING } from "../actions/customerActions/customerBookings"
 const initialState={
@@ -40,10 +41,12 @@ export default function customerReducer(state=initialState,action){
             return{
                 ...state,bookings:action.payload
             }
-            case SET_NEW_BOOKING:{
-                return {...state,bookings:[...state.bookings,action.payload]}
+        case SET_NEW_BOOKING:{
+            return {...state,bookings:[...state.bookings,action.payload]}
+        }
+            default:{
+                return state
             }
-
     }
-    return state
+    
 }

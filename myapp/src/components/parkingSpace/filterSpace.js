@@ -4,7 +4,7 @@ import React, { useState, useContext } from 'react'
 import { ParkingSpaceContext } from "../../contextApi/context"
 import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { startParkingSpaceBooking } from"../../actions/customerActions/customerBookings"
+import { startParkingSpaceBooking } from '../../actions/customerActions/customerBookings'
 import { TextField } from '@mui/material';
 import { DesktopDateTimePicker } from '@mui/lab'
 
@@ -125,7 +125,7 @@ export default function Filter(props) {
     }
     const popUp=()=>{
         Swal.fire({
-            title:` hello ${user.users.name}`,
+            title: `hello ${user.users.name}`,
             text: "Your booking request is success please wait for approval",
             icon: "success"
         })
@@ -135,7 +135,7 @@ export default function Filter(props) {
             vehicleId: "65fe556cc91c4e1012b5a0c6",
             amount: totalAmount,
             startDateTime: `${formatDate(startDateTime)}`,
-            endDateTime:` ${formatDate(endDateTime)}`
+            endDateTime: `${formatDate(endDateTime)}`
         }
         dispatch(startParkingSpaceBooking(id, parkingType, bookingForm,popUp))
     }

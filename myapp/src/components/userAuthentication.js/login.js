@@ -4,13 +4,14 @@ import { useNavigate,Link } from 'react-router-dom'
 import axios from 'axios'
 import { useFormik } from 'formik' //use to form validation and form handling
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { startGetUserDetail } from '../../actions/users'
 const validationLoginSchema = yup.object({//object method
     email: yup.string().email().required("email is required"),
     password: yup.string().required("password is required").min(8).max(20)
 })
 export default function LoginPage(props) {
+  
     const dispatch=useDispatch()
     const { loginToast } = props
     const navigate = useNavigate()
@@ -32,12 +33,12 @@ export default function LoginPage(props) {
                 // console.log(response.data)
                 const data = response.data
                 localStorage.setItem('token', data.token)
-                dispatch(startGetUserDetail)
-                navigate("/usersControll")
+                dispatch(startGetUserDetail())
+                navigate('/usersControll')
                 loginToast()
             } catch (err) {
                 if (err.response && err.response.data) {
-                    const serverErrors = err.response.data.error || []
+                   const serverErrors = err.response.data.error || []
                     // setServerErrors(serverErrors)
                     alert(serverErrors)
                     console.log(err)
@@ -55,7 +56,7 @@ export default function LoginPage(props) {
 
     })
     return (
-        <Container className="d-flex justify-content-center align-items-center vh-100">
+        <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingTop: '60px' }}>
             <div>
                 <h2 className="text-center mb-4 mt-4">Login</h2>
                 {/* {error && <Alert variant="danger">{error}</Alert>} */}
@@ -94,6 +95,7 @@ export default function LoginPage(props) {
                         <Form.Control.Feedback type="invalid">
                             {formik.errors.password}
                         </Form.Control.Feedback>
+                        
                     </Form.Group>
                     <div className="text-center mt-3">
                         <p>Don't have an account? <Link to="/register">Create Account</Link></p>
