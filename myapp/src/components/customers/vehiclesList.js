@@ -21,7 +21,7 @@ export default function VehiclesList(){
                         <tr key={ele._id}>
                             <td>{i+1}</td>
                             <td>{ele.vehicleName}</td>
-                            <td><Link to={`/VEHICLEDETAILS/${ele._id}`}>view details</Link></td>
+                            <td><Link to={`/VEHICLEDETAILS/${ele._id}`}  style={{ textDecoration: 'none', color: 'inherit' }}>view details</Link></td>
                         </tr>
                     )
                  })}

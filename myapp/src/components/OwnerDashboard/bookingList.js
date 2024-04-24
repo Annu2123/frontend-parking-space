@@ -12,7 +12,7 @@ export default function ParkingSpaceBooking() {
   const handleClick = async (id) => {
     // console.log(id)
     //  try{
-    //   const response=await axios.put(`http://localhost:3045/api/approve/booking/${id}`,{},{
+    //   const response=await axios.put(http://localhost:3045/api/approve/booking/${id},{},{
     //     headers:{
     //       Authorization:localStorage.getItem('token')}
     //   })

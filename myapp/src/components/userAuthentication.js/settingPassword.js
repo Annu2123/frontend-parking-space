@@ -11,6 +11,7 @@ const ForgotPassword = () => {
     const [stage, setStage] = useState('sendOTP'); // "sendOTP" or "verifyOTP"
     const [serverError, setServerError] = useState(null);
     const [formErrors, setFormErrors] = useState({});
+    console.log(otp,newPassword,'data')
 
     const handleSend = async (e) => {
         e.preventDefault();
@@ -42,10 +43,10 @@ const ForgotPassword = () => {
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
         const validationErrors = {};
-        if (!otp.trim().length==0) {
+        if (otp.trim().length==0) {
             validationErrors.otp = "OTP is required";
         }
-        if (!newPassword.trim().length==0) {
+        if (newPassword.trim().length==0) {
             validationErrors.newPassword = "New password is required";
         }
 

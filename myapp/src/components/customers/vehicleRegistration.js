@@ -1,22 +1,32 @@
 import { useFormik } from "formik"
 import *as yup from 'yup'//* all data
 import { Container, Form, Button } from 'react-bootstrap'
-import { startCreateVehicle } from "../../actions/customerActions/customerVehicle"
-import { useDispatch } from "react-redux"
+import { startCreateVehicle,startUpdateVehicle } from "../../actions/customerActions/customerVehicle"
+import { useDispatch,useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 const validationVehicleSchema = yup.object({//object method
     vehicleNumber: yup.string().required(" vehicleNumber is required"),
     vehicleName: yup.string().required("vehicleName is required"),
     documents:yup.string().required("documents is required"),
     vehicleType:yup.string().required("vehicle type is required")
 })
-export default function VehiclesRegistration(){
+export default function VehiclesRegistration(props){
+    const navigate=useNavigate()
+    const id=props.editId
+    const vehicles=useSelector((state)=>{
+        return state.customer.vehicles
+    })
+    const vehicle=vehicles.find((ele)=>{
+        return ele._id==id
+    })
+    
     const dispatch=useDispatch()
     const formik=useFormik({
            initialValues:{
-            vehicleNumber:"",
-            vehicleName:"",
-            vehicleType:"",
-            documents:""
+            vehicleNumber:vehicle?vehicle.vehicleNumber:"",
+            vehicleName: vehicle ? vehicle.vehicleName : "",
+            vehicleType: vehicle ? vehicle.vehicleType : "",
+            documents: vehicle ? vehicle.documents : ""
         },
        validationSchema:validationVehicleSchema,
        validateOnChange: true,
@@ -27,15 +37,17 @@ export default function VehiclesRegistration(){
             vehicleType:values.vehicleType,
             documents:values.documents
           }
-          console.log("formData",formData)
-          dispatch(startCreateVehicle(formData,resetForm))
-
+         if(vehicle){
+           dispatch(startUpdateVehicle(id,formData,resetForm,navigate))
+         }else{
+            dispatch(startCreateVehicle(formData,resetForm))
+         }
        }
     })
     return(
         <Container className="d-flex justify-content-center align-items-center vh-100">
         <div>
-            <h2 className="text-center mb-4 mt-4">vehicleRegistration</h2>
+            <h2 className="text-center mb-4 mt-4">vehicleForm</h2>
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Group controlId="formBasicvehicleName" >
                     <Form.Label>vehicleName</Form.Label>

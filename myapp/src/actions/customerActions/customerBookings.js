@@ -37,9 +37,3 @@ const setSpaceBooking=(data)=>{
         payload:data
     }
 }
-const getbookings=(data)=>{
-    return{
-        type:GET_BOOKINGS,
-        payload:data
-    }
-}
