@@ -33,13 +33,14 @@ import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings" 
 
-import { useDispatch } from 'react-redux';
+
 import PaymentPage from './components/payments/bookings';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ParkingSpaceBooking from './components/OwnerDashboard/bookingList';
 import { startGetUserDetail } from './actions/users';
 import MySpace from './components/OwnerDashboard/mySpace';
+import ReviewBooking from './components/customers/reviewBooking';
 
 function geoWithinSpace(state,action){
   switch(action.type){
@@ -85,7 +86,7 @@ useEffect(() => {
     if(localStorage.getItem('token')){
       dispatch(startGetUserDetail())
     }
-  },[dispatch])
+  },[])
  useEffect(()=>{
   (async()=>{
     try{
@@ -144,12 +145,13 @@ useEffect(() => {
          {/* <MapComponent2/> */}
         {/* <Table/> */}
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          <Route path='/home' element={<Home/>}/>
           <Route path='/login' element={<LoginPage loginToast={loginToast}/>}/>
           <Route path='/usersControll' element={<UserCantroll/>}/>
           <Route path='/register'element={<Register registerToast={registerToast}/>}/>
           <Route path='/otp' element={<Otp/>}/>
           <Route path='/success' element={<Succes/>}/>
+          <Route path="/forgotpassword" element={< ForgotPassword/>}/>
           {/* <Route path='/cancel' element={<Cancel/>}/> */}
           <Route path='/parkingSpaceBooking' element={ <ParkingSpaceBooking/>}/>
           <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
@@ -165,10 +167,11 @@ useEffect(() => {
           <Route path='/myspace' element={<MySpace/>}/>
 
 
-          <Route path='/spaceBookingPage/:id' element={user.users.role == 'customer' && <ProductPage/>}/> 
+          <Route path='/spaceBookingPage/:id' element={ <ProductPage/>}/> 
 
 
           <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
+          <Route path='/review/:id' element={<ReviewBooking/>}/>
 
 
 

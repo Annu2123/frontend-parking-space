@@ -1,8 +1,11 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios'
+import { startAddParkingSpace } from '../../actions/ownerActions';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 function reverseLatLon(arr) {
   return [arr[1], arr[0]]
 }
@@ -10,7 +13,7 @@ function reverseLatLon(arr) {
 const validationSpaceRegisterSchema = yup.object({
   title: yup.string().required('Title is required'),
   propertyType: yup.string().required('Property type is required'),
-  amenities: yup.string( 'Select at least one amenity'),
+  amenities: yup.string('Select at least one amenity'),
   street: yup.string().required('Street is required'),
   area: yup.string().required('Area is required'),
   city: yup.string().required('City is required'),
@@ -23,17 +26,17 @@ const validationSpaceRegisterSchema = yup.object({
       amount: yup.number().required('Amount per hour is required').max(100, 'Maximum amount is 100')
     })
   ).min(1, 'At least one space type must be filled')
-});
+})
 
 export default function ParkingSpaceRegister(props) {
-const {parkingRegisterToast}=props
-
-  
+  const { parkingRegisterToast } = props
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
   const formik = useFormik({
     initialValues: {
       title: '',
       propertyType: '',
-      amenities:'',
+      amenities: '',
       street: '',
       area: '',
       city: '',
@@ -43,7 +46,7 @@ const {parkingRegisterToast}=props
       spaceTypes: [
         {
           Type: "Two Wheeler",
-          capacity:'',
+          capacity: '',
           amount: ''
         },
         {
@@ -54,66 +57,37 @@ const {parkingRegisterToast}=props
       ]
     },
     validationSchema: validationSpaceRegisterSchema,
-    onSubmit: async(values,{resetForm}) => {
-          const formData={
-            title:values.title,
-      propertyType:values.propertyType,
-      amenities: values.amenities,
-     address:{ 
-      street:values.street,
-      area: values.area,
-      city:values.city,
-      state:values.state ,
+    onSubmit: async (values, { resetForm }) => {
+      const formData = {
+        title: values.title,
+        propertyType: values.propertyType,
+        amenities: values.amenities,
+        address: {
+          street: values.street,
+          area: values.area,
+          city: values.city,
+          state: values.state,
 
-     },
-      image:values.photo,
-      description: values.description,
-      spaceTypes: formik.values.spaceTypes.map((spaceType) => ({
-        types: spaceType.Type,
-        capacity: Number(spaceType.capacity),
-        amount: Number(spaceType.amount)
-      }))
-          }
-          console.log("formData",formData)
-          try{
-            const response=await axios.post('http://localhost:3045/api/parkingSpace/Register',formData,{
-              headers:{'Authorization':localStorage.getItem('token'),
-              'Content-Type': 'multipart/form-data'
-            }
-            })
-            console.log(response.data)
-            
-          }catch(err){
-            console.log(err)
-          }
+        },
+        image: values.photo,
+        description: values.description,
+        spaceTypes: formik.values.spaceTypes.map((spaceType) => ({
+          types: spaceType.Type,
+          capacity: Number(spaceType.capacity),
+          amount: Number(spaceType.amount)
+        }))
+      }
+      console.log("formData", formData)
+      dispatch(startAddParkingSpace(formData,resetForm,navigate))
     }
   });
 
   const handleSpaceTypeChange = (index, fieldName, value) => {
     formik.setFieldValue(`spaceTypes[${index}].${fieldName}`, value);
-  };
-
-  // useEffect(()=>{
-   
-  //     (async()=>{
-  //       try {
-  //         const response = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${formik.area}&apiKey=4a35345ee9054b188d775bb6cef27b7c`);
-  //         const location = response.data.features[0].geometry.coordinates;
-  //         setCords(reverseLatLon(location))
-  //         //  console.log(reverseLatLon(location))
-        
-  //         console.log("coord",response.data)
-  //     } catch (error) {
-  //         console.error('Error converting address to location:', error);
-  //     }
-  
-  //     })()
-
-    
-  // },[])
+  }
   return (
-    <Container>
-      <h2>Parking Space Registration</h2>
+    <Container style={{ paddingTop: '70px' }}>
+      <h2 className='text-center mt-4' style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>Register Your Space</h2>
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
@@ -140,7 +114,7 @@ const {parkingRegisterToast}=props
             onFocus={() => formik.setFieldError('propertyType', '')}
             isInvalid={formik.touched.propertyType && formik.errors.propertyType}
           >
-            
+            <option></option>
             <option value="independence_house">independence_house</option>
             <option value="gated_apartment"> gated_apartment</option>
             {/* Add options for property types */}
@@ -158,10 +132,11 @@ const {parkingRegisterToast}=props
             onFocus={() => formik.setFieldError('amenities', '')}
             isInvalid={formik.touched.amenities && formik.errors.amenities}
           >
+            <option></option>
             <option value="covered">covered</option>
             <option value="opendoor">opendoor</option>
-            
-          
+
+
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.amenities}</Form.Control.Feedback>
         </Form.Group>
@@ -297,13 +272,15 @@ const {parkingRegisterToast}=props
           />
           <Form.Control.Feedback type="invalid">{formik.errors.description}</Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>{' '}
-        <Button variant="danger" type="reset">
-          Reset
-        </Button>
+        <div className="d-flex justify-content-center mt-4 mb-4">
+          <Button variant="primary" type="submit" className='mr-5'>
+            Submit
+          </Button>{' '}
+          <Button variant="danger" type="reset" className='ml-5'>
+            Reset
+          </Button>
+        </div>
       </Form>
     </Container>
-  );
-};
+  )
+}

@@ -2,12 +2,18 @@ import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { startRemoveVehicle } from '../../actions/customerActions/customerVehicle';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { useState } from 'react';
+import VehiclesRegistration from './vehicleRegistration';
 
 export default function VehicleDetails() {
+    const [editId, seteditId] = useState('')
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
+    const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const vehicles = useSelector((state) => state.customer.vehicles);
-    const { id } = useParams();
     const vehicle = vehicles.find(ele => ele._id === id);
     const handleRemove = (vehicle) => {
         const confirmation = window.confirm(`Are you sure you want to remove vehicle ${vehicle.vehicleName}?`);
@@ -15,6 +21,10 @@ export default function VehicleDetails() {
             dispatch(startRemoveVehicle(vehicle._id, navigate));
         }
     };
+    const handleUpdate=(id)=>{
+        seteditId(id)
+
+    }
 
     return (
         <div className="container vh-100">
@@ -40,9 +50,19 @@ export default function VehicleDetails() {
                             </p>
                             <p className="font-weight-bold">Vehicle Is Verified: <span className="font-weight-normal">{vehicle.isVerified ? "Verified" : "Not Verified"}</span></p>
                             <div className="mt-4">
-                                <button className="btn btn-primary mr-2">Update</button>
+                                <button onClick={() => {
+                                    handleUpdate(id)
+                                    toggle()
+                                }} className="btn btn-primary mr-2">Update</button>
                                 <button onClick={() => handleRemove(vehicle)} className="btn btn-danger">Remove</button>
                             </div>
+                            <Modal isOpen={modal} toggle={toggle}>
+                                <ModalHeader toggle={toggle}>{editId}</ModalHeader>
+                                <ModalBody>
+                                <VehiclesRegistration editId={editId}/>
+                                </ModalBody>
+                               
+                            </Modal>
                         </div>
                     ) : (
                         <p>No vehicle found.</p>

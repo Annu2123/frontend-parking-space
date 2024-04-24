@@ -1,13 +1,13 @@
 import { jwtDecode } from "jwt-decode"
 import { useEffect, useState } from "react"
-import Owner from "./owner"
-import Admin from "./admin"
+import Admin from "../admin-dashborad/admin"
 import Customer from "./customer"
-// import Customer from "./customer"
+import OwnerMain from "../OwnerDashboard/myAccount"
+import { useNavigate } from "react-router-dom"
 export default function UserCantroll(){
+    const navigate=useNavigate()
     const token=localStorage.getItem('token')
     const [role,setRole]=useState(null)
-    console.log("assas",role)
     useEffect(()=>{
         try{
             const {role}=jwtDecode(token)
@@ -26,10 +26,10 @@ export default function UserCantroll(){
             <Admin/> 
            ): null}
            {role === 'owner' ? (
-            <Owner/>
+            <OwnerMain/>
            ): null}
            {role === "customer" ? (
-            <Customer/>
+            navigate("/")
            ):null}
         </>
     )

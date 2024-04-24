@@ -1,4 +1,4 @@
-import { CREATE_VEHICLE,REMOVE_VEHICLE,GET_VEHICLES} from "../actions/customerActions/customerVehicle"
+import { CREATE_VEHICLE,REMOVE_VEHICLE,GET_VEHICLES,UPDATE_VEHICLE} from "../actions/customerActions/customerVehicle"
 import { GET_CUSTOMER } from "../actions/customerActions/customerProfile"
 import { GET_BOOKINGS } from "../actions/customerActions/customerBookings"
 import bookings from "../components/payments/bookings"
@@ -20,6 +20,16 @@ export default function customerReducer(state=initialState,action){
         case CREATE_VEHICLE:
             return{
                 ...state,vehicles:[...state.vehicles,action.payload]
+            }
+        case UPDATE_VEHICLE:
+            return{
+                ...state,vehicles:state.vehicles.map((ele)=>{
+                    if(ele._id==action.payload._id){
+                        return action.payload
+                    }else{
+                        return ele
+                    }
+                })
             }
         case GET_CUSTOMER:
             return{

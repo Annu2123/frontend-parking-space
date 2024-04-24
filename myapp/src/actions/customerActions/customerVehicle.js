@@ -1,8 +1,8 @@
 import axios from "axios"
-// Action Types
  export const CREATE_VEHICLE = 'CREATE_VEHICLE';
  export const GET_VEHICLES = 'GET_VEHICLES';
  export const REMOVE_VEHICLE = 'REMOVE_VEHICLE';
+ export const UPDATE_VEHICLE="UPDATE_VEHICLE"
 export const startCreateVehicle=(formData,resetForm)=>{
 return async(dispatch)=>{
  try{
@@ -49,6 +49,22 @@ export const startRemoveVehicle=(id,navigate)=>{
       }
     }
     }
+export const startUpdateVehicle=(id,formData,resetForm,navigate)=>{
+  return async(dispatch)=>{
+     try{
+      const response=await axios.put(`http://localhost:3045/API/vehicles/update/${id}`,formData,{
+        headers:{
+          Authorization:localStorage.getItem("token"),
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      dispatch(updateVehicle(response.data))
+      navigate("/vehicles")
+     }catch(err){
+      console.log(err)
+     }
+  }
+}
 const createVehicle=(data)=>{
   return{
     type:CREATE_VEHICLE,
@@ -64,6 +80,12 @@ const getVehicles=(data)=>{
 const removeVehicle=(data)=>{
   return{
     type:REMOVE_VEHICLE,
+    payload:data
+  }
+}
+const updateVehicle=(data)=>{
+  return{
+    type:UPDATE_VEHICLE,
     payload:data
   }
 }

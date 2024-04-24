@@ -4,26 +4,16 @@ import { useNavigate,Link } from 'react-router-dom'
 import axios from 'axios'
 import { useFormik } from 'formik' //use to form validation and form handling
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { startGetUserDetail } from '../../actions/users'
 const validationLoginSchema = yup.object({//object method
     email: yup.string().email().required("email is required"),
     password: yup.string().required("password is required").min(8).max(20)
 })
 export default function LoginPage(props) {
+    const dispatch=useDispatch()
     const { loginToast } = props
     const navigate = useNavigate()
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    // Here you can handle the submission, like sending the credentials to an API
-    //     if (!email || !password) {
-    //         setError('Please enter both email and password.')
-    //       } else {
-    //         setError('')
-    //         console.log('Email:', email)
-    //         console.log('Password:', password)
-    //       }
-    //     console.log('Email:', email)
-    //     console.log('Password:', password)
-    //   };
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -42,8 +32,9 @@ export default function LoginPage(props) {
                 // console.log(response.data)
                 const data = response.data
                 localStorage.setItem('token', data.token)
-                loginToast()
+                dispatch(startGetUserDetail)
                 navigate("/usersControll")
+                loginToast()
             } catch (err) {
                 if (err.response && err.response.data) {
                     const serverErrors = err.response.data.error || []
@@ -63,7 +54,6 @@ export default function LoginPage(props) {
         },
 
     })
-    console.log(formik.errors)
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <div>
