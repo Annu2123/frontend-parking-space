@@ -1,7 +1,7 @@
 import { ToastContainer, toast } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
-import { BrowserRouter, Route, Routes,Link } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 //  import Header from "./components/headers/header"
 import Listing from './components/listParking';
 
@@ -31,75 +31,78 @@ import VehicleDetails from './components/customers/vehicleDetails';
 import BookingsList from './components/customers/bookingsList';
 import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
-import { startGetBookings } from "./actions/customerActions/customerBookings" 
+import { startGetBookings } from "./actions/customerActions/customerBookings"
 
-import { useDispatch } from 'react-redux';
+
 import PaymentPage from './components/payments/bookings';
-
+import OwnerDetail from './components/admin-dashborad/OwnerDetail';
 import { useDispatch, useSelector } from 'react-redux';
 import ParkingSpaceBooking from './components/OwnerDashboard/bookingList';
 import { startGetUserDetail } from './actions/users';
 import MySpace from './components/OwnerDashboard/mySpace';
+import OwnerMain from './components/OwnerDashboard/myAccount';
+import PrivateRoute from './components/privateRoute/privateRoutes';
+import Admin from './components/admin-dashborad/admin';
 
-function geoWithinSpace(state,action){
-  switch(action.type){
-    case "GET_PARKINGSPACE_RADIUS":{
+function geoWithinSpace(state, action) {
+  switch (action.type) {
+    case "GET_PARKINGSPACE_RADIUS": {
       return action.payload
     }
-    default :{
+    default: {
       return [...state]
     }
   }
 }
 
 function App() {
-  const [locationParking,latDispatch]=useReducer(geoWithinSpace,[])
+  const [locationParking, latDispatch] = useReducer(geoWithinSpace, [])
   const [center, setCenter] = useState([0, 0])
   const [radius, setRadius] = useState(10)
-  const dispatch=useDispatch()
-//   const [usersState,usersDispatch]=useReducer(usersReducer,{
+  const dispatch = useDispatch()
+  //   const [usersState,usersDispatch]=useReducer(usersReducer,{
 
-//   isLoggedIn:false
-// })
-//find current lat and log
-const user=useSelector((state)=>{
-  return state.users
-})
-useEffect(() => {
-  dispatch(startGetCustomer());
-  dispatch(startgetVehicles());
-  dispatch(startGetBookings());
-  (async () => {
+  //   isLoggedIn:false
+  // })
+  //find current lat and log
+  const user = useSelector((state) => {
+    return state.users
+  })
+  useEffect(() => {
+    dispatch(startGetCustomer());
+    dispatch(startgetVehicles());
+    dispatch(startGetBookings());
+    (async () => {
 
       if (navigator.geolocation) {
-          console.log(true)
-          console.log(navigator.geolocation.getCurrentPosition((location) => {
-              console.log("dhwdh", location)
-              const { latitude, longitude } = location.coords
-              setCenter([latitude, longitude])
-          }))
+        console.log(true)
+        console.log(navigator.geolocation.getCurrentPosition((location) => {
+          console.log("dhwdh", location)
+          const { latitude, longitude } = location.coords
+          setCenter([latitude, longitude])
+        }))
       }
-  })()
-}, [])
-  useEffect(()=>{
-    if(localStorage.getItem('token')){
+    })()
+  }, [])
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
       dispatch(startGetUserDetail())
     }
-  },[dispatch])
- useEffect(()=>{
-  (async()=>{
-    try{
-      const response=await axios.get(`http://localhost:3045/api/parkingSpace/radius?lat=${center[0]}&log=${center[1]}&radius=${radius}`)
-      console.log("sdfer",response.data)
-      latDispatch(({type:"GET_PARKINGSPACE_RADIUS",payload:response.data}))
-    }catch(err){
-      console.log(err)
-    }
-  })()
- },[center,radius])
- const setHandleRadius=(r)=>{
-  setRadius(r)
- }
+  }, [dispatch])
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(`http://localhost:3045/api/parkingSpace/radius?lat=${center[0]}&log=${center[1]}&radius=${radius}`)
+        console.log("sdfer", response.data)
+        latDispatch(({ type: "GET_PARKINGSPACE_RADIUS", payload: response.data }))
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, [center, radius])
+  const setHandleRadius = (r) => {
+    setRadius(r)
+  }
   const loginToast = () => {
     toast.success('logged in succesfully', {
       position: "top-right",
@@ -110,20 +113,20 @@ useEffect(() => {
     })
   }
 
-  const registerToast = ()=>{
+  const registerToast = () => {
     toast.success('Successfully created account', {
-      position:"top-right",
-      autoClose:2000,
+      position: "top-right",
+      autoClose: 2000,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true
     })
   }
 
-  const parkingRegisterToast = ()=>{
+  const parkingRegisterToast = () => {
     toast.success('Successfully created parking Space', {
-      position:"top-right",
-      autoClose:2000,
+      position: "top-right",
+      autoClose: 2000,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true
@@ -132,50 +135,66 @@ useEffect(() => {
   return (
     <div className=''>
       <BrowserRouter>
-      <ParkingSpaceContext.Provider value={
-        {locationParking,
-          setHandleRadius,
-          center, setCenter,
-          setRadius,radius
-        }
-      }>
-        <Header/>
-        {/* <Bookings/> */}
-         {/* <MapComponent2/> */}
-        {/* <Table/> */}
-        <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/login' element={<LoginPage loginToast={loginToast}/>}/>
-          <Route path='/usersControll' element={<UserCantroll/>}/>
-          <Route path='/register'element={<Register registerToast={registerToast}/>}/>
-          <Route path='/otp' element={<Otp/>}/>
-          <Route path='/success' element={<Succes/>}/>
-          {/* <Route path='/cancel' element={<Cancel/>}/> */}
-          <Route path='/parkingSpaceBooking' element={ <ParkingSpaceBooking/>}/>
-          <Route path='/spaceBookingPage' element={<ProductPage/>}/> 
-          <Route path='/myAccount' element={<MyAccount/>}/>
-          <Route path='/account' element={<CustomerDetails/>}/>
-          <Route path='/vehicles' element={<CustomerVehicle/>}/>
-          <Route path='/VEHICLEDETAILS/:id' element={<VehicleDetails/>}/>
-          <Route path='/bookings' element={<BookingsList/>}/>
+        <ParkingSpaceContext.Provider value={
+          {
+            locationParking,
+            setHandleRadius,
+            center, setCenter,
+            setRadius, radius
+          }
+        }>
+          <Header />
+          {/* <Bookings/> */}
+          {/* <MapComponent2/> */}
+          {/* <Table/> */}
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<LoginPage loginToast={loginToast} />} />
+            <Route path='/forgotpassword' element={<ForgotPassword/>}/>
+            <Route path='/usersControll' element={<UserCantroll />} />
+            <Route path='/register' element={<Register registerToast={registerToast} />} />
+            <Route path='/otp' element={<Otp />} />
+            <Route path='/success' element={<Succes />} />
+            <Route path='/cancel' element={<Cancel/>}/>
+            <Route path='/spaceBookingPage' element={<ProductPage />} />
+            <Route path='/myAccount' element={<PrivateRoute permmitedRoles={['customer']}> 
+            <MyAccount />
+              </PrivateRoute>} />
+            <Route path='/account' element={<PrivateRoute permmitedRoles={['customer']}>
+            <CustomerDetails />
+              </PrivateRoute>} />
+            <Route path='/vehicles' element={<PrivateRoute permmitedRoles={['customer']}>
+              <CustomerVehicle />
+              </PrivateRoute>} />
+            <Route path='/VEHICLEDETAILS/:id' element={<PrivateRoute permmitedRoles={['customer']}>
+              <VehicleDetails />
+            </PrivateRoute>} />
+            <Route path='/bookings' element={<PrivateRoute permmitedRoles={['customer']}>
+              <BookingsList />
+            </PrivateRoute>} />
+            <Route path='/paymentPage/:id' element={<PaymentPage />} />
+            <Route path='/spaceBookingPage/:id' element={<ProductPage />} />
 
-          <Route path='/paymentPage/:id' element={<PaymentPage/>}/>
-          <Route path='/spaceBookingPage/:id' element={<ProductPage/>}/> 
-
-          <Route path='/myspace' element={<MySpace/>}/>
-
-
-          <Route path='/spaceBookingPage/:id' element={user.users.role == 'customer' && <ProductPage/>}/> 
-
-
-          <Route path='/addParking' element={<ParkingSpaceRegister/>}/>
-
-
-
-        </Routes>
-        <ToastContainer/>
-      </ParkingSpaceContext.Provider>
-      </BrowserRouter> 
+            {/* owner Routes */}
+            <Route path='/myspace' element={<PrivateRoute permmitedRoles={['owner']}>
+              <MySpace />
+            </PrivateRoute>} />
+            <Route path='/main' element={<PrivateRoute permmitedRoles={['owner']}>
+              <OwnerMain />
+            </PrivateRoute>} />
+            <Route path='/parkingSpaceBooking' element={<PrivateRoute permmitedRoles={['owner']}>
+              <ParkingSpaceBooking />
+            </PrivateRoute>} />
+            <Route path='/addParking' element={<PrivateRoute permmitedRoles={['owner']}>
+              <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast} />
+            </PrivateRoute>} />
+            {/* admin routes */}
+            <Route path='/admin' element={<Admin/>}/>
+            <Route path='/ownerDetails' element={<OwnerDetail/>}/>
+          </Routes>
+          <ToastContainer />
+        </ParkingSpaceContext.Provider>
+      </BrowserRouter>
     </div>
 
   );

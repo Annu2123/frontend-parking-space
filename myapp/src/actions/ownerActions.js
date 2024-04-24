@@ -7,7 +7,6 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log("booking",response.data)
             dispatch(setBooking(response.data))
         }catch(err){
             console.log(err)
@@ -23,7 +22,6 @@ export const startApproveBooking=(id)=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log(response.data)
             dispatch(setApprove(response.data))
         }catch(err){
             console.log(err)
@@ -39,11 +37,35 @@ export const startGetParkingSpace=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            console.log('sdads',response.data)
             dispatch(setParking(response.data))
         }catch(err){
             console.log(err)
         }
+    }
+}
+
+export const startAddParkingSpace=(formData,resetForm,navigate)=>{
+    return async(dispatch)=>{
+        try {
+            const response = await axios.post('http://localhost:3045/api/parkingSpace/Register', formData, {
+              headers: {
+                'Authorization': localStorage.getItem('token'),
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+           dispatch( setParkingAdd(response.data))
+           resetForm()
+           navigate('/myspace')
+          } catch (err) {
+            console.log(err)
+          } 
+    }
+}
+
+const setParkingAdd=(data)=>{
+    return {
+        type:"SET_PARKING_ADD",
+        payload:data
     }
 }
 const setParking=(data)=>{

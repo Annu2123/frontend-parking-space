@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Image,Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-
+import parking from '../../images/parking.png'
 
 export default function Register() {
   const navigate=useNavigate()
@@ -83,10 +83,13 @@ const validation=()=>{
     })
   }
   return (
-    <Container>
+    <Container fluid style={{ paddingTop: '70px' }}>
       <Row className="justify-content-center mt-5">
-        <Col md={6}>
-          <Card>
+        <Col sm={12} md={6}>
+        <Image src={parking} fluid-style={{height:'100vh',objectFit:'cover'}}/>
+        </Col>
+        <Col sm={12} md={6}>
+          <Card style={{ width: '34rem' }}>
             <Card.Body>
               <h2 className="text-center">Register</h2>
 
@@ -118,9 +121,9 @@ const validation=()=>{
                     isInvalid={formError.email}
                   />
                    <Form.Control.Feedback type="invalid">
-                          {formError.email && formError.email} 
+                          {formData.email.length==0 && formError.email} 
                     </Form.Control.Feedback>
-                    {serverError.length >0 &&  <p style={{color:'red'}}>{helperFunction('email')}</p>}
+                    {formData.email.length ==0 &&  <p style={{color:'red'}}>{helperFunction('email')}</p>}
                 </Form.Group>
 
                 <Form.Group controlId="formPhone">
@@ -134,9 +137,9 @@ const validation=()=>{
                     isInvalid={formError.phone}
                   />
                   <Form.Control.Feedback type="invalid">
-                            {formError.phone && formError.phone} {/* Display error message if the field has been touched and has an error */}
+                            {formData.phone.length==0 && formError.phone} {/* Display error message if the field has been touched and has an error */}
                         </Form.Control.Feedback>
-                        {serverError.length >0 &&  <p style={{color:'red'}}>{helperFunction('phone')}</p>}
+                        {formData.phone.length ==0 &&  <p style={{color:'red'}}>{helperFunction('phone')}</p>}
                 </Form.Group>
 
                 <Form.Group controlId="formPassword">
@@ -150,7 +153,7 @@ const validation=()=>{
                     isInvalid={formError.password}
                   />
                   <Form.Control.Feedback type="invalid">
-                        {formError.password && formError.password} {/* Display error message if the field has been touched and has an error */}
+                        {formData.password.length==0 && formError.password} {/* Display error message if the field has been touched and has an error */}
                    </Form.Control.Feedback>
                    {formData.password.length ==0 &&  <p>{helperFunction('password')}</p>}
                 </Form.Group>

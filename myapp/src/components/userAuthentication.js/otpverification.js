@@ -11,7 +11,7 @@ export default function Otp(){
        console.log(formData)
     }
     return (
-        <div>
+        <div style={{ paddingTop: '80px' }}>
             <form onSubmit={handleSubmit}>
              <label>enter your otp</label>
              <input type="number" value={otp} onChange={(e)=>{setOtp(e.target.value)}}/><br/>

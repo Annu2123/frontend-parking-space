@@ -6,6 +6,9 @@ const usersReducers=(state=initialState,action)=>{
         case "SET_USERS":{
             return {...state,users:{...action.payload}}
         }
+        case "SET_USER_EMPTY":{
+            return {}
+        }
         default :{
             return state
         }
