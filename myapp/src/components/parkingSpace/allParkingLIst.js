@@ -3,9 +3,14 @@ import { ParkingSpaceContext } from "../../contextApi/context"
 import axios from 'axios'
 import { Link } from "react-router-dom"
 import { Col, Row,Container } from "react-bootstrap"
+import { getDistance } from 'geolib'
+// import getDistance from 'geolib/es/getDistance'
 export default function ListParkings() {
   const [parking, setParking] = useState([])
-  const { locationParking } = useContext(ParkingSpaceContext)
+  const { locationParking,center } = useContext(ParkingSpaceContext)
+  const calculateDistance=(userGeo,parkingGeo)=>{
+     return getDistance(userGeo,parkingGeo,1)
+  }
   // useEffect(()=>{
   //     (async()=>{
   //         try{
@@ -18,7 +23,7 @@ export default function ListParkings() {
   //     })()
   // },[])
   return (
-    <div className="container mt-4">
+    <div className="container mt-4" style={{ paddingTop: '40px' }}>
     <div className="row">
         {locationParking ? (locationParking.map((ele, index) => (
             <div key={index} className="col-lg-4 col-md-6 mb-4">
@@ -31,13 +36,18 @@ export default function ListParkings() {
                               <Col>
                               <p className="card-text">{ele.title}</p>
                               </Col>
-                              <Col>
+                              {/* <Col>
                               <p className="card-text">{ele.amenities}</p>
-                              </Col>
+                              </Col> */}
                             </Row>
                             <Row>
                               <Col>
                               <p>pricing starting from {ele.spaceTypes[0].amount} per hour</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                              <p>distance from your location is {calculateDistance(center,ele.address.coordinates)/1000} kilometer</p>
                               </Col>
                             </Row>
                           </Container>

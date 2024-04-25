@@ -31,6 +31,13 @@ export const startParkingSpaceBooking=(id, parkingType,formData,popUp)=>{
     }
 }
 
+
+const getbookings=(data)=>{
+    return{
+        type:GET_BOOKINGS,
+        payload:data
+    }
+}
 const setSpaceBooking=(data)=>{
     return {
         type:SET_NEW_BOOKING,

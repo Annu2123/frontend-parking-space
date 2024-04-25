@@ -4,8 +4,13 @@ import { ParkingSpaceContext } from '../../contextApi/context';
 import axios from 'axios'; // For making HTTP requests
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
+import user from './img/user.png'
+
 import { Icon } from 'leaflet'
 import './map.css'
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faUser } from '@fortawesome/free-solid-svg-icons'
 function reverseLatLon(arr) {
     return [arr[1], arr[0]]
 }
@@ -18,6 +23,10 @@ export default function MapComponent2() {
 
     const customMarker = new Icon({
         iconUrl: pin,
+        iconSize: [38, 38]
+    })
+    const userMarker=new Icon({
+        iconUrl:user,
         iconSize: [38, 38]
     })
     // Function to handle address input change
@@ -69,9 +78,12 @@ export default function MapComponent2() {
                     {locationParking && locationParking.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
                         } icon={customMarker} draggable={true}>
-                            <Popup>{space.title}</Popup>
+                            <Popup><Link to={`/spaceBookingPage/${space._id}`}>{space.title}</Link></Popup>
                         </Marker>
                     ))}
+                   <Marker position={center} icon={userMarker}>
+                      <Popup>You are hear</Popup>
+                   </Marker>
                 </MapContainer>
             }
 

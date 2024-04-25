@@ -35,7 +35,7 @@ export default function ParkingSpaceBooking() {
     //   }
     // })()
     dispatch(startGetBookings())
-  }, [dispatch])
+  }, [])
   
   const dateConvert = (val) => {
     const dateObj = new Date(val)
