@@ -62,7 +62,7 @@ export default function Header() {
                                                 My Account
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a className="dropdown-item" href="#">My Detail</a>
+                                                <Link to="/admin" className="dropdown-item" >My Detail</Link>
                                                 <a className="dropdown-item" href="#">Customer</a>
                                                 <Link to="/bookings" className="dropdown-item">Bookings</Link>
                                                 <Link to="/ownerDetails" className="dropdown-item" href="#">owners</Link>
