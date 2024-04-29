@@ -3,68 +3,71 @@ import { filter } from 'lodash'
 import React, { useState, useContext } from 'react'
 import { ParkingSpaceContext } from "../../contextApi/context"
 import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startParkingSpaceBooking } from '../../actions/customerActions/customerBookings'
-import { TextField } from '@mui/material';
-import { DesktopDateTimePicker } from '@mui/lab'
-
+import { Grid, TextField } from '@mui/material';
 import DatePicker from "react-datepicker"
-import { setHours } from 'date-fns'
-import { setMinutes } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css"
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
 export default function Filter(props) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { id, user } = props
     const { locationParking } = useContext(ParkingSpaceContext)
     const [startDateTime, setStartDateTime] = useState('')
     const [endDateTime, setEndDateTime] = useState('')
     const [parkingType, setParkingType] = useState('')
-    const [availableSeat, setAvaibleSeat] = useState('')
+    const [availableSeat, setAvaibleSeat] = useState({})
     const [selectedSeats, setSelectedSeats] = useState(null);
     const [totalAmount, setTotalAmount] = useState('')
+    const [vehicleType, setvehicleType] = useState('')
     const [bookingError, setBookingError] = useState({})
+    const[queryError,setQueryError]=useState("")
     const errors = {}
-    
+
+    const serverError = useSelector(state => state.customer.serverError)
+    const vehicles = useSelector((state) => {
+        return state.customer.vehicles
+    })
+    console.log("vehicle", vehicles)
 
     const handleStartChange = (start) => {
-        console.log('sdt',new Date(start))
+        console.log('sdt', new Date(start))
         setStartDateTime(start)
-     
+
     }
     const handleEndChange = (end) => {
         setEndDateTime(end)
     }
-    // const bookingValidation = () => {
-    //     if (selectedDate.length == 0) {
-    //         errors.selectedDate = "please select the dte"
-    //     }
-    //     if (new Date(selectedDate) >= new Date()) {
-    //         errors.selectedDate = "date should be greater than today"
-    //     }
-    //     if (startTime.length == 0) {
-    //         errors.startTime = "please chooose start time"
-    //     }
-    //     if (endTime.length == 0) {
-    //         errors.endTime = "please choose end time"
-    //     }
-    //     if (startTime >= endTime) {
-    //         errors.startTime = "start must be less than endTime"
-    //     }
-    //     if (endTime <= startTime) {
-    //         errors.endTime = "end time must be greater than start time"
-    //     }
-    //     if (parkingType.length == 0) {
-    //         errors.parkingType = "please select parking type"
-    //     }
-    //     if (startTime <= new Date(selectedDate).getHours()) {
-    //         errors.startTime = "please select time more than current time"
-    //     }
+    const bookingValidation = () => {
+        if (startDateTime.length == 0) {
+            errors.startDateTime = "please select the dte"
+        }
+        if (new Date(startDateTime) < new Date()) {
+            errors.startDateTime = "date should be greater than today"
+        }
+        if (endDateTime.length == 0) {
+            errors.endDateTime = "please choose end time"
+        }
+        if (endDateTime <= startDateTime) {
+            errors.endDateTime = "end time should be greater than startDateTime"
+        }
+        if (startDateTime >= endDateTime) {
+            errors.startDateTime = "start time must be less than endTime"
+        }
+        if (parkingType.length == 0) {
+            errors.parkingType = "please select parking type"
+        }
+        if (vehicleType.length == 0) {
+            errors.vehicleType = "please select a vehicle"
+        }
+        // if (startTime <= new Date(selectedDate).getHours()) {
+        //     errors.startTime = "please select time more than current time"
+        // }
+    }
 
-    // }
 
-    // console.log(new Date())
-    // console.log(selectedDate)
     const toggleSeat = (seat) => {
         setSelectedSeats(selectedSeats === seat ? null : seat)
     }
@@ -90,9 +93,9 @@ export default function Filter(props) {
         return durationHours
     }
     const handleSearch = async () => {
-        // bookingValidation()
+        bookingValidation()
         console.log(errors)
-        if (Object.keys(errors).length == 0) {
+        if (Object.keys(errors).length == 0 && Object.keys(availableSeat).length ==0) {
             try {
                 const response = await axios.get(`http://localhost:3045/api/parkingSpace/${id}/spaceType/${parkingType}?startDateTime=${formatDate(startDateTime)}&endDateTime=${formatDate(endDateTime)}`)
                 console.log(response.data)
@@ -100,6 +103,7 @@ export default function Filter(props) {
                 calculateTotalAmount()
             } catch (err) {
                 console.log(err)
+                setQueryError(err.response.data.error)
             }
         } else {
             setBookingError(errors)
@@ -113,17 +117,33 @@ export default function Filter(props) {
             }
         })
     }
+    const handleParkingType = (id) => {
+        setParkingType(id)
+    }
+    const typeSelected = () => {
+        return filterSpace()?.spaceTypes?.find((ele) => {
+            if (ele._id == parkingType) {
+                return ele
+            }
+        })
+    }
+    const filterVehicle = () => {
+        return vehicles?.filter((ele) => {
+            if (ele.vehicleType.includes(typeSelected()?.types.toLowerCase())) {
+                return ele
+            }
+        })
+    }
     //calculating total amount 
     const calculateTotalAmount = () => {
         const filteredSpace = filterSpace()
         const selectedSpaceType = filteredSpace?.spaceTypes?.find((ele) => ele._id === parkingType);
         if (selectedSpaceType) {
             return setTotalAmount(selectedSpaceType.amount * calculateDuration())
-
         }
         return 0
     }
-    const popUp=()=>{
+    const popUp = () => {
         Swal.fire({
             title: `hello ${user.users.name}`,
             text: "Your booking request is success please wait for approval",
@@ -132,12 +152,12 @@ export default function Filter(props) {
     }
     const handleClick = async () => {
         const bookingForm = {
-            vehicleId: "65fe556cc91c4e1012b5a0c6",
+            vehicleId: vehicleType,
             amount: totalAmount,
             startDateTime: `${formatDate(startDateTime)}`,
             endDateTime: `${formatDate(endDateTime)}`
         }
-        dispatch(startParkingSpaceBooking(id, parkingType, bookingForm,popUp))
+        dispatch(startParkingSpaceBooking(id, parkingType, bookingForm, popUp, navigate))
     }
     function getCurrentTime() {
         const now = new Date();
@@ -159,11 +179,17 @@ export default function Filter(props) {
     //         setStartTime(selectedTime);
     //     }
     // };
-    
+      const filterPassedTime = (time) => {
+        const currentDate = new Date()
+        const selectedDate = new Date(time)  
+        return currentDate.getTime() < selectedDate.getTime();
+      }
+      console.log(availableSeat)
+      console.log(queryError)
     return (
-        <Container style={{ marginRight: 0, marginLeft: 0 }}>
+        <Grid fluid style={{ marginRight: 0, marginLeft: 0 }}>
             <Row className="align-items-center" >
-                <Col xs={7}>
+                <Col xs={12} md={6}>
                     <Form.Group>
                         <DatePicker
                             selected={startDateTime}
@@ -172,74 +198,69 @@ export default function Filter(props) {
                             showTimeSelect
                             placeholderText='startDateTime'
                             minDate={new Date()}
-                            // minTime={"00:00:00:00:00"}
-                            // maxTime={"20:30:00:00:00"}
-                            className={bookingError.selectedDate ? "form-control is-invalid" : "form-control"}
-                        />
-                        {bookingError.selectedDate && (
-                            <div className="invalid-feedback">{bookingError.selectedDate}</div>
-                        )}
-                    </Form.Group>
-                </Col>
-                {/* <Col xs="auto">
-                    <Form.Group controlId="start-time">
-                        <Form.Label>start time</Form.Label>
-                        <Form.Control
-                            type="time"
-                            name="start-time"
-                            // min={getCurrentTime()}
-                            value={startTime}
-                            // onChange={handleStartTimeChange}   
-                            onChange={(e) => { setStartTime(e.target.value) }}
-                            isInvalid={bookingError.startTime}
+                            filterTime={filterPassedTime}
+                            isInvalid={bookingError.startDateTime}
+                            className={bookingError.startDateTime ? "form-control is-invalid" : "form-control"}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {bookingError.startTime && bookingError.startTime}
+                            {bookingError.startDateTime  && <p>{bookingError.startDateTime}</p>}
                         </Form.Control.Feedback>
                     </Form.Group>
-                </Col> */}
-                <Col xs={5}>
+                </Col>
+                <Col xs={12} md={6}>
                     <Form.Group controlId="time">
-                          
-                    <DatePicker
+                  
+                        <DatePicker
                             selected={endDateTime}
                             onChange={handleEndChange}
                             dateFormat="MMMM d, yyyy h:mm aa"
                             showTimeSelect
                             placeholderText='EndDateTime'
-                            className={bookingError.selectedDate ? "form-control is-invalid" : "form-control"}
+                            minDate={new Date()}
+                            filterTime={filterPassedTime}
+                            className={bookingError.endDateTime ? "form-control is-invalid" : "form-control"}
                         />
-                        {/* <Form.Control
-                            name='start-time'
-                            type="time"
-                            value={endTime}
-                            onChange={(e) => { setEndTime(e.target.value) }}
-                            isInvalid={bookingError.endTime}
-                        /> */}
+                       
                         <Form.Control.Feedback type="invalid">
-                            {bookingError.endTime && bookingError.endTime1}
+                            {bookingError.endDateTime && bookingError.endDateTime}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
             </Row>
-            <Row>
-                <Col xs="auto">
+            <Row className='mt-4'>
+                <Col xs={12} md={6} style={{width:"16rem"}} className='ml-4'>
                     <Form.Group controlId='spaceType'>
-                        <Form.Label>Space Type</Form.Label>
+                        {/* <Form.Label>Space Type</Form.Label> */}
                         <Form.Control
                             name='spaceType'
                             as="select"
                             isInvalid={bookingError.parkingType}
-                            onChange={(e) => setParkingType(e.target.value)}>
-                            <option value="">Select a type</option>
+                            onChange={(e) => handleParkingType(e.target.value)}>
+                            <option value="">Select space type...</option>
                             {filterSpace()?.spaceTypes?.map((ele) => (
                                 <option key={ele._id} value={ele._id}>{ele.types}</option>
                             ))}
-
                         </Form.Control>
-
                         <Form.Control.Feedback type="invalid">
                             {bookingError.parkingType && bookingError.parkingType}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col xs={12} md={6} style={{width:"16rem"}} className=''>
+                    <Form.Group controlId='vehicleType'>
+                        {/* <Form.Label>select vehicle</Form.Label> */}
+                        <Form.Control
+                            as="select"
+                            disabled={parkingType.length == 0}
+                            isInvalid={bookingError.vehicleType}
+                            onChange={(e) => setvehicleType(e.target.value)}>
+                            <option value="">Select a vehicle type</option>
+                            {filterVehicle().map((ele) => (
+                                <option key={ele._id} value={ele._id}>{ele.vehicleName}</option>
+                            ))}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                            {bookingError.vehicleType && bookingError.vehicleType}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
@@ -249,17 +270,15 @@ export default function Filter(props) {
                     <p>Duration: {calculateDuration()} hours</p>
                 )}
             </div>
-
-            <button type='button' className='btn-primary' onClick={handleSearch}>search space</button>
-
-            {/* Seat Selection */}
-            {availableSeat ? (<div>
+            <button type='button' className=' btn btn-primary mt-2' onClick={handleSearch}>search space</button>
+            <div>    {queryError && <p>{queryError}</p>}</div>
+            {/* lot Selection */}
+            {availableSeat.capacity >0 ? (<div>
                 <Form.Group controlId="seatSelection">
                     <Form.Label>Select your slot:</Form.Label>
                     <div style={{ border: '2px solid #03cffc', padding: '10px', width: '250px' }}>
-
-                        {[...Array(Number(availableSeat))].map((_, index) => (
-                            <div className={  'rounded text-center' } 
+                        {[...Array(Number(availableSeat.capacity))].map((_, index) => (
+                            <div className={'rounded text-center'}
                                 key={index}
                                 onClick={() => toggleSeat(index + 1)}
                                 style={{
@@ -270,24 +289,27 @@ export default function Filter(props) {
                                     display: 'inline-block',
                                     backgroundColor: selectedSeats === index + 1 ? '#0b7a0f' : 'transparent',
                                     cursor: 'pointer',
-                                    
                                 }}
                             >
                                 {index + 1}
+                               
                             </div>
                         ))}
                     </div>
+                
                 </Form.Group>
                 <div>
                     <div>
                         total Amount- {totalAmount}
                     </div>
-                    {selectedSeats ? (<Button variant="primary" block onClick={handleClick}>
+                    {selectedSeats ? <div><Button variant="primary" block onClick={handleClick}>
                         Book Now
-                    </Button>) : <p>please select the slot</p>}
+                    </Button>
+                      <Button className='ml-4' variant='danger' block onClick={()=>{setAvaibleSeat({})}}>cancel</Button></div>
+                    : <p className='text-success'>please select the slot</p>}
                 </div>
             </div>
-            ) : <p>no Space is available</p>}
-        </Container>
+            ) : <p></p>}
+        </Grid>
     )
 }

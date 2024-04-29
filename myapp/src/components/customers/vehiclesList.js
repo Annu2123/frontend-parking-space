@@ -1,6 +1,12 @@
-import {useSelector}from "react-redux"
+import { useEffect } from "react"
+import {useDispatch, useSelector}from "react-redux"
 import { Link } from "react-router-dom"
+import { startgetVehicles } from "../../actions/customerActions/customerVehicle"
 export default function VehiclesList(){
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        dispatch(startgetVehicles())
+    })
     const vehicles=useSelector((state)=>{
         return state.customer.vehicles
     })

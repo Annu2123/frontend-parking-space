@@ -12,7 +12,7 @@ export default function Header() {
     const navigate = useNavigate()
     const handleLogout = () => {
         localStorage.removeItem('token')
-        dispatch(startSetUser())
+        dispatch(startSetUser({}))
         navigate('/')
 
     }
@@ -77,6 +77,7 @@ export default function Header() {
                                                 My Account
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <Link to="/" className="dropdown-item">Home</Link> {/* New Home Link */}
                                                 <Link to="/account" className="dropdown-item" href="#"> Account</Link>
                                                 <Link to="/bookings" className="dropdown-item" href="#">My bookings</Link>
                                                 <Link to="/vehicles" className="dropdown-item" href="#">my vehicles</Link>

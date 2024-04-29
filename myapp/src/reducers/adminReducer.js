@@ -2,8 +2,7 @@ const initialState={
     ownersAllParkings:[],
     allCustomer:[],
     allOwners:[],
-    bookings:[],
-    spaceApprovalList:[]
+    bookings:[]
 }
 const adminReducers=(state=initialState,action)=>{
     switch(action.type){
@@ -18,9 +17,6 @@ const adminReducers=(state=initialState,action)=>{
         }
         case "SET_ALL_BOOKINGS":{
             return {...state,bookings:action.payload}
-        }
-        case "SET_APPROVAL_LIST":{
-            return {...state,spaceApprovalList:action.payload}
         }
         case "SET_APPROVE_PARKING":{
             return {...state, ownersAllParkings:state. ownersAllParkings.map((ele)=>{

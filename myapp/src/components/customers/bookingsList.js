@@ -1,12 +1,18 @@
 import '../../bookingList.css';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect,useState } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom"
+import { startGetBookings } from '../../actions/customerActions/customerBookings';
 
 export default function BookingsList() {
     const navigate=useNavigate()
+    const dispatch=useDispatch()
+    useEffect(()=>{
+         dispatch(startGetBookings())
+    },[])
     const bookings = useSelector(state => state.customer.bookings);
+    console.log("sffaa",bookings)
     // Helper function to get today's date in YYYY-MM-DD format
     const getTodayDate = () => {
         const today = new Date();
@@ -45,8 +51,9 @@ export default function BookingsList() {
         };
         try {
             const response = await axios.post('http://localhost:3045/api/create-checkout-session', paymentForm);
-            localStorage.setItem('stripeId', response.data.id);
-            window.location = response.data.url;
+            localStorage.setItem('stripeId', response.data.id)
+            console.log("payment",response.data)
+           window.location = response.data.url
         } catch (err) {
             console.log(err);
         }

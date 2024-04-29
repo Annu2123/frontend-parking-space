@@ -23,9 +23,9 @@ export default function ListParkings() {
   //     })()
   // },[])
   return (
-    <div className="container mt-4" style={{ paddingTop: '40px' }}>
+    <div className="container mt-4" style={{ paddingTop: '40px',paddingBottom:"60px" }}>
     <div className="row">
-        {locationParking ? (locationParking.map((ele, index) => (
+        {locationParking.length !=0 ? (locationParking.map((ele, index) => (
             <div key={index} className="col-lg-4 col-md-6 mb-4">
                 <Link to={`/spaceBookingPage/${ele._id}`} className="text-decoration-none text-dark">
                     <div className="card shadow-sm h-100">
@@ -47,7 +47,7 @@ export default function ListParkings() {
                             </Row>
                             <Row>
                               <Col>
-                              <p>distance from your location is {calculateDistance(center,ele.address.coordinates)/1000} kilometer</p>
+                              <p>distance from your location is {Math.round(calculateDistance(center,ele.address.coordinates)/1000)} kilometer</p>
                               </Col>
                             </Row>
                           </Container>
@@ -55,7 +55,7 @@ export default function ListParkings() {
                     </div>
                 </Link>
             </div>
-        ))):(<p>No Parking Space Found</p>)}
+        ))):(<p className="text-center bold">No Parking Space Found</p>)}
     </div>
 </div>
 

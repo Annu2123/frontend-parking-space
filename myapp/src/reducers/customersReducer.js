@@ -7,7 +7,8 @@ import bookings from "../components/payments/bookings"
 const initialState={
     account:{},
     vehicles:[],
-    bookings:[]
+    bookings:[],
+    serverError:[]
 }
 export default function customerReducer(state=initialState,action){
     switch(action.type){
@@ -43,6 +44,18 @@ export default function customerReducer(state=initialState,action){
             }
         case SET_NEW_BOOKING:{
             return {...state,bookings:[...state.bookings,action.payload]}
+        }
+        case "SET_SERVER_ERROR":{
+            return {...state,serverError:action.payload}
+        }
+        case "SET_PAYMENT_SUCCESS":{
+            return {...state,bookings:state.bookings.map((ele)=>{
+                if(ele._id == action.payload._id){
+                    return action.payload
+                }else{
+                    return ele
+                }
+            })}
         }
             default:{
                 return state
