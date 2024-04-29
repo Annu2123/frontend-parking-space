@@ -60,21 +60,21 @@ export const startGetAllBooking=()=>{
     }
 }
 
-export const startGetAllApprovalList=()=>{
-    return async(dispatch)=>{
-        try{
-            const approvalList=await axios.get('http://localhost:3045/api/parkingSpace/approvalList',{
-                        headers:{
-                            Authorization:localStorage.getItem('token')
-                        }
-                       })
-                       console.log("list",approvalList.data)
-                       dispatch(setList(approvalList.data))
-        }catch(err){
-            console.log(err)
-        }
-    }
-}
+// export const startGetAllApprovalList=()=>{
+//     return async(dispatch)=>{
+//         try{
+//             const approvalList=await axios.get('http://localhost:3045/api/parkingSpace/approvalList',{
+//                         headers:{
+//                             Authorization:localStorage.getItem('token')
+//                         }
+//                        })
+//                        console.log("list",approvalList.data)
+//                        dispatch(setList(approvalList.data))
+//         }catch(err){
+//             console.log(err)
+//         }
+//     }
+// }
 export const startApproveParkings=(id)=>{
     return async(dispatch)=>{
         try{
@@ -96,12 +96,12 @@ const setApprove=(data)=>{
         payload:data
     }
 }
-const setList=(data)=>{
-    return {
-        type:"SET_APPROVAL_LIST",
-        payload:data
-    }
-}
+// const setList=(data)=>{
+//     return {
+//         type:"SET_APPROVAL_LIST",
+//         payload:data
+//     }
+// }
 
 const setBookings=(data)=>{
     return{

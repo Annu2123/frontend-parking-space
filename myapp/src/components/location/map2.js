@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from 'react';
-import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet'
 import { ParkingSpaceContext } from '../../contextApi/context';
 import axios from 'axios'; // For making HTTP requests
 import 'leaflet/dist/leaflet.css'
@@ -77,7 +77,7 @@ export default function MapComponent2() {
                     {/* Display nearby services as markers */}
                     {locationParking && locationParking.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
-                        } icon={customMarker} draggable={true}>
+                        } icon={customMarker}>
                             <Popup><Link to={`/spaceBookingPage/${space._id}`}>{space.title}</Link></Popup>
                         </Marker>
                     ))}

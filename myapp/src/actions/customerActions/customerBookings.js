@@ -9,6 +9,7 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem("token")
                 }
             })
+            console.log("customerBoo",response.data)
             dispatch(getbookings(response.data))
         }catch(err){
             console.log(err)
@@ -16,7 +17,7 @@ export const startGetBookings=()=>{
     }
 }
 
-export const startParkingSpaceBooking=(id, parkingType,formData,popUp)=>{
+export const startParkingSpaceBooking=(id, parkingType,formData,popUp,navigate)=>{
     return async(dispatch)=>{
         try {
             const response = await axios.post(`http://localhost:3045/api/booking/${id}/spaceTypes/${parkingType}`,formData, {
@@ -24,14 +25,39 @@ export const startParkingSpaceBooking=(id, parkingType,formData,popUp)=>{
             })
             console.log("booo",response.data)
             dispatch(setSpaceBooking(response.data))
+            dispatch(setServerError({}))
             popUp()
+            navigate("/bookings")
         } catch (err) {
+            console.log(err)
+            dispatch(setServerError(err.response.data.errors))
+        }
+    }
+}
+export const startPaymentStatusSuccess=(id,navigate)=>{
+    return async(dispatch)=>{
+        try{
+         const response=await axios.put(`http://localhost:3045/api/booking/payment/update/${id}`)
+         console.log(response.data)
+         dispatch(setPaymentSuccess(response.data))
+         navigate("/bookings")
+        }catch(err){
             console.log(err)
         }
     }
 }
-
-
+const setPaymentSuccess=(data)=>{
+    return {
+        type:"SET_PAYMENT_SUCCESS",
+        payload:data
+    }
+}
+const setServerError=(data)=>{
+    return {
+        type:"SET_SERVER_ERROR",
+        payload:data
+    }
+}
 const getbookings=(data)=>{
     return{
         type:GET_BOOKINGS,
