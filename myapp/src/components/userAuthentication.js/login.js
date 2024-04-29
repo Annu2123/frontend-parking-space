@@ -37,15 +37,19 @@ export default function LoginPage(props) {
                 navigate('/usersControll')
                 loginToast()
             } catch (err) {
-                if (err.response && err.response.data) {
+                 if(err.response.data.error=="User is not verified"){
+                    localStorage.setItem("email",err.response.data.email)
+                    alert("your email is not verified fast verify then try to login")
+                    navigate('/otp')
+                }else if (err.response && err.response.data) {
                    const serverErrors = err.response.data.error || []
                     // setServerErrors(serverErrors)
                     alert(serverErrors)
                     console.log(err)
-                } else if (err.request) {
+                }else if (err.request) {
                     // Handle network errors
                     alert('Network error. Please check your internet connection.');
-                } else {
+                }else {
                     alert('An unexpected error occurred. Please try again later.');
                     console.error("Unexpected error:", err)
                 }

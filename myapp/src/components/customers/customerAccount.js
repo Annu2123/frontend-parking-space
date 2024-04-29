@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 export default function MyAccount() {
     return (
-        <div className="container mt-4">
+        <div className="container mt-4" style={{paddingTop:"60px"}}>
             <div className="row">
                 <div className="row-md-4">
                     <h2>My Account</h2>

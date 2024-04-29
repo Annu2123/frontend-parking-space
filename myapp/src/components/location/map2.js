@@ -77,7 +77,7 @@ export default function MapComponent2() {
                     {/* Display nearby services as markers */}
                     {locationParking && locationParking.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
-                        } icon={customMarker}>
+                        } icon={customMarker}>                      
                             <Popup><Link to={`/spaceBookingPage/${space._id}`}>{space.title}</Link></Popup>
                         </Marker>
                     ))}

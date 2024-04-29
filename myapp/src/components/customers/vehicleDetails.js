@@ -27,7 +27,7 @@ export default function VehicleDetails() {
     }
 
     return (
-        <div className="container vh-100">
+        <div className="container vh-100" style={{paddingTop:"60px"}}>
             <div className="row justify-content-center align-items-center h-100">
                 <div className="col-md-6 text-center bg-light p-4 rounded shadow">
                     <h2 className="mb-4">Vehicle Details</h2>

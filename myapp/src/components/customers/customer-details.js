@@ -7,7 +7,7 @@ export default function CustomerDetails() {
     const customer = useSelector(state => state.customer.account);
 
     return (
-        <Container className="mt-5">
+        <Container className="mt-5" style={{paddingTop:"60px"}}>
             <Row className="justify-content-md-center">
                 <Col md={8}>
                     <Card style={{ borderColor: '#4A90E2' }}>

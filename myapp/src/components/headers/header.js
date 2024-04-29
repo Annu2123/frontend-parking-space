@@ -14,7 +14,6 @@ export default function Header() {
         localStorage.removeItem('token')
         dispatch(startSetUser({}))
         navigate('/')
-
     }
     const user = useSelector((state) => {
         return state.users
@@ -81,6 +80,7 @@ export default function Header() {
                                                 <Link to="/account" className="dropdown-item" href="#"> Account</Link>
                                                 <Link to="/bookings" className="dropdown-item" href="#">My bookings</Link>
                                                 <Link to="/vehicles" className="dropdown-item" href="#">my vehicles</Link>
+                                                <Link to="/spaceCart" className="dropdown-item" href="#">my spaceCart</Link>
                                                 <Link className="dropdown-item" to='/' onClick={handleLogout}>Logout</Link>
                                             </div>
                                         </li>

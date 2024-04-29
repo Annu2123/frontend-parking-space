@@ -1,8 +1,12 @@
 import '../../bookingList.css';
-import React, { useEffect,useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import socketIOClient from 'socket.io-client';
+import { useEffect } from 'react';
+import { startRemoveBooking } from '../../actions/customerActions/customerBookings';
+export default function BookingsList() {
 import { startGetBookings } from '../../actions/customerActions/customerBookings';
 
 export default function BookingsList() {
@@ -18,10 +22,12 @@ export default function BookingsList() {
         const today = new Date();
         return today.toISOString().split('T')[0];
     };
-
+    const dispatch=useDispatch()
     const [filterOption, setFilterOption] = useState('all');
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
-
+    const navigate = useNavigate()
+    const bookings = useSelector(state => state.customer.bookings);
+    // Helper function to get today's date in YYYY-MM-DD format
     const dateTimeOptions = {
         dateStyle: 'short',
         timeStyle: 'short',
@@ -58,10 +64,42 @@ export default function BookingsList() {
             console.log(err);
         }
     };
+    useEffect(() => {
+        const socket = socketIOClient('http://localhost:3045');
+        socket.on('connection', () => {
+            console.log('Connected to server');
+        });
+        socket.on('bookingId', (data) => {
+            console.log(data.id,'socketid')
+        dispatch(startRemoveBooking(data.id))
+        });
+        return () => {
+            socket.disconnect(); 
+        };
+    }, [dispatch]);
 
     return (
-        <div className="bookings-list">
-            <div className="mb-3">
+        <div className="bookings-list" style={{paddingTop:"60px"}}>
+            <div className=" d-flex justify-content-center align-items-center mt-5 ">
+                <div className="card shadow-sm" style={{ width: "36rem" }}>
+                    <div className="card-body text-center">
+                        {bookings.length !== 0 ? (bookings.map((ele) => {
+                            if (ele.approveStatus == true && ele.paymentStatus == "pending") {
+                                return (<p>`your ${ele.parkingSpaceId ? ele.parkingSpaceId.title : "N/A"} booking is approved make payment`
+                                    <button
+                                        className="btn btn-sm btn-outline-secondary"
+                                        onClick={() => { handlePayment(ele._id, ele.amount) }}
+                                    >make payment
+                                    </button>
+                                </p>
+                                )
+                            }
+                        })) : "no bookings"}
+
+                    </div>
+                </div>
+            </div>
+            <div>
                 <label htmlFor="date-picker" className="form-label">Select date:</label>
                 <input
                     type="date"
@@ -70,7 +108,8 @@ export default function BookingsList() {
                     onChange={(e) => setSelectedDate(e.target.value)}
                 />
             </div>
-            <div className="mb-3">
+
+            <div >
                 <label htmlFor="filter-option" className="form-label">Filter by booking status:</label>
                 <select
                     id="filter-option"
@@ -89,7 +128,7 @@ export default function BookingsList() {
                     const endTime = new Date(ele.endDateTime);
                     const formattedStartTime = new Intl.DateTimeFormat('en-GB', dateTimeOptions).format(startTime);
                     const formattedEndTime = new Intl.DateTimeFormat('en-GB', dateTimeOptions).format(endTime);
-                    const spaceType = ele.parkingSpaceId.spaceTypes.find(e => e._id === ele.spaceTypesId);
+                    const spaceType = ele.parkingSpaceId?.spaceTypes.find(e => e._id === ele.spaceTypesId);
                     const linkStyle = {
                         textDecoration: 'none',
                         color: ele.status === 'completed' && ele.paymentStatus === 'completed' ? 'green' : 'blue',
@@ -116,8 +155,8 @@ export default function BookingsList() {
                                         <strong>Parking Name:</strong> {ele.parkingSpaceId ? ele.parkingSpaceId.title : "N/A"}
                                     </p>
                                     <p className="card-text">
-                                        {/* <strong>Start Time:</strong> {formattedStartTime}<br />
-                                        <strong>End Time:</strong> {formattedEndTime} */}
+                                        <strong>Start Time:</strong> {formattedStartTime}<br />
+                                        <strong>End Time:</strong> {formattedEndTime}
                                     </p>
                                     <p className="card-text"><strong>Status:</strong> {ele.approveStatus ? 'Approved' : 'Waiting'}</p>
                                     <p className="card-text"><strong>Space Type:</strong> {spaceType ? spaceType.types : "N/A"}</p>
@@ -152,6 +191,3 @@ export default function BookingsList() {
         </div>
     );
 }
-
-
-
