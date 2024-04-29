@@ -65,6 +65,21 @@ export default function customerReducer(state = initialState, action) {
         default: {
             return state
         }
+        case "SET_SERVER_ERROR":{
+            return {...state,serverError:action.payload}
+        }
+        case "SET_PAYMENT_SUCCESS":{
+            return {...state,bookings:state.bookings.map((ele)=>{
+                if(ele._id == action.payload._id){
+                    return action.payload
+                }else{
+                    return ele
+                }
+            })}
+        }
+            default:{
+                return state
+            }
     }
 
 }

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react'
+import { Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { useFormik } from 'formik'
 import * as yup from 'yup';
 import axios from 'axios'
-import { startAddParkingSpace } from '../../actions/ownerActions';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { startAddParkingSpace } from '../../actions/ownerActions'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux'
 function reverseLatLon(arr) {
   return [arr[1], arr[0]]
 }
+
 
 const validationSpaceRegisterSchema = yup.object({
   title: yup.string().required('Title is required'),
@@ -31,6 +34,17 @@ const validationSpaceRegisterSchema = yup.object({
 export default function ParkingSpaceRegister(props) {
   const { parkingRegisterToast } = props
   const navigate=useNavigate()
+
+  const user=useSelector((state)=>{
+    return state.users
+})
+  const popUp=()=>{
+    Swal.fire({
+        title: `hello ${user.users.name}`,
+        text: "your space is saved wait for admin approval",
+        icon: "success"
+    })
+}
   const dispatch=useDispatch()
   const formik = useFormik({
     initialValues: {
@@ -78,7 +92,7 @@ export default function ParkingSpaceRegister(props) {
         }))
       }
       console.log("formData", formData)
-      dispatch(startAddParkingSpace(formData,resetForm,navigate))
+      dispatch(startAddParkingSpace(formData,resetForm,navigate,popUp))
     }
   });
 
@@ -86,7 +100,7 @@ export default function ParkingSpaceRegister(props) {
     formik.setFieldValue(`spaceTypes[${index}].${fieldName}`, value);
   }
   return (
-    <Container style={{ paddingTop: '70px' }}>
+    <Container style={{ paddingTop: '70px', width: '800px' }}>
       <h2 className='text-center mt-4' style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>Register Your Space</h2>
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">

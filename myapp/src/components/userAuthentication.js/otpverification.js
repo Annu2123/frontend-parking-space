@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { Container } from "react-bootstrap"
 export default function Otp(){
     const navigate=useNavigate()
     const [otp,setOtp]=useState()
@@ -19,12 +20,12 @@ export default function Otp(){
       }
     }
     return (
-        <div style={{ paddingTop: '80px' }}>
+        <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingTop: '60px' }}>
             <form onSubmit={handleSubmit}>
              <label>enter your otp</label>
              <input type="number" value={otp} onChange={(e)=>{setOtp(e.target.value)}}/><br/>
                <input type="submit" placeholder="verify"/>
              </form>
-        </div>
+        </Container>
     )
 }

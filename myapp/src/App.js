@@ -70,11 +70,17 @@ function App() {
   const user = useSelector((state) => {
     return state.users
   })
+  
+  useEffect(()=>{
+    console.log("dsdksdksdkskkk")
+   if(user?.users?.role === 'customer'){
+    dispatch(startGetCustomer())
+    dispatch(startgetVehicles())
+    dispatch(startGetBookings())
+    dispatch(startGetSpaceCarts())
+   }
+  },[user])
   useEffect(() => {
-    dispatch(startGetCustomer());
-    dispatch(startgetVehicles());
-    dispatch(startGetBookings());
-    dispatch(startGetSpaceCarts());
     (async () => {
 
       if (navigator.geolocation) {
@@ -85,7 +91,7 @@ function App() {
           setCenter([latitude, longitude])
         }))
       }
-    })()
+    })();
   }, [])
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -176,9 +182,12 @@ function App() {
               <BookingsList />
             </PrivateRoute>} />
             <Route path='/paymentPage/:id' element={<PaymentPage />} />
-            <Route path='/spaceBookingPage/:id' element={<ProductPage />} />
             <Route path='/review/:id' element={<ReviewBooking/>}/>
             <Route path='/spaceCart' element={<SpaceCart/>}/>
+            <Route path='/spaceBookingPage/:id' element={
+              <PrivateRoute permmitedRoles={['customer']}>
+                  <ProductPage/>
+              </PrivateRoute>}/>
 
             {/* owner Routes */}
             <Route path='/myspace' element={<PrivateRoute permmitedRoles={['owner']}>

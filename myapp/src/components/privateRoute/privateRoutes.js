@@ -16,9 +16,12 @@ export default function PrivateRoute({permmitedRoles,children}){
     }
     if(!user){
         return <Navigate to="/login"/>
+               
     }
-    if(!permmitedRoles.includes(user.users.role)){
-        return <p>you are not authorise</p>
+    if(!permmitedRoles.includes(user?.users?.role)){
+        return <div className="text-center" style={{ paddingTop: '110px' }}>
+        <p className="display-4">You are not authorized</p>
+    </div>
     }
 return children
 }

@@ -5,46 +5,44 @@ import axios from 'axios';
 import ownersReducers from '../../reducers/ownersReduceres';
 import { Row, Container, Col } from 'react-bootstrap';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts'
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { startApproveParkings,  startGetAllParkingSpace,startGetAllBooking, startGetAllCustomer, startGetAllOwner } from '../../actions/adminsActions';
+import SpaceInfo from './spaceInfoModel';
 export default function Admin() {
-    const [owners, setOwners] = useState([])
-    const [customers, setCustomer] = useState([])
-    const [bookings, setBookings] = useState([])
-    useEffect(() => {
-        (async () => {
-            try {
-                const customers = await axios.get('http://localhost:3045/api/customer', {
-                    headers: {
-                        Authorization: localStorage.getItem('token')
-                    }
-                })
-                setCustomer(customers.data)
-                console.log("customer", customers.data)
-                const owners = await axios.get('http://localhost:3045/api/owner', {
-                    headers: {
-                        Authorization: localStorage.getItem('token')
-                    }
-                })
-                setOwners(owners.data)
-                console.log("owners", owners.data)
-                const bookings = await axios.get('http://localhost:3045/api/allBooking', {
-                    headers: {
-                        Authorization: localStorage.getItem('token')
-                    }
-                })
-                setBookings(bookings.data)
-                console.log(bookings.data)
+    const dispatch = useDispatch()
+    const [modal, setModal] = useState(false);
+    const [spaceId, setSpaceId] = useState('')
+    const toggle = () => setModal(!modal)
+    const customers = useSelector((state) => {
+        return state.admin.allCustomer
+    })
+    const owners = useSelector((state) => {
+        return state.admin.allOwners
+    })
+    const bookings = useSelector((state) => {
+        return state.admin.bookings
+    })
+    const handleApprove = (id) => {
+        dispatch(startApproveParkings(id))
+    }
+    const parkingSpaces=useSelector((state)=>{
+        return state.admin.ownersAllParkings
+    })
 
-               const approvalList=await axios.get('http://localhost:3045/api/parkingSpace/approvalList',{
-                headers:{
-                    Authorization:localStorage.getItem('token')
-                }
-               })
-               console.log("list",approvalList.data)
-            } catch (err) {
-                console.log(err)
+    useEffect(() => {
+        dispatch(startGetAllCustomer())
+        dispatch(startGetAllOwner())
+        dispatch(startGetAllBooking())
+        dispatch(startGetAllParkingSpace())
+
+    },[])
+    const list= parkingSpaces.filter((ele)=>{
+            if(ele.approveStatus == false){
+                return ele
             }
-        })()
-    }, [])
+        })
+    
     const totalRevenue = () => {
         return bookings.reduce((acc, cv) => {
             acc = acc + cv.amount
@@ -62,8 +60,11 @@ export default function Admin() {
         month: monthName,
         bookings: bookingsByMonth[monthName]
     }))
-console.log("data",data)
-console.log("data",bookingsByMonth)
+    const handleMore = (spaceId) => {
+        setSpaceId(spaceId)
+        toggle()
+    }
+   
     return (
         <>
             <div class="container text-center" style={{ paddingTop: '60px' }}>
@@ -103,28 +104,28 @@ console.log("data",bookingsByMonth)
             <Container style={{ paddingTop: '60px' }} bordered>
                 <Row>
                     <Col sm={5} className=" m-0 bg-light">
-                        <div className=" d-flex justify-content-center align-items-center mt-5 ">
-                            <div className="card shadow-sm" style={{ width: "36rem" }}>
-                                <div className="card-body text-center">
-
-                                    <p>New request for listing parking Space {" " + " "}
-                                    <button type="button " className="btn btn-primary">Accept</button>
-                                    <button type="button " className=" ml-2 btn btn-info">more</button>
-                                    </p>
+                        {list.map((ele) => {
+                            return <div className=" d-flex justify-content-center align-items-center mt-2 ">
+                                <div className="card shadow-sm" style={{ width: "28rem" }}>
+                                    <div className="card-body text-center">
+                                        <p>listing request from {ele.ownerId.name}{" " + " "}
+                                            <button onClick={() => { handleApprove(ele._id) }} type="button " className="btn btn-primary">Accept</button>
+                                            <button onClick={() => { handleMore(ele._id) }} type="button " className=" ml-2 btn btn-info">more</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        })}
                     </Col>
-                    <Col sm={7}m-0 >
-                        <ResponsiveContainer width="100%" >
+                    <Col sm={7} m-0 style={{ height: "300px" }} >
+                        <ResponsiveContainer width="100%" height="100%" >
                             <BarChart width={8} height={20} data={data}>
                                 {/* <CartesianGrid */}
-                                    {/* stroke="grey"    // Change the color of grid lines */}
-                                    {/* strokeDasharray="3 3"  // Change the pattern of grid lines to dashed */}
+                                {/* stroke="grey"    // Change the color of grid lines */}
+                                {/* strokeDasharray="3 3"  // Change the pattern of grid lines to dashed */}
                                 {/* /> */}
                                 <XAxis dataKey='month' />
-
-                                <YAxis  />
+                                <YAxis />
                                 <Tooltip />
                                 <Legend />
                                 <Bar dataKey='bookings' fill="blue" />
@@ -134,6 +135,16 @@ console.log("data",bookingsByMonth)
                     </Col>
                 </Row>
             </Container>
+
+            <Modal isOpen={modal} toggle={toggle} centered>
+                <ModalBody className="d-flex justify-content-center align-items-center">                  
+                       
+                        <SpaceInfo spaceId={spaceId} list={list} handleApprove={handleApprove} toggle={toggle} />
+                   
+                </ModalBody>
+            </Modal>
         </>
     )
 }
+
+

@@ -7,7 +7,8 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            dispatch(setBooking(response.data))
+            dispatch(setSpaceBooking(response.data))
+           console.log("parkingBooking",response.data)
         }catch(err){
             console.log(err)
         }
@@ -22,6 +23,7 @@ export const startApproveBooking=(id)=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
+            console.log("approv",response.data)
             dispatch(setApprove(response.data))
         }catch(err){
             console.log(err)
@@ -37,6 +39,7 @@ export const startGetParkingSpace=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
+            console.log("parkings",response.data)
             dispatch(setParking(response.data))
         }catch(err){
             console.log(err)
@@ -44,7 +47,7 @@ export const startGetParkingSpace=()=>{
     }
 }
 
-export const startAddParkingSpace=(formData,resetForm,navigate)=>{
+export const startAddParkingSpace=(formData,resetForm,navigate,popUp)=>{
     return async(dispatch)=>{
         try {
             const response = await axios.post('http://localhost:3045/api/parkingSpace/Register', formData, {
@@ -55,13 +58,59 @@ export const startAddParkingSpace=(formData,resetForm,navigate)=>{
             })
            dispatch( setParkingAdd(response.data))
            resetForm()
+           popUp()
            navigate('/myspace')
           } catch (err) {
             console.log(err)
+            alert(err.msg)
           } 
     }
 }
 
+export const startRemoveParkingSpace=(id)=>{
+    return async(dispatch)=>{
+        try{
+            const response=await axios.delete(`http://localhost:3045/api/parkingSpace/remove/${id}`,{
+               headers:{
+                   Authorization:localStorage.getItem('token')
+               }
+            })
+            console.log(response.data)
+            dispatch(setRemoveParkingSpace(response.data))
+           }catch(err){
+               console.log(err)
+           }
+    }
+}
+
+export const startActiveOrDisableParkings=(id)=>{
+    return async(dispatch)=>{
+        try{
+            const response=await axios.put(`http://localhost:3045/api/parkingSpace/disable/${id}`,{},{
+               headers:{
+                   Authorization:localStorage.getItem('token')
+               }
+            })
+            console.log(response.data)
+            dispatch(setDisableOrActive(response.data))
+           }catch(err){
+               console.log(err)
+           }
+    }
+}
+
+const setDisableOrActive=(data)=>{
+    return {
+        type:"SET_ACTIVE_OR_DISABLE",
+        payload:data
+    }
+}
+const setRemoveParkingSpace=(data)=>{
+    return {
+        type:"SET_REMOVE_PARKINGSPACE",
+        payload:data
+    }
+}
 const setParkingAdd=(data)=>{
     return {
         type:"SET_PARKING_ADD",
@@ -74,9 +123,9 @@ const setParking=(data)=>{
         payload:data
     }
 }
-const setBooking=(data)=>{
+const setSpaceBooking=(data)=>{
     return {
-        type:"SET_BOOKINGS",payload:data
+        type:"SET_SPACE_BOOKINGS",payload:data
     }
 }
 const setApprove=(data)=>{

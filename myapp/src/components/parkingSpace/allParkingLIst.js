@@ -3,9 +3,14 @@ import { ParkingSpaceContext } from "../../contextApi/context"
 import axios from 'axios'
 import { Link } from "react-router-dom"
 import { Col, Row,Container } from "react-bootstrap"
+import { getDistance } from 'geolib'
+// import getDistance from 'geolib/es/getDistance'
 export default function ListParkings() {
   const [parking, setParking] = useState([])
-  const { locationParking } = useContext(ParkingSpaceContext)
+  const { locationParking,center } = useContext(ParkingSpaceContext)
+  const calculateDistance=(userGeo,parkingGeo)=>{
+     return getDistance(userGeo,parkingGeo,1)
+  }
   // useEffect(()=>{
   //     (async()=>{
   //         try{
@@ -18,9 +23,9 @@ export default function ListParkings() {
   //     })()
   // },[])
   return (
-    <div className="container mt-4">
+    <div className="container mt-4" style={{ paddingTop: '40px',paddingBottom:"60px" }}>
     <div className="row">
-        {locationParking ? (locationParking.map((ele, index) => (
+        {locationParking.length !=0 ? (locationParking.map((ele, index) => (
             <div key={index} className="col-lg-4 col-md-6 mb-4">
                 <Link to={`/spaceBookingPage/${ele._id}`} className="text-decoration-none text-dark">
                     <div className="card shadow-sm h-100">
@@ -31,13 +36,18 @@ export default function ListParkings() {
                               <Col>
                               <p className="card-text">{ele.title}</p>
                               </Col>
-                              <Col>
+                              {/* <Col>
                               <p className="card-text">{ele.amenities}</p>
-                              </Col>
+                              </Col> */}
                             </Row>
                             <Row>
                               <Col>
                               <p>pricing starting from {ele.spaceTypes[0].amount} per hour</p>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                              <p>distance from your location is {Math.round(calculateDistance(center,ele.address.coordinates)/1000)} kilometer</p>
                               </Col>
                             </Row>
                           </Container>
@@ -45,7 +55,7 @@ export default function ListParkings() {
                     </div>
                 </Link>
             </div>
-        ))):(<p>No Parking Space Found</p>)}
+        ))):(<p className="text-center bold">No Parking Space Found</p>)}
     </div>
 </div>
 

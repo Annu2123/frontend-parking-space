@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 export default function UserCantroll(){
     const navigate=useNavigate()
     const token=localStorage.getItem('token')
-    const [role,setRole]=useState(null)
+    const [role,setRole]=useState(null)   
     useEffect(()=>{
         try{
             const {role}=jwtDecode(token)
@@ -20,6 +20,8 @@ export default function UserCantroll(){
             console.log("something went wrong")
         }
     },[token])
+    
+   
     return (
         <>
            {role ==='admin' ? (
