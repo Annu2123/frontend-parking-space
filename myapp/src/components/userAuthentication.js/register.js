@@ -64,7 +64,6 @@ const validation=()=>{
       try{
         localStorage.setItem('email',formData.email)
         const response=await axios.post('http://localhost:3045/api/users/register',formData)
-        console.log(response.data)
         alert("reg succesful")
         navigate('/otp')     
        }catch(err){

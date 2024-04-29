@@ -32,6 +32,7 @@ import BookingsList from './components/customers/bookingsList';
 import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings"
+import { startGetSpaceCarts } from './actions/customerActions/customerSpaceCart';
 
 
 import PaymentPage from './components/payments/bookings';
@@ -43,7 +44,8 @@ import MySpace from './components/OwnerDashboard/mySpace';
 import OwnerMain from './components/OwnerDashboard/myAccount';
 import PrivateRoute from './components/privateRoute/privateRoutes';
 import Admin from './components/admin-dashborad/admin';
-
+import ReviewBooking from './components/customers/reviewBooking';
+import SpaceCart from './components/customers/spaceCartReg'
 function geoWithinSpace(state, action) {
   switch (action.type) {
     case "GET_PARKINGSPACE_RADIUS": {
@@ -72,6 +74,7 @@ function App() {
     dispatch(startGetCustomer());
     dispatch(startgetVehicles());
     dispatch(startGetBookings());
+    dispatch(startGetSpaceCarts());
     (async () => {
 
       if (navigator.geolocation) {
@@ -174,6 +177,8 @@ function App() {
             </PrivateRoute>} />
             <Route path='/paymentPage/:id' element={<PaymentPage />} />
             <Route path='/spaceBookingPage/:id' element={<ProductPage />} />
+            <Route path='/review/:id' element={<ReviewBooking/>}/>
+            <Route path='/spaceCart' element={<SpaceCart/>}/>
 
             {/* owner Routes */}
             <Route path='/myspace' element={<PrivateRoute permmitedRoles={['owner']}>

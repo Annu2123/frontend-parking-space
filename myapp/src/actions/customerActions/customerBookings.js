@@ -1,6 +1,7 @@
 import axios from"axios"
 export const GET_BOOKINGS="GET_BOOKINGS"
 export const SET_NEW_BOOKING="SET_NEW_BOOKING"
+export const REMOVE_BOOKING="REMOVE_BOOKING"
 export const startGetBookings=()=>{
     return async(dispatch)=>{
         try{
@@ -9,7 +10,7 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem("token")
                 }
             })
-            dispatch(getbookings(response.data))
+            dispatch(GetBookings(response.data))
         }catch(err){
             console.log(err)
         }
@@ -30,10 +31,23 @@ export const startParkingSpaceBooking=(id, parkingType,formData,popUp)=>{
         }
     }
 }
+export const startRemoveBooking=(id)=>{
+    console.log(id,'sociod')
+    return{
+        type:REMOVE_BOOKING,
+        payload:id
+    }
+}
 
 const setSpaceBooking=(data)=>{
     return {
         type:SET_NEW_BOOKING,
+        payload:data
+    }
+}
+const GetBookings=(data)=>{
+    return{
+        type:GET_BOOKINGS,
         payload:data
     }
 }

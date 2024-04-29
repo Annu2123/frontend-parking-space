@@ -1,14 +1,22 @@
 import { useState } from "react"
-
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 export default function Otp(){
+    const navigate=useNavigate()
     const [otp,setOtp]=useState()
-    const handleSubmit=(e)=>{
+    const handleSubmit=async(e)=>{
         e.preventDefault()
        const  formData={
         otp:otp,
-        // email:localStorage.getItem(email)
+        email:localStorage.getItem("email")
        }
-       console.log(formData)
+      try{
+        const response=await axios.put("http://localhost:3045/api/verify/emails",formData)
+        alert(response.data)
+        navigate("/login")
+      }catch(err){
+        console.log(err)
+      }
     }
     return (
         <div style={{ paddingTop: '80px' }}>

@@ -45,7 +45,7 @@ export default function VehiclesRegistration(props){
        }
     })
     return(
-        <Container className="d-flex justify-content-center align-items-center vh-100">
+        <Container className="d-flex justify-content-center align-items-center vh-100" style={{paddingTop:"60px"}}>
         <div>
             <h2 className="text-center mb-4 mt-4">vehicleForm</h2>
             <Form onSubmit={formik.handleSubmit}>

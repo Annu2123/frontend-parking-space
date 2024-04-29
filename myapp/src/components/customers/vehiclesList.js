@@ -5,7 +5,7 @@ export default function VehiclesList(){
         return state.customer.vehicles
     })
     return(
-        <div>
+        <div style={{paddingTop:"60px"}}>
             <h2>vehiclesList-{vehicles.length}</h2>
             <table className="table table-dark table-striped-columns">
                 <thead>

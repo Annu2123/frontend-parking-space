@@ -68,7 +68,7 @@ export default function MapComponent2() {
                     {/* Display nearby services as markers */}
                     {locationParking && locationParking.map((space, index) => (
                         <Marker key={index} position={space.address.coordinates
-                        } icon={customMarker} draggable={true}>
+                        } icon={customMarker}>
                             <Popup>{space.title}</Popup>
                         </Marker>
                     ))}
