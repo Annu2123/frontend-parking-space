@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { startActiveOrDisableParkings, startGetParkingSpace, startRemoveParkingSpace } from "../../actions/ownerActions"
 import { Button, Modal, ModalHeader, ModalBody} from 'reactstrap'
 import EditSpace from "./editSpace"
-import { useNavigate } from "react-router-dom"
+import Swal from 'sweetalert2'
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
+import BookingCalender from "./advanceBooking"
 export default function MySpace() {
     const dispatch = useDispatch()
     const navigate=useNavigate()
@@ -14,26 +16,50 @@ export default function MySpace() {
     const parkingSpace = useSelector((state) => {
         return state.owners.parkingSpace
     })
+
+    const user = useSelector((state) => {
+        return state.users
+      })
     const handleCLick = (id) => {
         setEditId(id)
         toggle()
     }
+    const deletePopUP=()=>{
+        Swal.fire({
+            title: "Deleted!",
+            text: `${user?.users?.name} Your space space has been.`,
+            icon: "success"
+          })
+       }
     const handleAdd=()=>{
          navigate('/addparking')
     }
     const handleDelete=async(id)=>{
-       dispatch(startRemoveParkingSpace(id))
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will not able to revert it!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(startRemoveParkingSpace(id,deletePopUP))
+            }
+          })
     }
-    const handleDisable=async(id)=>{
-       dispatch(startActiveOrDisableParkings(id))
+    const handleDisable=async(id)=>{ 
+        dispatch(startActiveOrDisableParkings(id))
     }
+
     console.log("parkings",parkingSpace)
     return (
         <>
             <div class="container text-center" style={{ paddingTop: '60px' }}>
                 <h3 className="mt-4">Total Space-{parkingSpace.length}</h3>
                 <div class="row">
-                    {parkingSpace && parkingSpace.map((ele) => {
+                    {parkingSpace.length >0  ? parkingSpace.map((ele) => {
                         return <div class="col-md-4"  key={ele._id}>
                             <div class="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
                                 <span className={ele.approveStatus ? "badge text-bg-success" : "badge text-bg-danger"} style={{ position: "absolute", top: 0, right: 0 }}>
@@ -49,7 +75,9 @@ export default function MySpace() {
                                 </div>
                             </div>
                         </div>
-                    })}
+                    }):((<div className="text-center" style={{ paddingTop: '60px' }}>
+                   <Link to="/addParking"><p className="display-8">No Parking please Add</p></Link>
+                </div>))}
 
                 </div>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -62,6 +90,8 @@ export default function MySpace() {
                   <EditSpace editId={editId} toggle={toggle}/>
                 </ModalBody>
             </Modal>
+
+          
         </>
     )
 }

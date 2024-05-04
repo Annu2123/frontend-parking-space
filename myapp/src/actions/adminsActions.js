@@ -30,15 +30,16 @@ export const startGetAllCustomer=()=>{
     }
 }
 
-export const startGetAllOwner=()=>{
+export const startGetAllOwner=(currentPage)=>{
     return async(dispatch)=>{
         try{
-            const owners = await axios.get('http://localhost:3045/api/owner', {
+            const response = await axios.get(`http://localhost:3045/api/owner?page=${currentPage}`, {
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }
                 })
-                dispatch(setOwners(owners.data))
+                console.log(response.data)
+                dispatch(setOwners(response.data.data))
         }catch(err){
             console.log(err)
         }
@@ -75,7 +76,7 @@ export const startGetAllBooking=()=>{
 //         }
 //     }
 // }
-export const startApproveParkings=(id)=>{
+export const startApproveParkings=(id,acceptedPopUp,toggle)=>{
     return async(dispatch)=>{
         try{
             const response=await axios.put(`http://localhost:3045/api/parkingSpace/approve/${id}`,{},{
@@ -85,6 +86,8 @@ export const startApproveParkings=(id)=>{
             })
             console.log(response.data)
             dispatch(setApprove(response.data))
+            acceptedPopUp()
+            toggle()
         }catch(err){
             console.log(err)
         }

@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Container, Spinner,Col,Row } from "react-bootstrap";
 export default function PrivateRoute({permmitedRoles,children}){
+    
     const user=useSelector((state)=>{
         return state.users
     })

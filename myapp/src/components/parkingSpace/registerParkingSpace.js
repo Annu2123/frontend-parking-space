@@ -154,6 +154,7 @@ export default function ParkingSpaceRegister(props) {
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.amenities}</Form.Control.Feedback>
         </Form.Group>
+        
         <Form.Group controlId="spaceType">
           <Form.Label>Space Types</Form.Label>
           {formik.values.spaceTypes.map((space, index) => (

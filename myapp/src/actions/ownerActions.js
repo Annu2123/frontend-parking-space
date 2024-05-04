@@ -15,7 +15,7 @@ export const startGetBookings=()=>{
     }
 }
 
-export const startApproveBooking=(id)=>{
+export const startApproveBooking=(id,approvePopUP)=>{
     return async(dispatch)=>{
         try{
             const response =await axios.put(`http://localhost:3045/api/approve/booking/${id}`,{},{
@@ -25,12 +25,29 @@ export const startApproveBooking=(id)=>{
             })
             console.log("approv",response.data)
             dispatch(setApprove(response.data))
+            approvePopUP()
         }catch(err){
             console.log(err)
         }
     }
 }
 
+export const startRejectBooking=(id,RejectPopUP)=>{
+     return async(dispatch)=>{
+        try{
+            const response=await axios.put(`http://localhost:3045/api/reject/booking/${id}`,{},{
+                headers:{
+                    Authorization:localStorage.getItem('token')
+                }
+            })
+            console.log(response.data)
+           dispatch(setReject(response.data)) 
+           RejectPopUP()
+        }catch(err){
+            console.log(err)
+        }
+     }
+}
 export const startGetParkingSpace=()=>{
     return async(dispatch)=>{
         try{
@@ -63,11 +80,12 @@ export const startAddParkingSpace=(formData,resetForm,navigate,popUp)=>{
           } catch (err) {
             console.log(err)
             alert(err.msg)
+            dispatch(setServerError(err.response.data))
           } 
     }
 }
 
-export const startRemoveParkingSpace=(id)=>{
+export const startRemoveParkingSpace=(id,deletePopUP)=>{
     return async(dispatch)=>{
         try{
             const response=await axios.delete(`http://localhost:3045/api/parkingSpace/remove/${id}`,{
@@ -77,6 +95,7 @@ export const startRemoveParkingSpace=(id)=>{
             })
             console.log(response.data)
             dispatch(setRemoveParkingSpace(response.data))
+            deletePopUP()
            }catch(err){
                console.log(err)
            }
@@ -99,9 +118,21 @@ export const startActiveOrDisableParkings=(id)=>{
     }
 }
 
+const setReject=(data)=>{
+    return {
+        type:"SET_BOOKING_REJECT",
+        payload:data
+    }
+}
 const setDisableOrActive=(data)=>{
     return {
         type:"SET_ACTIVE_OR_DISABLE",
+        payload:data
+    }
+}
+const setServerError=(data)=>{
+    return {
+        type:"SET_SERVER_ERROR",
         payload:data
     }
 }

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollar, faDollarSign, faHomeUser, faUser } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'
 import ownersReducers from '../../reducers/ownersReduceres';
 import { Row, Container, Col } from 'react-bootstrap';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts'
@@ -14,6 +15,13 @@ export default function Admin() {
     const [modal, setModal] = useState(false);
     const [spaceId, setSpaceId] = useState('')
     const toggle = () => setModal(!modal)
+    useEffect(() => {
+        dispatch(startGetAllCustomer())
+        dispatch(startGetAllOwner())
+        dispatch(startGetAllBooking())
+        dispatch(startGetAllParkingSpace())
+
+    },[])
     const customers = useSelector((state) => {
         return state.admin.allCustomer
     })
@@ -23,20 +31,32 @@ export default function Admin() {
     const bookings = useSelector((state) => {
         return state.admin.bookings
     })
+   const acceptedPopUp=()=>{
+    Swal.fire({
+        title: "Accepted!",
+        text: "You have approved space listing.",
+        icon: "success"
+      })
+   }
     const handleApprove = (id) => {
-        dispatch(startApproveParkings(id))
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to approve!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, approve it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              dispatch(startApproveParkings(id,acceptedPopUp,toggle))
+            }
+          });
+       
     }
     const parkingSpaces=useSelector((state)=>{
         return state.admin.ownersAllParkings
     })
-
-    useEffect(() => {
-        dispatch(startGetAllCustomer())
-        dispatch(startGetAllOwner())
-        dispatch(startGetAllBooking())
-        dispatch(startGetAllParkingSpace())
-
-    },[])
     const list= parkingSpaces.filter((ele)=>{
             if(ele.approveStatus == false){
                 return ele
@@ -67,32 +87,32 @@ export default function Admin() {
    
     return (
         <>
-            <div class="container text-center" style={{ paddingTop: '60px' }}>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
-                            <div class="card-body bg-light">
-                                <h5 class="card-title"> <FontAwesomeIcon icon={faUser} /> Customers</h5>
-                                <p class="card-text font-weight-bold fs-5">{customers.length}</p>
+            <div className="container text-center" style={{ paddingTop: '60px' }}>
+                <div className="row">
+                    <div className="col-md-4">
+                        <div className="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
+                            <div className="card-body bg-light">
+                                <h5 className="card-title"> <FontAwesomeIcon icon={faUser} /> Customers</h5>
+                                <p className="card-text font-weight-bold fs-5">{customers.length}</p>
 
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
-                            <div class="card-body bg-light">
-                                <h5 class="card-title"><FontAwesomeIcon icon={faUser} /> Space Ownesr</h5>
-                                <p class="card-text font-weight-bold fs-5">{owners.length}</p>
+                    <div className="col-md-4">
+                        <div className="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
+                            <div className="card-body bg-light">
+                                <h5 className="card-title"><FontAwesomeIcon icon={faUser} /> Space Ownesr</h5>
+                                <p className="card-text font-weight-bold fs-5">{owners.length}</p>
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
-                            <div class="card-body bg-light">
-                                <h5 class="card-title"><FontAwesomeIcon icon={faDollarSign} /> Revenue</h5>
-                                <p class="card-text font-weight-bold fs-5">{totalRevenue()}</p>
+                    <div className="col-md-4">
+                        <div className="card text-center mb-3 mt-4 ml-4" style={{ width: "18rem", position: "relative" }}>
+                            <div className="card-body bg-light">
+                                <h5 className="card-title"><FontAwesomeIcon icon={faDollarSign} /> Revenue</h5>
+                                <p className="card-text font-weight-bold fs-5">{totalRevenue()}</p>
 
 
                             </div>
@@ -103,19 +123,20 @@ export default function Admin() {
             </div>
             <Container style={{ paddingTop: '60px' }} bordered>
                 <Row>
-                    <Col sm={5} className=" m-0 bg-light">
-                        {list.map((ele) => {
-                            return <div className=" d-flex justify-content-center align-items-center mt-2 ">
-                                <div className="card shadow-sm" style={{ width: "28rem" }}>
-                                    <div className="card-body text-center">
+                    <Col sm={5} classNameName=" m-0 bg-light">
+                      {list.length != 0 ?  list.map((ele) => {
+                            return <div classNameName=" d-flex justify-content-center align-items-center mt-2 ">
+                                <div classNameName="card shadow-sm" style={{ width: "28rem" }}>
+                                    <div classNameName="card-body text-center">
                                         <p>listing request from {ele.ownerId.name}{" " + " "}
-                                            <button onClick={() => { handleApprove(ele._id) }} type="button " className="btn btn-primary">Accept</button>
-                                            <button onClick={() => { handleMore(ele._id) }} type="button " className=" ml-2 btn btn-info">more</button>
+                                            <button onClick={() => { handleApprove(ele._id) }} type="button " classNameName="btn btn-primary">Accept</button>
+                                            <button onClick={() => { handleMore(ele._id) }} type="button " classNameName=" ml-2 btn btn-info">more</button>
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                        })}
+                        }):( <div classNameName="text-center" style={{ paddingTop: '60px' }}>
+                        <p classNameName="display-8">No listing request for space </p></div> )}
                     </Col>
                     <Col sm={7} m-0 style={{ height: "300px" }} >
                         <ResponsiveContainer width="100%" height="100%" >
@@ -137,7 +158,7 @@ export default function Admin() {
             </Container>
 
             <Modal isOpen={modal} toggle={toggle} centered>
-                <ModalBody className="d-flex justify-content-center align-items-center">                  
+                <ModalBody classNameName="d-flex justify-content-center align-items-center">                  
                        
                         <SpaceInfo spaceId={spaceId} list={list} handleApprove={handleApprove} toggle={toggle} />
                    

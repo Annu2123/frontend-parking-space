@@ -10,42 +10,46 @@ import { Grid } from '@mui/material';
 export default function ProductPage() {
     const { id } = useParams()
     const { locationParking } = useContext(ParkingSpaceContext)
-    const user=useSelector((state)=>{
+    const user = useSelector((state) => {
         return state.users
     })
     return (
-        <Grid fluid  style={{ paddingTop: '70px', marginRight: 0, marginLeft: '0px' }}>
-            <Row style={{ marginRight: 0, marginLeft: 0 }}>
-                <Col sm={5} style={{ marginRight: 0, marginLeft: 0 }}>
+        <>
+         <Container style={{ paddingTop: '70px' }}>
+            <Row>
+                <Col sm={12} md={6} >
                     {locationParking && locationParking.map((ele) => {
                         if (ele._id == id) {
-                            return <Card style={{ width: '24rem' ,border:'none' }} key={ele._id}>
+                            return <Card style={{ width: '100%', border: 'none' }} key={ele._id}>
                                 <Card.Title className='text-center'>{ele.title}</Card.Title>
-                                <Card.Img variant="top" src={`http://localhost:3045/uploads/${ele.image}`}  className="img-fluid" style={{ maxHeight: '200px' }} />
+                                <Card.Img variant="top" src={`http://localhost:3045/uploads/${ele.image}`} className="img-fluid" style={{ maxHeight: '200px' }} />
                                 <Card.Body>
-                              <h6>Facilties</h6>
-                              <ul>
-                                <li>{ele.amenities}</li>
-                                <li>parking for {ele.spaceTypes[0].types } {ele.spaceTypes[1].types}</li>
-                                <li>{ele.propertyType}</li>
-                                </ul>                         
+                                    <h6>Facilties</h6>
+                                    <ul>
+                                        <li>{ele.amenities}</li>
+                                        <li>parking for {ele.spaceTypes[0].types} {ele.spaceTypes[1].types}</li>
+                                        <li>{ele.propertyType}</li>
+                                    </ul>
                                 </Card.Body>
-                            </Card>                     
+                            </Card>
                         }
                     })}
-                    <Row >
-                        <Col >
-                        <Card className='mt-0' style={{ width: '24rem' ,border:'none' }} >
-                        <SpaceMap id={id}/>
-                        </Card>
-                       </Col>
-                    </Row>
                 </Col>
-                <Col sm={7}  xs={12} >
-                       
-                            <FilterSpace id={id} user={user} />     
+                <Col sm={12} md={6} >
+                    <FilterSpace id={id} user={user} />
                 </Col>
             </Row>
-        </Grid>
+        </Container>
+        <Container>
+        <Row >
+                <Col sm={12} >
+                    <Card className='mt-0' style={{ width: '100%', border: 'none' }} >
+                        <SpaceMap id={id} />
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+        </>
+       
     )
 }

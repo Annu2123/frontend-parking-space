@@ -4,13 +4,26 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import parking from '../../images/parking.png'
-
+import register from '../../images/register.jpg'
+import { Grid } from '@mui/material';
+import './style.css'
 export default function Register() {
   const navigate = useNavigate()
   const [serverError, setServerError] = useState([])
   const [confirm, setConfirm] = useState('')
   const [formError, setFormError] = useState({})
-  const [hoveredField, setHoveredField] = useState(null)
+ 
+
+  const handleEmailHover = () => {
+    // Set emailError state to true when hovering over the email field with an error
+    setServerError([]);
+  };
+
+  const handleEmailLeave = () => {
+    // Set emailError state to false when leaving the email field
+    //setServerError(false);
+  };
+
   const errors = {}
   console.log("dddd", errors)
   console.log("ser verrer", serverError)
@@ -88,16 +101,15 @@ export default function Register() {
     })
   }
   return (
-    <Container fluid style={{ paddingTop: '70px' }}>
-      <Row className="justify-content-center mt-5">
+    <Container fluid style={{ paddingTop: '60px', width:"100%" }}>
+      <Row className="justify-content-center ">
         <Col sm={12} md={6}>
-          <Image src={parking} fluid-style={{ height: '100vh', objectFit: 'cover' }} />
+          <Image className='mt-0' src={register} fluid-style={{ height: '100vh', objectFit: 'cover' }} />
         </Col>
         <Col sm={12} md={6}>
-          <Card style={{ width: '34rem' }}>
-            <Card.Body>
-              <h2 className="text-center">Register</h2>
-
+          <Card className="w-100 mt-5" style={{ maxWidth: '26rem', height: '455px' }}>
+         
+            <Card.Body>            
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formName">
                   <Form.Label>Name</Form.Label>
@@ -112,7 +124,7 @@ export default function Register() {
                   <Form.Control.Feedback type="invalid">
                     {formData.name.length == 0 && formError.name}
                   </Form.Control.Feedback>
-                  <p>{helperFunction('name')}</p>
+                  <p style={{ color: 'red' }}>{helperFunction('name')}</p>
                 </Form.Group>
 
                 <Form.Group controlId="formEmail">
@@ -124,6 +136,8 @@ export default function Register() {
                     value={formData.email}
                     onChange={handleChange}
                     isInvalid={formError.email}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formData.email.length == 0 && formError.email}
@@ -140,6 +154,8 @@ export default function Register() {
                     value={formData.phone}
                     onChange={handleChange}
                     isInvalid={formError.phone}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formData.phone.length == 0 && formError.phone} {/* Display error message if the field has been touched and has an error */}
@@ -156,11 +172,13 @@ export default function Register() {
                     value={formData.password}
                     onChange={handleChange}
                     isInvalid={formError.password}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formData.password.length == 0 && formError.password} {/* Display error message if the field has been touched and has an error */}
                   </Form.Control.Feedback>
-                  {formData.password.length == 0 && <p>{helperFunction('password')}</p>}
+                  <p style={{ color: 'red' }}>{helperFunction('password')}</p>
                 </Form.Group>
 
                 {/* <Form.Group controlId="formPassword">
@@ -208,17 +226,22 @@ export default function Register() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-
-                <Button variant="primary" type="submit" block>
+                {/* {serverError.length >0 && serverError.map((ele,i)=>{
+        return <li key={i} style={{color:"red"}}>{ele.msg}</li>
+      })} */}
+                <Button className='mx-auto d-block' variant="primary" type="submit">
                   Register
                 </Button>
               </Form>
             </Card.Body>
           </Card>
-          <div className="text-center mt-3">
+          <Card.Footer>
+           
             <p>Already have an account? <Link to="/login">Login here</Link></p>
-          </div>
+        
+            </Card.Footer>
         </Col>
+      
       </Row>
     </Container>
   );

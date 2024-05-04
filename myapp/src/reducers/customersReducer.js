@@ -62,9 +62,6 @@ export default function customerReducer(state = initialState, action) {
                 return ele._id!=action.payload._id
             })}
         }
-        default: {
-            return state
-        }
         case "SET_SERVER_ERROR":{
             return {...state,serverError:action.payload}
         }
