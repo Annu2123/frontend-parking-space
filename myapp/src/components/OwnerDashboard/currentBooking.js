@@ -10,6 +10,7 @@ export default function CurrentBooking(props) {
             }
         })
     }
+    
     console.log("selel", selectedParkingSpace())
     console.log("hbdddhwwj", currentBooking)
     return (
@@ -32,21 +33,26 @@ export default function CurrentBooking(props) {
                         <Card>
                             <div className="container text-center" style={{ paddingTop: '20px' }}>
                                 <div className="row">
-                                    {[...Array(selectedParkingSpace()?.spaceTypes[0].capacity)].map((_, index) => {
-                                        console.log("cduud",currentBooking)
-                                        const booking =currentBooking?.find(booking => booking.spaceTypesId === selectedParkingSpace()?.spaceTypes[0]._id );
-                                        console.log("booki",booking)
-                                        return (
-                                            <div className="col-md-4" key={index}>
-                                                <div className={`card text-center mb-2 ml-2 }` } style={{ width: "8rem", height: "60px", position: "relative" }}>
-                                                    <div className="card-body">
-                                                        <p>{booking?.amount}</p>
-                                                        {/* <h6 className="card-text">{booking ? (booking.approveStatus ? 'Approved' : 'Pending') : 'Available'}</h6> */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                    {/* {[...Array(selectedParkingSpace()?.spaceTypes[0].capacity)].map((_, index) => {
+                                        console.log("cduud", currentBooking) */}
+                                       {currentBooking && currentBooking.map((ele)=>{
+                                              if(ele.spaceTypeId == selectedParkingSpace.spaceTypes[0]._ele){
+                                                return (
+                                                    
+                                                        <div className="col-md-4">
+                                                            <div className={`card text-center mb-2 ml-2 }`} style={{ width: "8rem", height: "60px", position: "relative" }}>
+                                                                <div className="card-body">
+                                                                    {/* <p>{booking?.amount}</p> */}
+                                                                    {/* <h6 className="card-text">{booking ? (booking.approveStatus ? 'Approved' : 'Pending') : 'Available'}</h6> */}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                )
+                                              }
+                                       })
+                                       }
+                                    {/* })} */}
                                 </div>
                             </div>
                         </Card>
@@ -60,26 +66,26 @@ export default function CurrentBooking(props) {
                         <Card>
                             <div className="container text-center" style={{ paddingTop: '20px' }}>
                                 <div className="row">
-                                {[...Array(selectedParkingSpace()?.spaceTypes[1].capacity)].map((_, index) => {
-    const spaceTypeId = selectedParkingSpace()?.spaceTypes[1]._id;
-    const booking = currentBooking?.find(ele => ele.spaceTypesId === spaceTypeId && ele.status === "pending")
-    console.log("currentBookingfin",booking)
-    const bookingAmount = booking ? booking.amount : null;
+                                    {[...Array(selectedParkingSpace()?.spaceTypes[1].capacity)].map((_, index) => {
+                                        const spaceTypeId = selectedParkingSpace()?.spaceTypes[1]._id;
+                                        const booking = currentBooking?.find(ele => ele.spaceTypesId === spaceTypeId && ele.status === "pending")
+                                        console.log("currentBookingfin", booking)
+                                        const bookingAmount = booking ? booking.amount : null;
 
-    // Determine the color based on whether there's a booking for the specific space type ID
-    const cardColor = booking ? 'bg-danger' : 'bg-success';
+                                        // Determine the color based on whether there's a booking for the specific space type ID
+                                        const cardColor = booking ? 'bg-danger' : 'bg-success';
 
-    return (
-        <div className="col-md-4" key={index}>
-            <div className={`card text-center mb-2 ml-2 ${cardColor}`} style={{ width: "8rem", height: "60px", position: "relative" }}>
-                <div className="card-body">
-                    <p>{bookingAmount}</p>
-                    {/* Display additional booking details if needed */}
-                </div>
-            </div>
-        </div>
-    );
-})}
+                                        return (
+                                            <div className="col-md-4" key={index}>
+                                                <div className={`card text-center mb-2 ml-2 ${cardColor}`} style={{ width: "8rem", height: "60px", position: "relative" }}>
+                                                    <div className="card-body">
+                                                        <p>{bookingAmount}</p>
+                                                        {/* Display additional booking details if needed */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </Card>

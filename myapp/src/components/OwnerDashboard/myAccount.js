@@ -276,8 +276,8 @@ export default function OwnerMain() {
                     </div>
                 </div>
             </div>
-
-            <Container style={{ paddingTop: '60px' }}>
+<hr></hr>
+            <Container style={{ paddingTop: '40px' }}>
                 <Row>
                     <Col md={6}>
                         <div className="text-center" >
@@ -298,7 +298,7 @@ export default function OwnerMain() {
                      <Table>
                      <thead>
                          <tr>
-                             <th>Customer</th>
+                             <th>Customer</th>s
                              <th>StartTime</th>
                              <th>EndTime</th>                                  
                              <th>vehicle</th>                                   

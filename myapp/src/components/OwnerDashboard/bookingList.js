@@ -9,9 +9,14 @@ export default function ParkingSpaceBooking() {
  const [booking,setBooking]=useState([])
   const[limit,setLimit]=useState(5)
   const [page, setPage] = useState(1)
+  const [currentBooking,setCurrentBooking]=useState([])
+  const [selectedParkingId, setSelectedParkingId] = useState('')
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
   }
+  const parkingSpace = useSelector((state) => {
+    return state.owners.parkingSpace
+})
   const handleClick = async (id) => {
     dispatch(startApproveBooking(id))
   }
@@ -33,14 +38,22 @@ export default function ParkingSpaceBooking() {
     }
   )()
   },[page , limit])
-  
-  const parkingSpace = useSelector((state) => {
-    return state.owners.parkingSpace
-})
-
-//   const booking = useSelector((state) => {
-//     return state.owners.spaceBookings
-// })
+  useEffect(()=>{
+    (async()=>{
+        try{
+            const response=await axios.get('http://localhost:3045/api/current/booking',{
+                headers:{
+                    Authorization:localStorage.getItem('token')
+                }
+            })
+            console.log(response.data)
+            setCurrentBooking(response.data)
+        }catch(err){
+            console.log(err)
+        }
+    })()
+},[])
+ 
  console.log("bookings",booking)
   const convertDate = (val) => {
     const dateObj = new Date(val)
@@ -58,66 +71,83 @@ export default function ParkingSpaceBooking() {
     const amPm = timeArray[2].split(' ')[1]
     return hours + ':' + minutes + ' ' + amPm
 }
-// const vehicleType = (id) => {
-//   return parkingSpace.map((ele) => {
-//       return  ele.spaceTypes?.filter((type) => {
-//           if (type._id == id) {
-//               return type.types
-//           }
-//       })
-//   })
+const selectedParkingSpace = () => {
+  return parkingSpace?.find((ele) => {
+      if (ele._id == selectedParkingId) {
+          return ele
+      }
+  })
+}
+// Filter two-wheeler bookings
+const twoWheelerBookings = currentBooking.filter(booking => {
+  return booking.spaceTypesId === selectedParkingSpace()?.spaceTypes[0]._id; // Adjust index as needed
+});
 
-// }
-// const vehicleType=(id)=>{
-//   const type=''
-//    for(let i=0;i<parkingSpace.length;i++){
-//     parkingSpace.spaceTypes.reduce((acc,cv)=>{
-//       if(cv._id == id){
-//         acc = cv.type
-//         return acc
-//       }
-//      },type)
-//   }
-//   return type
-// }
+// Filter four-wheeler bookings
+const fourWheelerBookings = currentBooking.filter(booking => {
+  return booking.spaceTypesId === selectedParkingSpace()?.spaceTypes[1]._id; // Adjust index as needed
+});
+console.log("12",twoWheelerBookings)
+console.log("34",fourWheelerBookings)
+console.log("currentbooking",currentBooking)
 
-//console.log(vehicleType())
-console.log(booking)
   return (
     <>
     <Container style={{ paddingTop: '80px',marginLeft:'20px',marginLeft:"20px" }}>
       <Row>
       <Col md={6}>
-        <h3 className="text-center">Today booking</h3>
+      <div className="row">
+                        <select className="form-select col-4" style={{ width: "6rem" }} onChange={(e) => { setSelectedParkingId(e.target.value) }}>
+                            <option></option>
+                            {parkingSpace?.map((ele) => {
+                                return  <option key={ele._id} value={ele._id}>{ele.title}</option>
+                            })}
+                        </select>                    
+                        </div> 
         <Table>
         <thead>
           <tr>
             <th>customer Name</th>
-            <th>date</th>
             <th>startTime</th>
             <th>endTime</th>
             <th>vehicle </th>
-            <th>payment</th>
-            <th>action</th>
           </tr>
         </thead>
+        <tbody>
+          {twoWheelerBookings?.map((ele)=>{
+              return <tr>
+              <td>{ele.customerId.name}</td>
+              <td>{convertTime(ele.startDateTime)}</td>
+              <td>{convertTime(ele.endDateTime)}</td>
+              <td>{ele.vehicleId.vehicleName}</td>
+            </tr>
+             }
+          )}
+        </tbody>
         </Table>
       </Col>
       {/* <hr className="vertical-line"></hr> */}
       <Col md={6}>
-      <h3 className="text-center">Today Completed booking</h3>
         <Table>
         <thead>
           <tr>
             <th>customer Name</th>
             <th>startTime</th>
-            <th>endTime</th>
-            <th>space Name</th>
+            <th>endTime</th>          
             <th>vehicle</th>
-            <th>payment</th>
-            <th>Status</th>
           </tr>
         </thead>
+        <tbody>
+          {fourWheelerBookings?.map((ele)=>{
+              return <tr>
+               <td>{ele.customerId.name}</td>
+              <td>{convertTime(ele.startDateTime)}</td>
+              <td>{convertTime(ele.endDateTime)}</td>
+              <td>{ele.vehicleId.vehicleName}</td>
+            </tr>
+             }
+          )}
+        </tbody>
         </Table>
       </Col>
       </Row>

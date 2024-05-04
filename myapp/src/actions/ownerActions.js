@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { response } from 'express'
 export const startGetBookings=()=>{
     return async(dispatch)=>{
         try{
@@ -98,6 +99,7 @@ export const startRemoveParkingSpace=(id,deletePopUP)=>{
             deletePopUP()
            }catch(err){
                console.log(err)
+            //    alert(err.response.data.error)
            }
     }
 }

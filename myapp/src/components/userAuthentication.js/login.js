@@ -116,8 +116,7 @@ export default function LoginPage(props) {
                         </Button>
                     </Form>
                     <Link to="/forgotpassword" variant="primary" className="w-100 mt-3 justify-center"> forgotPassword</Link>
-                </Col>
-            </Row>
+                </div>
         </Container>
 
     )
