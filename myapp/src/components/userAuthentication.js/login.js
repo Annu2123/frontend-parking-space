@@ -1,10 +1,10 @@
 import *as yup from 'yup'//* all data
-import { Container, Form, Button, Alert } from 'react-bootstrap'
-import { useNavigate,Link } from 'react-router-dom'
+import { Container, Form, Button, Row,Col,Image } from 'react-bootstrap'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { useFormik } from 'formik' //use to form validation and form handling
 import { useState } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startGetUserDetail } from '../../actions/users'
 import backgroundImage from '../../images/admin.png';
 const validationLoginSchema = yup.object({//object method
@@ -12,9 +12,10 @@ const validationLoginSchema = yup.object({//object method
     password: yup.string().required("password is required").min(8).max(20)
 })
 export default function LoginPage(props) {
-  
-    const dispatch=useDispatch()
+
+    const dispatch = useDispatch()
     const { loginToast } = props
+    const [serverError, setServerError] = useState([])
     const navigate = useNavigate()
     const formik = useFormik({
         initialValues: {
@@ -38,27 +39,26 @@ export default function LoginPage(props) {
                 navigate('/usersControll')
                 loginToast()
             } catch (err) {
-                 if(err.response.data.error=="User is not verified"){
-                    localStorage.setItem("email",err.response.data.email)
+                if (err.response.data.error == "User is not verified") {
+                    localStorage.setItem("email", err.response.data.email)
                     alert("your email is not verified fast verify then try to login")
                     navigate('/otp')
-                }else if (err.response && err.response.data) {
-                   const serverErrors = err.response.data.error || []
+                } else if (err.response && err.response.data) {
+                    //    const serverErrors = err.response.data.error || []
                     // setServerErrors(serverErrors)
-                    alert(serverErrors)
+                    setServerError(err.response.data)
+                    console.log(err.response.data.error)
+                    alert(err.response.data.error)
                     console.log(err)
-                }else if (err.request) {
+                } else if (err.request) {
                     // Handle network errors
                     alert('Network error. Please check your internet connection.');
-                }else {
+                } else {
                     alert('An unexpected error occurred. Please try again later.');
                     console.error("Unexpected error:", err)
                 }
             }
-
-
         },
-
     })
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100" fluid style={{
@@ -88,34 +88,36 @@ export default function LoginPage(props) {
                             {formik.touched.email && formik.errors.email} {/* Display error message if the field has been touched and has an error */}
                         </Form.Control.Feedback>
                     </Form.Group>
-
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            size="lg"
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            onFocus={() => formik.setFieldError('password', '')}
-                            isInvalid={formik.touched.password && formik.errors.password}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {formik.errors.password}
-                        </Form.Control.Feedback>
-                        
-                    </Form.Group>
-                    <div className="text-center mt-3">
-                        <p>Don't have an account? <Link to="/register">Create Account</Link></p>
-                    </div>
-                    <Button variant="primary" type="submit" className="w-100 mt-3">
-                        Submit
-                    </Button>
-                </Form>
-                <Link to="/forgotpassword" variant="primary"  className="w-100 mt-3"> forgotPassword</Link>
-            </div>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                size="lg"
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                onFocus={() => formik.setFieldError('password', '')}
+                                isInvalid={formik.touched.password && formik.errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        {/* {serverError.length >0 && serverError.map((ele)=>{
+                          return <li>{ele.error}</li>
+                    })} */}
+                        <div className="text-center mt-3">
+                            <p>Don't have an account? <Link to="/register">Create Account</Link></p>
+                        </div>
+                        <Button variant="primary" type="submit" className="w-100 mt-3">
+                            Submit
+                        </Button>
+                    </Form>
+                    <Link to="/forgotpassword" variant="primary" className="w-100 mt-3 justify-center"> forgotPassword</Link>
+                </Col>
+            </Row>
         </Container>
 
     )

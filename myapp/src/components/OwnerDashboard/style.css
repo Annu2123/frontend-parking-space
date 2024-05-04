@@ -1,0 +1,13 @@
+.tooltip {
+    position: absolute;
+    background-color: #f9f9f9;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    z-index: 1;
+    top: 100%; /* Position below the box */
+    left: 50%; /* Position in the center of the box */
+    transform: translateX(-50%); /* Center horizontally */
+    box-shadow: 0 2px 5px #4ac20aeb;
+}

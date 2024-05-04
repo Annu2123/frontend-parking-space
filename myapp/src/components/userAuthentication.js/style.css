@@ -1,0 +1,7 @@
+.form-group:hover .invalid-feedback {
+    display: none; /* Hide error message by default */
+  }
+  
+  .form-group:hover .is-invalid:hover .invalid-feedback {
+    display: block; /* Display error message when hovering over the field with an error */
+  }

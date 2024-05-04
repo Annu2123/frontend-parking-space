@@ -26,20 +26,33 @@ export default function BookingsList() {
         return today.toISOString().split('T')[0];
     };
 
+
     const [filterOption, setFilterOption] = useState('all');
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
+  
+    // Helper function to get today's date in YYYY-MM-DD format
+    const dateTimeOptions = {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        timeZone: 'UTC',
+    };
 
-    const filteredBookings = bookings.filter(booking => {
-        if (selectedDate) {
-            return booking.startDateTime.split('T')[0] === selectedDate;
-        }
-        return true;
-    }).filter(booking => {
-        if (filterOption === 'all') return true;
-        if (filterOption === 'pending') return booking.status === 'pending';
-        if (filterOption === 'completed') return booking.status === 'completed';
-        return false;
-    });
+    // Filter and sort bookings based on selected date and filter option
+    const filteredBookings = bookings
+        .filter(booking => {
+            if (selectedDate) {
+                // Only include bookings that start on the selected date
+                return booking.startDateTime.split('T')[0] === selectedDate;
+            }
+            return true; // If no date is selected, don't filter out any bookings based on date
+        })
+        .filter(booking => {
+            if (filterOption === 'all') return true;
+            if (filterOption === 'pending') return booking.status === 'pending';
+            if (filterOption === 'completed') return booking.status === 'completed';
+            return false;
+        });
+
 
     useEffect(() => {
         const socket = socketIOClient('http://localhost:3045');

@@ -17,6 +17,15 @@ const ownersReducers=(state=initialState,action)=>{
                 }
             })}
         }
+        case "SET_BOOKING_REJECT":{
+            return {...state,spaceBookings:state.spaceBookings.map((ele)=>{
+                if(ele._id == action.payload._id){
+                    return action.payload
+                }else{
+                    return ele
+                }
+            })}
+        }
         case "SET_PARKING_SPACE":{
             return {...state,parkingSpace:action.payload}
         }

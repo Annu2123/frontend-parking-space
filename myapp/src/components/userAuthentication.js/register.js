@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import backgroundImage from '../../images/parking.png'; // Make sure you have the image at this path
 
+import React, { useEffect, useState } from 'react';
+import { Image, Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import parking from '../../images/parking.png'
+import register from '../../images/register.jpg'
+import { Grid } from '@mui/material';
+import './style.css'
 export default function Register() {
-  const navigate = useNavigate();
-  const [serverError, setServerError] = useState([]);
-  const [formError, setFormError] = useState({});
+  const navigate = useNavigate()
+  const [serverError, setServerError] = useState([])
+  const [confirm, setConfirm] = useState('')
+  const [formError, setFormError] = useState({})
+ 
+
+  const handleEmailHover = () => {
+    // Set emailError state to true when hovering over the email field with an error
+    setServerError([]);
+  };
+
+  const handleEmailLeave = () => {
+    // Set emailError state to false when leaving the email field
+    //setServerError(false);
+  };
+
+  const errors = {}
+  console.log("dddd", errors)
+  console.log("ser verrer", serverError)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -59,17 +79,15 @@ export default function Register() {
   };
 
   return (
-    <Container fluid style={{
-      height: '100vh',
-      background: `url(${backgroundImage}) no-repeat center center fixed`,
-      backgroundSize: 'cover',
-      paddingTop: "60px"
-    }}>
-      <Row className="justify-content-center align-items-center" style={{ height: '100%',color:'blue' }}>
-        <Col xs={12} md={6}>
-          <Card style={{ width: '100%', maxWidth: '500px', margin: 'auto', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
-            <Card.Body>
-              <h2 className="text-center">Register</h2>
+    <Container fluid style={{ paddingTop: '60px', width:"100%" }}>
+      <Row className="justify-content-center ">
+        <Col sm={12} md={6}>
+          <Image className='mt-0' src={register} fluid-style={{ height: '100vh', objectFit: 'cover' }} />
+        </Col>
+        <Col sm={12} md={6}>
+          <Card className="w-100 mt-5" style={{ maxWidth: '26rem', height: '455px' }}>
+         
+            <Card.Body>            
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formName">
                   <Form.Label>Name</Form.Label>
@@ -84,6 +102,7 @@ export default function Register() {
                   <Form.Control.Feedback type="invalid">
                     {formError.name}
                   </Form.Control.Feedback>
+          <p style={{ color: 'red' }}>{helperFunction('name')}</p>
                 </Form.Group>
                 <Form.Group controlId="formEmail">
                   <Form.Label>Email</Form.Label>
@@ -93,7 +112,9 @@ export default function Register() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    isInvalid={!!formError.email}
+                    isInvalid={formError.email}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formError.email}
@@ -107,7 +128,9 @@ export default function Register() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    isInvalid={!!formError.phone}
+                    isInvalid={formError.phone}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formError.phone}
@@ -121,11 +144,14 @@ export default function Register() {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    isInvalid={!!formError.password}
+                    isInvalid={formError.password}
+                    onMouseEnter={handleEmailHover} 
+                    onMouseLeave={handleEmailLeave} 
                   />
                   <Form.Control.Feedback type="invalid">
                     {formError.password}
                   </Form.Control.Feedback>
+                  <p style={{ color: 'red' }}>{helperFunction('password')}</p>
                 </Form.Group>
                 <Form.Group>
                   <Form.Check
@@ -147,7 +173,11 @@ export default function Register() {
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="mt-4">
+
+                {/* {serverError.length >0 && serverError.map((ele,i)=>{
+        return <li key={i} style={{color:"red"}}>{ele.msg}</li>
+      })} */}
+                <Button className='mx-auto d-block' variant="primary" type="submit">
                   Register
                 </Button>
               </Form>
@@ -156,7 +186,13 @@ export default function Register() {
               </div>
             </Card.Body>
           </Card>
+          <Card.Footer>
+           
+            <p>Already have an account? <Link to="/login">Login here</Link></p>
+        
+            </Card.Footer>
         </Col>
+      
       </Row>
     </Container>
   );
