@@ -46,6 +46,7 @@ import PrivateRoute from './components/privateRoute/privateRoutes';
 import Admin from './components/admin-dashborad/admin';
 import ReviewBooking from './components/customers/reviewBooking';
 import SpaceCart from './components/customers/spaceCartReg'
+import io from 'socket.io-client'
 function geoWithinSpace(state, action) {
   switch (action.type) {
     case "GET_PARKINGSPACE_RADIUS": {
@@ -70,7 +71,17 @@ function App() {
   const user = useSelector((state) => {
     return state.users
   })
-  
+  // useEffect(()=>{
+  //   console.log(user.users._id , 'hataposhgads')
+  //   const socket = io('http://127.0.0.1:3045')
+  //   socket.on('connect' , ()=>{
+  //     socket.emit('joinOwnerBookingRoom' , (user?.users._id))
+  //     console.log('jijii',user)
+  //   })
+  //   socket.on('bookingUpdate' , (data)=>{
+  //     console.log('data' , data)
+  //   })
+  // },[])
   useEffect(()=>{
     console.log("dsdksdksdkskkk")
    if(user?.users?.role === 'customer'){

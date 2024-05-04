@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom"
 import socketIOClient from 'socket.io-client';
 import { useEffect } from 'react';
 import { startRemoveBooking } from '../../actions/customerActions/customerBookings';
-export default function BookingsList() {
 import { startGetBookings } from '../../actions/customerActions/customerBookings';
 
 export default function BookingsList() {
@@ -22,11 +21,9 @@ export default function BookingsList() {
         const today = new Date();
         return today.toISOString().split('T')[0];
     };
-    const dispatch=useDispatch()
     const [filterOption, setFilterOption] = useState('all');
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
-    const navigate = useNavigate()
-    const bookings = useSelector(state => state.customer.bookings);
+  
     // Helper function to get today's date in YYYY-MM-DD format
     const dateTimeOptions = {
         dateStyle: 'short',
