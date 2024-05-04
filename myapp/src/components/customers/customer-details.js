@@ -4,8 +4,7 @@ import { Container, Row, Col, Card, Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function CustomerDetails() {
-    const customer = useSelector(state => state.customer.account);
-
+    const customer = useSelector(state => state.users.users);
     return (
         <Container className="mt-5" style={{paddingTop:"60px"}}>
             <Row className="justify-content-md-center">

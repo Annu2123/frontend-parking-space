@@ -6,6 +6,7 @@ import { useFormik } from 'formik' //use to form validation and form handling
 import { useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { startGetUserDetail } from '../../actions/users'
+import backgroundImage from '../../images/admin.png';
 const validationLoginSchema = yup.object({//object method
     email: yup.string().email().required("email is required"),
     password: yup.string().required("password is required").min(8).max(20)
@@ -60,7 +61,12 @@ export default function LoginPage(props) {
 
     })
     return (
-        <Container className="d-flex justify-content-center align-items-center vh-100" style={{ paddingTop: '60px' }}>
+        <Container className="d-flex justify-content-center align-items-center vh-100" fluid style={{
+            height: '100vh',
+            background: `url(${backgroundImage}) no-repeat center center fixed`,
+            backgroundSize: 'cover',
+            paddingTop: "60px"
+          }}>
             <div>
                 <h2 className="text-center mb-4 mt-4">Login</h2>
                 {/* {error && <Alert variant="danger">{error}</Alert>} */}

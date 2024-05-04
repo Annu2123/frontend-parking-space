@@ -40,14 +40,14 @@ export default function VehiclesRegistration(props){
          if(vehicle){
            dispatch(startUpdateVehicle(id,formData,resetForm,navigate))
          }else{
-            dispatch(startCreateVehicle(formData,resetForm))
+            dispatch(startCreateVehicle(formData,resetForm,navigate))
          }
        }
     })
     return(
         <Container className="d-flex justify-content-center align-items-center vh-100" style={{paddingTop:"60px"}}>
         <div>
-            <h2 className="text-center mb-4 mt-4">vehicleForm</h2>
+            <h2 className="text-center mb-4 mt-4"></h2>
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Group controlId="formBasicvehicleName" >
                     <Form.Label>vehicleName</Form.Label>
@@ -87,16 +87,20 @@ export default function VehiclesRegistration(props){
                 <Form.Group controlId="formBasicvehicleDocuments">
                     <Form.Label>vehicleType</Form.Label>
                     <Form.Control
-                        size="lg"
-                        type="text"
-                        name="vehicleType"
-                        placeholder="vehicleType"
-                        value={formik.values.vehicleType}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        onFocus={() => formik.setFieldError('vehicleType', '')}
-                        isInvalid={formik.touched.vehicleType && formik.errors.vehicleType}
-                    />
+    as="select"
+    size="lg"
+    name="vehicleType"
+    value={formik.values.vehicleType}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    onFocus={() => formik.setFieldError('vehicleType', '')}
+    isInvalid={formik.touched.vehicleType && formik.errors.vehicleType}
+>
+    <option value="">Select Vehicle Type</option>
+    <option value="two wheeler">Two Wheeler</option>
+    <option value="four Wheeler">Four Wheeler</option>
+</Form.Control>
+
                     <Form.Control.Feedback type="invalid">
                         {formik.errors.vehicleType}
                     </Form.Control.Feedback>

@@ -2,12 +2,13 @@ import React from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { startRemoveVehicle } from '../../actions/customerActions/customerVehicle';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useState } from 'react';
 import VehiclesRegistration from './vehicleRegistration';
+import image from "../../images/ktm.jpg"; // Import the image
 
 export default function VehicleDetails() {
-    const [editId, seteditId] = useState('')
+    const [editId, seteditId] = useState('');
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
     const { id } = useParams();
@@ -21,13 +22,18 @@ export default function VehicleDetails() {
             dispatch(startRemoveVehicle(vehicle._id, navigate));
         }
     };
-    const handleUpdate=(id)=>{
-        seteditId(id)
-
-    }
+    const handleUpdate = (id) => {
+        seteditId(id);
+        toggle();
+    };
 
     return (
-        <div className="container vh-100" style={{paddingTop:"60px"}}>
+        <div className="container-fluid vh-100" style={{ 
+            backgroundImage: `url(${image})`, // Use url() to specify the image path
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            paddingTop: "60px"
+        }}>
             <div className="row justify-content-center align-items-center h-100">
                 <div className="col-md-6 text-center bg-light p-4 rounded shadow">
                     <h2 className="mb-4">Vehicle Details</h2>
@@ -50,18 +56,14 @@ export default function VehicleDetails() {
                             </p>
                             <p className="font-weight-bold">Vehicle Is Verified: <span className="font-weight-normal">{vehicle.isVerified ? "Verified" : "Not Verified"}</span></p>
                             <div className="mt-4">
-                                <button onClick={() => {
-                                    handleUpdate(id)
-                                    toggle()
-                                }} className="btn btn-primary mr-2">Update</button>
+                                <button onClick={() => handleUpdate(id)} className="btn btn-primary mr-2" disabled={vehicle.isVerified}>Update</button>
                                 <button onClick={() => handleRemove(vehicle)} className="btn btn-danger">Remove</button>
                             </div>
                             <Modal isOpen={modal} toggle={toggle}>
                                 <ModalHeader toggle={toggle}>{editId}</ModalHeader>
                                 <ModalBody>
-                                <VehiclesRegistration editId={editId}/>
+                                    <VehiclesRegistration editId={editId} />
                                 </ModalBody>
-                               
                             </Modal>
                         </div>
                     ) : (

@@ -62,7 +62,7 @@ export default function Header() {
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                                                 <Link to="/admin" className="dropdown-item" >My Detail</Link>
-                                                <a className="dropdown-item" href="#">Customer</a>
+                                                <Link  to="/adminCustomers"className="dropdown-item" href="#">Customer</Link>
                                                 <Link to="/bookings" className="dropdown-item">Bookings</Link>
                                                 <Link to="/ownerDetails" className="dropdown-item" href="#">owners</Link>
                                               
@@ -81,6 +81,7 @@ export default function Header() {
                                                 <Link to="/bookings" className="dropdown-item" href="#">My bookings</Link>
                                                 <Link to="/vehicles" className="dropdown-item" href="#">my vehicles</Link>
                                                 <Link to="/spaceCart" className="dropdown-item" href="#">my spaceCart</Link>
+                                                <Link to="/paymetList" className="dropdown-item" href="#">payments</Link>
                                                 <Link className="dropdown-item" to='/' onClick={handleLogout}>Logout</Link>
                                             </div>
                                         </li>

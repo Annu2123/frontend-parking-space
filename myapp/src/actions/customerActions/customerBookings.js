@@ -43,6 +43,7 @@ export const startRemoveBooking=(id)=>{
 }
 
 export const startPaymentStatusSuccess=(id,navigate)=>{
+    console.log(id,'iiii')
     return async(dispatch)=>{
         try{
          const response=await axios.put(`http://localhost:3045/api/booking/payment/update/${id}`)
