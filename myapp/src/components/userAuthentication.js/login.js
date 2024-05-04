@@ -6,7 +6,7 @@ import { useFormik } from 'formik' //use to form validation and form handling
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { startGetUserDetail } from '../../actions/users'
-import login  from '../../images/login.avif'
+import backgroundImage from '../../images/admin.png';
 const validationLoginSchema = yup.object({//object method
     email: yup.string().email().required("email is required"),
     password: yup.string().required("password is required").min(8).max(20)
@@ -61,33 +61,33 @@ export default function LoginPage(props) {
         },
     })
     return (
-        <Container style={{ paddingTop: '60px' }}>
-            <Row>
-            <Col sm={12} md={6}>
-            <Image className='mt-0' src={login} fluid-style={{ height: '100vh', objectFit: 'cover' }} />
-                  </Col>
-                <Col sm={12} md={6} style={{ width:"22rem",paddingTop:"75px"}}>
-                    <h2 className="text-center mb-4 mt-4">Login</h2>
-                    {/* {error && <Alert variant="danger">{error}</Alert>} */}
-                    <Form onSubmit={formik.handleSubmit}>
-                        <Form.Group controlId="formBasicEmail" >
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                size="lg"
-                                type="email"
-                                placeholder="Enter email"
-                                name="email"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                onFocus={() => formik.setFieldError('email', '')}//set field error on focus
-                                isInvalid={formik.touched.email && formik.errors.email}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {formik.touched.email && formik.errors.email} {/* Display error message if the field has been touched and has an error */}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-
+        <Container className="d-flex justify-content-center align-items-center vh-100" fluid style={{
+            height: '100vh',
+            background: `url(${backgroundImage}) no-repeat center center fixed`,
+            backgroundSize: 'cover',
+            paddingTop: "60px"
+          }}>
+            <div>
+                <h2 className="text-center mb-4 mt-4">Login</h2>
+                {/* {error && <Alert variant="danger">{error}</Alert>} */}
+                <Form onSubmit={formik.handleSubmit}>
+                    <Form.Group controlId="formBasicEmail" >
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control
+                            size="lg"
+                            type="email"
+                            placeholder="Enter email"
+                            name="email"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            onFocus={() => formik.setFieldError('email', '')}//set field error on focus
+                            isInvalid={formik.touched.email && formik.errors.email}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {formik.touched.email && formik.errors.email} {/* Display error message if the field has been touched and has an error */}
+                        </Form.Control.Feedback>
+                    </Form.Group>
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
@@ -104,7 +104,6 @@ export default function LoginPage(props) {
                             <Form.Control.Feedback type="invalid">
                                 {formik.errors.password}
                             </Form.Control.Feedback>
-
                         </Form.Group>
                         {/* {serverError.length >0 && serverError.map((ele)=>{
                           return <li>{ele.error}</li>

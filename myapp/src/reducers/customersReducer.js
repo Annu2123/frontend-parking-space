@@ -2,12 +2,15 @@ import { CREATE_VEHICLE, REMOVE_VEHICLE, GET_VEHICLES, UPDATE_VEHICLE } from "..
 import { GET_CUSTOMER } from "../actions/customerActions/customerProfile"
 import { GET_BOOKINGS,SET_NEW_BOOKING,REMOVE_BOOKING } from "../actions/customerActions/customerBookings"
 import { GET_CART,CREATE_SPACECART ,REMOVE_SPACECART} from "../actions/customerActions/customerSpaceCart"
-import bookings from "../components/payments/bookings"
+import { GET_RATINGS } from "../actions/customerActions/customerRatings"
+import { GET_PAYMENTS } from "../actions/customerActions/customerPayments"
 const initialState = {
     account: {},
     vehicles: [],
     bookings: [],
-    cart: []
+    cart: [],
+    ratings:[],
+    payments:[]
 }
 export default function customerReducer(state = initialState, action) {
     switch (action.type) {
@@ -46,6 +49,10 @@ export default function customerReducer(state = initialState, action) {
             return { ...state, bookings: [...state.bookings, action.payload] }
         }
         case REMOVE_BOOKING:{
+            const result = state.bookings.filter(ele =>{
+                return ele._id === action.payload.id
+            })
+            console.log(result)
             return {...state,bookings:state.bookings.filter((ele)=>{
                 return ele._id!=action.payload.id
             })}
@@ -73,6 +80,16 @@ export default function customerReducer(state = initialState, action) {
                     return ele
                 }
             })}
+        }
+        case GET_RATINGS:{
+            return{
+                ...state,ratings:action.payload
+            }
+        }
+        case GET_PAYMENTS:{
+            return{
+                ...state,payments:action.payload
+            }
         }
             default:{
                 return state

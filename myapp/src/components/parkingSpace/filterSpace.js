@@ -126,11 +126,12 @@ export default function Filter(props) {
     }
     const filterVehicle = () => {
         return vehicles?.filter((ele) => {
-            if (ele.vehicleType.includes(typeSelected()?.types.toLowerCase())) {
+            if (ele.vehicleType.toLowerCase().includes(typeSelected()?.types.toLowerCase())) {
                 return ele
             }
         })
     }
+    console.log(filterVehicle(),'fiiiivv')
     //calculating total amount 
     const calculateTotalAmount = () => {
         const filteredSpace = filterSpace()

@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 //  import Header from "./components/headers/header"
 import Listing from './components/listParking';
-
 import LoginPage from './components/userAuthentication.js/login';
 import ProductPage from './components/parkingSpace/productPage';
 import IndianStandardTime from './components/time'
@@ -33,6 +32,7 @@ import { startGetCustomer } from './actions/customerActions/customerProfile';
 import { startgetVehicles } from './actions/customerActions/customerVehicle'
 import { startGetBookings } from "./actions/customerActions/customerBookings"
 import { startGetSpaceCarts } from './actions/customerActions/customerSpaceCart';
+import { startGetRatings } from './actions/customerActions/customerRatings';
 
 
 import PaymentPage from './components/payments/bookings';
@@ -46,6 +46,9 @@ import PrivateRoute from './components/privateRoute/privateRoutes';
 import Admin from './components/admin-dashborad/admin';
 import ReviewBooking from './components/customers/reviewBooking';
 import SpaceCart from './components/customers/spaceCartReg'
+import CustomerPayments from './components/customers/customerpayments';
+import BookingsView from './components/customers/bookingsView';
+import AdminCustomers from './components/admin-dashborad/customers';
 import io from 'socket.io-client'
 function geoWithinSpace(state, action) {
   switch (action.type) {
@@ -71,6 +74,8 @@ function App() {
   const user = useSelector((state) => {
     return state.users
   })
+
+
   // useEffect(()=>{
   //   console.log(user.users._id , 'hataposhgads')
   //   const socket = io('http://127.0.0.1:3045')
@@ -92,6 +97,11 @@ function App() {
    }
   },[user])
   useEffect(() => {
+    dispatch(startGetCustomer());
+    dispatch(startgetVehicles());
+    dispatch(startGetBookings());
+    dispatch(startGetSpaceCarts());
+    dispatch(startGetRatings());
     (async () => {
 
       if (navigator.geolocation) {
@@ -102,7 +112,7 @@ function App() {
           setCenter([latitude, longitude])
         }))
       }
-    })();
+    })()
   }, [])
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -168,6 +178,7 @@ function App() {
           {/* <MapComponent2/> */}
           {/* <Table/> */}
           <Routes>
+          <Route path="/paymetList" element={<CustomerPayments/>}/>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<LoginPage loginToast={loginToast} />} />
             <Route path='/forgotpassword' element={<ForgotPassword/>}/>
@@ -193,12 +204,10 @@ function App() {
               <BookingsList />
             </PrivateRoute>} />
             <Route path='/paymentPage/:id' element={<PaymentPage />} />
+            <Route path='/spaceBookingPage/:id' element={<ProductPage />} />
             <Route path='/review/:id' element={<ReviewBooking/>}/>
             <Route path='/spaceCart' element={<SpaceCart/>}/>
-            <Route path='/spaceBookingPage/:id' element={
-              <PrivateRoute permmitedRoles={['customer']}>
-                  <ProductPage/>
-              </PrivateRoute>}/>
+            <Route path="/bookingsView" element={<BookingsView/>}/>
 
             {/* owner Routes */}
             <Route path='/myspace' element={<PrivateRoute permmitedRoles={['owner']}>
@@ -216,6 +225,7 @@ function App() {
             {/* admin routes */}
             <Route path='/admin' element={<Admin/>}/>
             <Route path='/ownerDetails' element={<OwnerDetail/>}/>
+            <Route path='/adminCustomers' element={<AdminCustomers/>}/>
           </Routes>
           <ToastContainer />
         </ParkingSpaceContext.Provider>

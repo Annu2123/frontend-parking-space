@@ -3,7 +3,7 @@ import axios from "axios"
  export const GET_VEHICLES = 'GET_VEHICLES';
  export const REMOVE_VEHICLE = 'REMOVE_VEHICLE';
  export const UPDATE_VEHICLE="UPDATE_VEHICLE"
-export const startCreateVehicle=(formData,resetForm)=>{
+export const startCreateVehicle=(formData,resetForm,navigate)=>{
 return async(dispatch)=>{
  try{
   const result=await axios.post("http://localhost:3045/API/vehicle/register",formData,{
@@ -14,6 +14,7 @@ return async(dispatch)=>{
   })
   dispatch(createVehicle(result.data))
   resetForm()
+  navigate(`/VEHICLEDETAILS/${result.data._id}`)
  }catch(err){
   console.log(err)
  }
