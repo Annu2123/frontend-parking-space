@@ -78,6 +78,13 @@ export default function Register() {
     }
   };
 
+  const helperFunction=(name)=>{
+    return serverError.filter((ele)=>{
+      return ele.path===name
+    }).map((ele,i)=>{
+      return <li key={i}>{ele.msg}</li>
+    })
+  }
   return (
     <Container fluid style={{ paddingTop: '60px', width:"100%" }}>
       <Row className="justify-content-center ">

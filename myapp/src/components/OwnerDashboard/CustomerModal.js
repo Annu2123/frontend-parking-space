@@ -9,7 +9,7 @@ export default function CustomerInfo(props) {
         toggle()
     }
     const filterCustBookingDetails=()=>{
-        return todayBookingRequest()?.filter((ele)=>{
+        return todayBookingRequest?.filter((ele)=>{
             if(ele._id == customerId){
                 return ele
             }
@@ -42,7 +42,7 @@ export default function CustomerInfo(props) {
         const durationHours = difference / (1000 * 60 * 60)
         return durationHours
     }
-    console.log("sdfhgfd",todayBookingRequest())
+
     return (
         <>
             {filterCustBookingDetails()?.map((ele) => {

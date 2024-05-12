@@ -166,17 +166,27 @@ export default function Filter(props) {
         const selectedDate = new Date(time)
         return currentDate.getTime() < selectedDate.getTime();
     }
+    const handleEmailHover = () => {
+        // Set emailError state to true when hovering over the email field with an error
+        setBookingError({});
+      };
+    
+      const handleEmailLeave = () => {
+        // Set emailError state to false when leaving the email field
+        //setServerError(false);
+      }
+     
 
     return (
         <>
             <div class="header text-center">
                 <h4>Find space </h4>
             </div>
-            <div class="card rounded" style={{ width: "27rem", }} >
-                <div class="card-body text-center">
-                    <Form.Group className="mb-4">
+            <div class="card rounded ml-5 " style={{ width: "28rem", display: "flex", justifyContent: "center", alignItems: "center"}} >
+                <div class="card-body text-center m-0">
+                    <Form.Group className="mb-0">
                         <DatePicker
-                            style={{ margin: "auto" }}
+                            
                             selected={startDateTime}
                             onChange={handleStartChange}
                             dateFormat="MMMM d, yyyy h:mm aa"
@@ -186,6 +196,8 @@ export default function Filter(props) {
                             filterTime={filterPassedTime}
                             isInvalid={bookingError.startDateTime}
                             className={bookingError.startDateTime ? "form-control is-invalid" : "form-control"}
+                            onMouseEnter={handleEmailHover} 
+                           
                         />
                         <Form.Control.Feedback type="invalid">
                             {bookingError.startDateTime && <p>{bookingError.startDateTime}</p>}
@@ -202,36 +214,40 @@ export default function Filter(props) {
                             minDate={new Date()}
                             filterTime={filterPassedTime}
                             className={bookingError.endDateTime ? "form-control is-invalid" : "form-control mt-4"}
+                            onMouseEnter={handleEmailHover} 
                         />
                         <Form.Control.Feedback type="invalid">
                             {bookingError.endDateTime && bookingError.endDateTime}
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group controlId='spaceType' className="mb-4">
+                    <Form.Group controlId='spaceType' className="mb-3">
                         {/* <Form.Label>Space Type</Form.Label> */}
                         <Form.Control
                             name='spaceType'
                             as="select"
+                            style={{ width: '300px' }}
                             isInvalid={bookingError.parkingType}
-                            onChange={(e) => handleParkingType(e.target.value)}>
+                            onChange={(e) => handleParkingType(e.target.value)}
+                            onMouseEnter={handleEmailHover}>
                             <option value="">Select space type...</option>
                             {filterSpace()?.spaceTypes?.map((ele) => (
                                 <option key={ele._id} value={ele._id}>{ele.types}</option>
-                            ))}
+                            ))}                           
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
                             {bookingError.parkingType && bookingError.parkingType}
                         </Form.Control.Feedback>
                     </Form.Group>
 
-
-                    <Form.Group controlId='vehicleType' className="mb-4">
+                 <Form.Group controlId='vehicleType' className="mb-4">
                         {/* <Form.Label>select vehicle</Form.Label> */}
                         <Form.Control
                             as="select"
                             disabled={parkingType.length == 0}
                             isInvalid={bookingError.vehicleType}
-                            onChange={(e) => setvehicleType(e.target.value)}>
+                            onChange={(e) => setvehicleType(e.target.value)}
+                            onMouseEnter={handleEmailHover} 
+                            onMouseLeave={handleEmailLeave} >
                             <option value="">Select a vehicle type</option>
                             {filterVehicle().map((ele) => (
                                 <option key={ele._id} value={ele._id}>{ele.vehicleName}</option>

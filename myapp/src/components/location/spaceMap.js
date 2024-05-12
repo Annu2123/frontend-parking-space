@@ -1,4 +1,4 @@
-import { Icon } from 'leaflet'
+import { Icon ,latLng} from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
 import './map.css'
@@ -7,9 +7,9 @@ import { ParkingSpaceContext } from '../../contextApi/context'
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 export default function SpaceMap(props) {
     const { id } = props
-    const { locationParking } = useContext(ParkingSpaceContext)
+    const { locationParking,center } = useContext(ParkingSpaceContext)
     console.log("location", locationParking)
-    const center = locationParking?.find((ele) => {
+    const parking = locationParking?.find((ele) => {
         if (ele._id == id) {
             return ele
         }
@@ -23,21 +23,22 @@ export default function SpaceMap(props) {
     })
     useEffect(() => {
         const map = mapRef.current
-        if (map && center.address.coordinates && Array.isArray(center.address.coordinates) && center.address.coordinates.length === 2) {
-            map.setView(center.address.coordinates);
+        if (map && parking.address.coordinates && Array.isArray(parking.address.coordinates) && parking.address.coordinates.length === 2) {
+            map.setView(parking.address.coordinates);
         }
     }, [])
+
     return (
-        <div className="container mt-2 mb-2 " style={{ paddingTop: '70px' }}>
-            {center?.address.coordinates[0] != 0 &&
-                <MapContainer ref={mapRef} center={center?.address.coordinates}
+        <div className="container mt-0 mb-2 " >
+            {parking?.address.coordinates[0] != 0 &&
+                <MapContainer ref={mapRef} center={parking?.address.coordinates}
                     zoom={11} style={{ height: '400px' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={center?.address.coordinates
-                    } icon={customMarker} draggable={true}>
+                    <Marker position={parking?.address.coordinates
+                    } icon={customMarker} >
                         <Popup></Popup>
                     </Marker>
                 </MapContainer>

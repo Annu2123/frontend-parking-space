@@ -2,6 +2,7 @@ import { Container,Button,Col,Row } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import { startActiveOrDisableParkings } from '../../actions/ownerActions'
 import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 export default function OwnerInfo(props) {
     const dispatch=useDispatch()
     const {ownerId, toggle,owners ,parkingSpaces} = props
@@ -23,8 +24,15 @@ export default function OwnerInfo(props) {
     const handleOk=()=>{
         toggle()
     }
+    const DisableError = (error) => {
+        Swal.fire({
+            title: `${error}`,
+            text: ` cancel disable request.`,
+            icon: "cancel"
+        })
+    }
     const handleDisable=async(id)=>{ 
-        dispatch(startActiveOrDisableParkings(id))
+        dispatch(startActiveOrDisableParkings(id,DisableError))
     }
     console.log("osod",owner())
     console.log(owners)

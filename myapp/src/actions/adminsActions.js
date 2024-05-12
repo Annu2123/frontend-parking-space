@@ -76,6 +76,23 @@ export const startGetAllBooking=()=>{
 //         }
 //     }
 // }
+export const startDisableOwner=(id,DisableError,disAblePopUP)=>{
+    return async(dispatch)=>{
+        try{
+            const response=await axios.put(`http://localhost:3045/api/disable/owner/${id}`,{},{
+                headers:{
+                    Authorization:localStorage.getItem('token')
+                }
+            })
+            console.log(response.data)
+            dispatch(setDisableOwner(response.data))
+            // disAblePopUP()
+        }catch(err){
+            console.log(err)
+            DisableError(err.response.data.error)
+        }
+    }
+}
 export const startApproveParkings=(id,acceptedPopUp,toggle)=>{
     return async(dispatch)=>{
         try{
@@ -91,6 +108,12 @@ export const startApproveParkings=(id,acceptedPopUp,toggle)=>{
         }catch(err){
             console.log(err)
         }
+    }
+}
+const setDisableOwner=(data)=>{
+    return {
+        type:"SET_OWNER_DISABLE",
+        payload:data
     }
 }
 const setApprove=(data)=>{

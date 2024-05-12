@@ -3,8 +3,9 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { startGetAllParkingSpace } from '../../actions/adminsActions'
+import { startDisableOwner, startGetAllParkingSpace } from '../../actions/adminsActions'
 import OwnerInfo from './ownerInfo'
+import Swal from 'sweetalert2'
 import { startGetAllOwner } from '../../actions/adminsActions'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 export default function OwnerDetail() {
@@ -32,7 +33,36 @@ export default function OwnerDetail() {
   const handleSearchQuary=(event)=>{
     setSearchQuary(event.target.value)
 }
-  
+const disAblePopUP=()=>{
+  Swal.fire({
+      title: "Deleted!",
+      text: ` Your disable owner.`,
+      icon: "success"
+    })
+ }
+const DisableError = (error) => {
+  Swal.fire({
+      title: `${error}`,
+      text:  "cancel disable request",
+      icon: "cancel"
+  })
+}
+  const handleDisable=(id,isverified)=>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: isverified ? "You wants to disable !" :"You wants to active !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: isverified ? "yes disable it" : "yes active it"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(startDisableOwner(id,DisableError,disAblePopUP))
+      }
+    })
+   
+  }
   const parkingSpaces = useSelector((state) => {
     return state.admin.ownersAllParkings
   })
@@ -57,9 +87,6 @@ export default function OwnerDetail() {
 const handlePageChange = (pageNumber) => {
   setCurrentPage(pageNumber);
 }
-console.log("all",parkingSpaces)
-console.log("sqsq",totalSpace())
-console.log("adfdds",debounceQuary)
   return (
    <> 
    <Container style={{ paddingTop: '80px' }}>
@@ -92,7 +119,7 @@ console.log("adfdds",debounceQuary)
               <td>{totalSpace(ele._id)}</td>
               <td>
                 <button  type="button" className='btn btn-info' onClick={()=>{handleMore(ele._id)}}>More</button>
-                <button type='button' className={ele.activeStatus ? 'btn btn-success ml-2' : 'btn btn-danger ml-2'}>{ele.activeStatus ? "active" : "disable"}</button>
+                <button type='button' onClick={()=>{handleDisable(ele._id,ele.isverified)}} className={ele.isverified ? 'btn btn-success ml-2' : 'btn btn-danger ml-2'}>{ele.isverified ? "active" : "disable"}</button>
               </td>
             </tr>
           })}

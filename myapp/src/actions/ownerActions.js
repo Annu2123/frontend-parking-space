@@ -7,14 +7,29 @@ export const startGetBookings=()=>{
                     Authorization:localStorage.getItem('token')
                 }
             })
-            dispatch(setSpaceBooking(response.data))
-           console.log("parkingBooking",response.data)
+            dispatch(setSpaceBooking(response.data.allBookings))
+           console.log("parkingBooking",response.data.allBookings)
         }catch(err){
             console.log(err)
         }
     }
 }
 
+export const startGetBookingRequest=()=>{
+    return async(dispatch)=>{
+        try{
+            const response=await axios.get('http://localhost:3045/api/parkingSpace/bookingRequest',{
+                headers:{
+                    Authorization:localStorage.getItem('token')
+                }
+            })
+             console.log(response.data)
+             dispatch(setCuurentBookingsRequest(response.data))
+        }catch(err){
+            console.log(err)
+        }
+    }
+}
 export const startApproveBooking=(id,approvePopUP)=>{
     return async(dispatch)=>{
         try{
@@ -85,7 +100,7 @@ export const startAddParkingSpace=(formData,resetForm,navigate,popUp)=>{
     }
 }
 
-export const startRemoveParkingSpace=(id,deletePopUP)=>{
+export const startRemoveParkingSpace=(id,deletePopUP,DeleteError)=>{
     return async(dispatch)=>{
         try{
             const response=await axios.delete(`http://localhost:3045/api/parkingSpace/remove/${id}`,{
@@ -98,11 +113,12 @@ export const startRemoveParkingSpace=(id,deletePopUP)=>{
             deletePopUP()
            }catch(err){
                console.log(err)
+               DeleteError(err.response.data.error)
            }
     }
 }
 
-export const startActiveOrDisableParkings=(id)=>{
+export const startActiveOrDisableParkings=(id,DisableError)=>{
     return async(dispatch)=>{
         try{
             const response=await axios.put(`http://localhost:3045/api/parkingSpace/disable/${id}`,{},{
@@ -114,10 +130,17 @@ export const startActiveOrDisableParkings=(id)=>{
             dispatch(setDisableOrActive(response.data))
            }catch(err){
                console.log(err)
+               DisableError(err.response.data.error)
+
            }
     }
 }
-
+const setCuurentBookingsRequest=(data)=>{
+    return {
+        type:"SET_BOOKING_REQUEST",
+        payload:data
+    }
+}
 const setReject=(data)=>{
     return {
         type:"SET_BOOKING_REJECT",

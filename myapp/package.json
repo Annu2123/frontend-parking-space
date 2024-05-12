@@ -27,6 +27,7 @@
     "geolib": "^3.3.4",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
+    "leaflet-routing-machine": "^3.2.12",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-awesome-stars-rating": "^0.16.2",

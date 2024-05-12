@@ -31,6 +31,20 @@ export default function MySpace() {
             icon: "success"
           })
        }
+       const DeleteError = (error) => {
+        Swal.fire({
+            title: `${error}`,
+            text: ` cancel delete request.`,
+            icon: "cancel"
+        })
+    }
+    const DisableError = (error) => {
+        Swal.fire({
+            title: `${error}`,
+            text: ` cancel disable request.`,
+            icon: "cancel"
+        })
+    }
     const handleAdd=()=>{
          navigate('/addparking')
     }
@@ -45,15 +59,24 @@ export default function MySpace() {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(startRemoveParkingSpace(id,deletePopUP))
+                dispatch(startRemoveParkingSpace(id,deletePopUP,DeleteError))
             }
           })
     }
-    const handleDisable=async(id)=>{ 
-        dispatch(startActiveOrDisableParkings(id))
+    const handleDisable=async(id,activeStatus)=>{ 
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: activeStatus ? "Yes, disable it!": "yes active it"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(startActiveOrDisableParkings(id, DisableError))
+            }
+          })
     }
-
-    console.log("parkings",parkingSpace)
     return (
         <>
             <div class="container text-center" style={{ paddingTop: '60px' }}>
@@ -70,7 +93,7 @@ export default function MySpace() {
                                     <h6 class="card-text">
                                     <button type="button" className="btn btn-info" onClick={()=>{handleCLick(ele._id)}}>more</button>
                                     <button type="button" className="btn btn-danger ml-2" onClick={()=>{handleDelete(ele._id)}}> delete</button>
-                                <button type="button" className={ele.activeStatus ? " btn btn-success ml-2" : "btn btn-danger ml-2"} onClick={()=>{handleDisable(ele._id)}}>{ele.activeStatus ? ("active"):("disable")}</button>
+                                <button type="button" className={ele.activeStatus ? " btn btn-success ml-2" : "btn btn-danger ml-2"} onClick={()=>{handleDisable(ele._id,ele.activeStatus)}}>{ele.activeStatus ? ("active"):("disable")}</button>
                                     </h6>                           
                                 </div>
                             </div>

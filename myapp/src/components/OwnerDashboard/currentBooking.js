@@ -10,8 +10,7 @@ export default function CurrentBooking(props) {
             }
         })
     }
-    console.log("selel", selectedParkingSpace())
-    console.log("hbdddhwwj", currentBooking)
+
     return (
         <>
             <div className="text-center" style={{ paddingTop: '60px' }}>

@@ -149,8 +149,6 @@ export default function ParkingSpaceRegister(props) {
             <option></option>
             <option value="covered">covered</option>
             <option value="opendoor">opendoor</option>
-
-
           </Form.Control>
           <Form.Control.Feedback type="invalid">{formik.errors.amenities}</Form.Control.Feedback>
         </Form.Group>
