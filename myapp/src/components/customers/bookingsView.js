@@ -80,7 +80,7 @@ export default function BookingsView() {
                 <Modal.Body>
                     {selectedBooking && (
                         <div>
-                            <h4>{selectedBooking?.parkingSpaceId.title}</h4>
+                            <h4>{selectedBooking?.parkingSpaceId?.title}</h4>
                             {getRatingForParkingSpace(ratings, selectedBooking)}
                         </div>
                     )}
@@ -96,7 +96,7 @@ export default function BookingsView() {
 }
 
 function getRatingForParkingSpace(ratings, booking) {
-    const rating = ratings.find(rating => rating.parkingSpaceId === booking.parkingSpaceId._id);
+    const rating = ratings.find(rating => rating.parkingSpaceId === booking.parkingSpaceId?._id);
     return rating ? (
         <div>
             <h2>Rating: {rating.rating}</h2>

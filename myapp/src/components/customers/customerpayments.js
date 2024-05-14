@@ -18,8 +18,15 @@ export default function CustomerPayments() {
     };
 
     const parkingSpace = (id) => {
-        const space = bookings.find((e) => e._id === id);
-        return space ? space.parkingSpaceId.title : "N/A";
+        const space = bookings.find((e)=>{
+            if(e._id === id){
+                return "hi"
+            }else{
+                return "N/A"
+            }
+        }) ;
+        return space
+      
     };
 
     return (

@@ -77,7 +77,13 @@ export default function Register() {
       setFormError(errors);
     }
   };
-
+  const helperFunction=(name)=>{
+    return serverError.filter((ele)=>{
+      return ele.path===name
+    }).map((ele,i)=>{
+      return <li key={i}>{ele.msg}</li>
+    })
+  }
   return (
     <Container fluid style={{ paddingTop: '60px', width:"100%" }}>
       <Row className="justify-content-center ">
@@ -186,11 +192,6 @@ export default function Register() {
               </div>
             </Card.Body>
           </Card>
-          <Card.Footer>
-           
-            <p>Already have an account? <Link to="/login">Login here</Link></p>
-        
-            </Card.Footer>
         </Col>
       
       </Row>
