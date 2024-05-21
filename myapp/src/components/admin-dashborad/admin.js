@@ -129,8 +129,8 @@ export default function Admin() {
                                 <div classNameName="card shadow-sm" style={{ width: "28rem" }}>
                                     <div classNameName="card-body text-center">
                                         <p>listing request from {ele.ownerId.name}{" " + " "}
-                                            <button onClick={() => { handleApprove(ele._id) }} type="button " classNameName="btn btn-primary">Accept</button>
-                                            <button onClick={() => { handleMore(ele._id) }} type="button " classNameName=" ml-2 btn btn-info">more</button>
+                                            <button onClick={() => { handleApprove(ele._id) }} type="button" className="btn btn-primary">Accept</button>
+                                            <button onClick={() => { handleMore(ele._id) }} type="button" className=" ml-2 btn btn-info">more</button>
                                         </p>
                                     </div>
                                 </div>

@@ -11,7 +11,7 @@ export default function ParkingSpaceBooking() {
   const [page, setPage] = useState(1)
   const [currentBooking, setCurrentBooking] = useState([])
   const [selectedParkingId, setSelectedParkingId] = useState('')
-  const [sort,setSort]=useState('')
+  const [sort, setSort] = useState('')
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
   }
@@ -71,21 +71,24 @@ export default function ParkingSpaceBooking() {
   console.log(sort)
   const sortFunction = () => {
     return booking?.filter((ele) => {
-       if(ele.status.toLowerCase().includes(sort.toLowerCase()))
+      if (ele.status.toLowerCase().includes(sort.toLowerCase()))
         return ele
     })
-}
-console.log("sdfgfds",sortFunction())
+  }
+  console.log("sdfgfds", sortFunction())
   return (
     <>
-      <Container style={{ paddingTop: '60px' }}>
-      <select onChange={(e)=>{setSort(e.target.value)}}>
-      <option value="completed">completed</option>
-      <option value="failed">failed</option>
-      <option value="pending">pending</option>
-      <option value="success">payment success</option>
-    </select>
-        <Table border="1" style={{ paddingTop: '70px' }}>
+      <Container style={{ paddingTop: '80px' }}>
+        <div className="mb=4">
+        <select style={{width:'12rem'}} className="form-select " onChange={(e) => { setSort(e.target.value) }}>
+          <option value="completed">completed</option>
+          <option value="failed">failed</option>
+          <option value="pending">pending</option>
+        
+        </select>
+        </div>
+        
+        <Table border="1" >
           <thead>
             <tr>
               <th>Customers</th>
@@ -100,7 +103,7 @@ console.log("sdfgfds",sortFunction())
             </tr>
           </thead>
           <tbody>
-            { sortFunction().length > 0 &&
+            {sortFunction().length > 0 &&
               sortFunction()?.map((ele) => {
                 return <tr>
                   <td>{ele.customerId.name}</td>

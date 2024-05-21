@@ -6,7 +6,7 @@ import { startParkingSpaceBooking } from '../../actions/customerActions/customer
 import { useDispatch } from 'react-redux'
 import { Form } from 'react-bootstrap'
 export default function BookingModal(props){
-    const {availableSeat,user,id,parkingType,startDateTime,endDateTime,vehicleType,totalAmount}=props
+    const {availableSeat,user,id,parkingType,startDateTime,endDateTime,vehicleType,totalAmount,cancel,toggle}=props
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [selectedSeats, setSelectedSeats] = useState(null);
@@ -39,11 +39,15 @@ export default function BookingModal(props){
         }
         dispatch(startParkingSpaceBooking(id, parkingType, bookingForm, popUp, navigate))
     }
+    const handleCancel=()=>{
+        cancel()
+        toggle()
+    }
     return (
         <>
          {availableSeat?.capacity > 0 ? (<div>
                 <Form.Group controlId="seatSelection">
-                    <Form.Label>Select your slot:</Form.Label>
+                    <Form.Label className="text-center"><strong>Select a parking lot</strong></Form.Label>
                     <div style={{ border: '2px solid #03cffc', padding: '10px', width: '250px' }}>
                         {[...Array(Number(availableSeat.capacity))].map((_, index) => (
                             <div className={'rounded text-center'}
@@ -70,12 +74,18 @@ export default function BookingModal(props){
                     <div>
                         total Amount- {totalAmount}
                     </div>
-                    {selectedSeats ? <div><Button variant="primary" block onClick={handleClick}>
+                    {selectedSeats ? <div className='justify-content-center d-flex'><button type='button' className='btn btn-primary' onClick={handleClick}>
                         Book Now
-                    </Button>
+                    </button>
                     </div>
                         : <p className='text-success'>please select the slot</p>}
                 </div>
+                <div  className='justify-content-center d-flex mt-2'>
+                <button type='button' className='btn btn-danger' onClick={handleCancel}>
+                        cancel
+                    </button>
+                </div>
+        
             </div>
             ) : <p></p>}
         </>

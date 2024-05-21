@@ -13,6 +13,9 @@ export default function SpaceInfo(props) {
             }
         })
     }
+    const handleReject=(id)=>{
+       
+    }
     return (
         <>
             {space()?.map((ele) => {
@@ -33,7 +36,7 @@ export default function SpaceInfo(props) {
                                 <Card.Link ><Button  onClick={()=>{handleCLick(ele._id)}}> accept</Button></Card.Link>
                                 </Col>
                                 <Col>
-                                <Card.Link ><Button>reject</Button></Card.Link>
+                                {/* <Card.Link ><Button onClick={()=>{handleReject(ele._id)}}>reject</Button></Card.Link> */}
                                 </Col>
                             </Row>
                         </Container>                                      

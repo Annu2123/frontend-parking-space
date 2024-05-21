@@ -62,7 +62,7 @@ export default function ListParkings() {
                   </Row>
                   <Row>
                     <Col>
-                    <p>distance from your location is {Math.round(calculateDistance(center, ele.address.coordinates) / 1000)} k</p>
+                    <p> {Math.round(calculateDistance(center, ele.address.coordinates) / 1000)} km away from your location</p>
                     </Col>
                   </Row>
                   <Row>

@@ -1,6 +1,7 @@
 import { Icon ,latLng} from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import pin from './img/pin.png'
+import userpop from './img/userpop.png'
 import './map.css'
 import { useRef, useContext, useEffect } from 'react'
 import { ParkingSpaceContext } from '../../contextApi/context'
@@ -21,6 +22,10 @@ export default function SpaceMap(props) {
         iconUrl: pin,
         iconSize: [38, 38]
     })
+    const userMarker = new Icon({
+        iconUrl:  userpop,
+        iconSize: [38, 38]
+    })
     useEffect(() => {
         const map = mapRef.current
         if (map && parking.address.coordinates && Array.isArray(parking.address.coordinates) && parking.address.coordinates.length === 2) {
@@ -39,6 +44,10 @@ export default function SpaceMap(props) {
                     />
                     <Marker position={parking?.address.coordinates
                     } icon={customMarker} >
+                        <Popup></Popup>
+                    </Marker>
+                    <Marker position={center
+                    } icon={userMarker} >
                         <Popup></Popup>
                     </Marker>
                 </MapContainer>

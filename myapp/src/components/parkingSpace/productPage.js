@@ -23,12 +23,26 @@ export default function ProductPage() {
                                     <Card.Title className='text-center'>{ele.title}</Card.Title>
                                     <Card.Img variant="top" src={`http://localhost:3045/uploads/${ele.image}`} className="img-fluid" style={{ maxHeight: '200px' }} />
                                     <Card.Body>
+                                        <Container>
+                                            <Row>
+                                            <Col>
                                         <h6>Facilties</h6>
                                         <ul>
                                             <li>{ele.amenities}</li>
                                             <li>parking for {ele.spaceTypes[0].types} {ele.spaceTypes[1].types}</li>
                                             <li>{ele.propertyType}</li>
                                         </ul>
+                                        </Col>
+                                        <Col>  
+                                        <h6>charges(Hourly)</h6>                                     
+                                            <li>Two Wheeler:₹{ele.spaceTypes[0].amount}</li>
+                                            <li>Four Wheeler:₹{ele.spaceTypes[1].amount}</li>
+                                            
+                                      
+                                        </Col>
+                                            </Row>
+                                        </Container>
+                                       
                                     </Card.Body>
                                 </Card>
                             }
