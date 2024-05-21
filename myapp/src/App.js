@@ -204,10 +204,18 @@ function App() {
               <BookingsList />
             </PrivateRoute>} />
             <Route path='/paymentPage/:id' element={<PaymentPage />} />
-            <Route path='/spaceBookingPage/:id' element={<ProductPage />} />
-            <Route path='/review/:id' element={<ReviewBooking/>}/>
-            <Route path='/spaceCart' element={<SpaceCart/>}/>
-            <Route path="/bookingsView" element={<BookingsView/>}/>
+            <Route path='/spaceBookingPage/:id' element={ <PrivateRoute permmitedRoles={['customer']}>
+                <ProductPage />
+                </PrivateRoute>}/>
+            <Route path='/review/:id' element={<PrivateRoute permmitedRoles={['customer']}>
+              <ReviewBooking/>
+              </PrivateRoute>}/>
+            <Route path='/spaceCart' element={<PrivateRoute permmitedRoles={['customer']}>
+            <SpaceCart/>
+            </PrivateRoute>}/>
+            <Route path="/bookingsView" element={<PrivateRoute permmitedRoles={['customer']}>
+            <BookingsView/>
+            </PrivateRoute>}/>
 
             {/* owner Routes */}
             <Route path='/myspace' element={<PrivateRoute permmitedRoles={['owner']}>
@@ -223,9 +231,16 @@ function App() {
               <ParkingSpaceRegister parkingRegisterToast={parkingRegisterToast} />
             </PrivateRoute>} />
             {/* admin routes */}
-            <Route path='/admin' element={<Admin/>}/>
-            <Route path='/ownerDetails' element={<OwnerDetail/>}/>
-            <Route path='/adminCustomers' element={<AdminCustomers/>}/>
+            <Route path='/admin' element={<PrivateRoute permmitedRoles={['admin']}>
+            <Admin/>
+            </PrivateRoute>}/>
+            <Route path='/ownerDetails' element={<PrivateRoute permmitedRoles={['admin']}>
+            <OwnerDetail/>
+            </PrivateRoute>}/>
+            <Route path='/adminCustomers' element={<PrivateRoute permmitedRoles={['admin']}>
+            <AdminCustomers/>
+            </PrivateRoute>}/>
+            
           </Routes>
           <ToastContainer />
         </ParkingSpaceContext.Provider>

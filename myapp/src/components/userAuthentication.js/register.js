@@ -6,8 +6,8 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import parking from '../../images/parking.png'
 import register from '../../images/register.jpg'
-import { Grid } from '@mui/material';
 import './style.css'
+import Swal from 'sweetalert2'
 export default function Register() {
   const navigate = useNavigate()
   const [serverError, setServerError] = useState([])
@@ -59,16 +59,25 @@ export default function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
+  }
+ 
+  const registerPop=()=>{
+    Swal.fire({
+      title: "Register Successfull!",
+      text: "Enter otp recieved in your register email",
+      icon: "success"
+    })
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validation();
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post('http://localhost:3045/api/users/register', formData);
-        alert("Registration successful");
-        navigate('/otp');
+        // alert("Registration successful")
+        localStorage.setItem('email',formData.email)
+        registerPop()
+        navigate('/otp')
       } catch (err) {
         console.error(err);
         setServerError(err.response?.data?.errors || []);
@@ -174,9 +183,9 @@ export default function Register() {
                     type="radio"
                     label="I'm looking for a space"
                     name="role"
-                    id="role-searcher"
-                    value="searcher"
-                    checked={formData.role === 'searcher'}
+                    id="role-customer"
+                    value="customer"
+                    checked={formData.role === 'customer'}
                     onChange={handleChange}
                   />
                 </Form.Group>
@@ -188,9 +197,9 @@ export default function Register() {
                   Register
                 </Button>
               </Form>
-              <div className="text-center mt-3">
+              {/* <div className="text-center mt-3 mb-3">
                 <p>Already have an account? <Link to="/login">Login here</Link></p>
-              </div>
+              </div> */}
             </Card.Body>
           </Card>
           <Card.Footer>

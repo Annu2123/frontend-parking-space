@@ -1,14 +1,15 @@
 import axios from 'axios'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext,useEffect } from 'react'
 import { ParkingSpaceContext } from "../../contextApi/context"
 import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,Link} from 'react-router-dom'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import BookingModal from './bookingModal'
 export default function Filter(props) {
+    const navigate=useNavigate()
     const { id, user } = props
     const { locationParking } = useContext(ParkingSpaceContext)
     const [startDateTime, setStartDateTime] = useState('')
@@ -25,7 +26,13 @@ export default function Filter(props) {
     const handleBooking = () => {
         toggle()
     }
-
+ const cancel=()=>{
+    setvehicleType('')
+    setStartDateTime('')
+    setParkingType('')
+    setEndDateTime('')
+    filterSpace([])
+ }
     const serverError = useSelector(state => state.customer.serverError)
     const vehicles = useSelector((state) => {
         return state.customer.vehicles
@@ -93,11 +100,13 @@ export default function Filter(props) {
         console.log(errors)
         if (Object.keys(errors).length == 0 && Object.keys(availableSeat).length == 0) {
             try {
+                console.log("id",id)
                 const response = await axios.get(`http://localhost:3045/api/parkingSpace/${id}/spaceType/${parkingType}?startDateTime=${formatDate(startDateTime)}&endDateTime=${formatDate(endDateTime)}`)
                 console.log(response.data)
                 setAvaibleSeat(response.data)
                 calculateTotalAmount()
                 handleBooking()
+                console.log(response.data)
             } catch (err) {
                 console.log(err)
                 setQueryError(err.response.data.error)
@@ -175,12 +184,30 @@ export default function Filter(props) {
         // Set emailError state to false when leaving the email field
         //setServerError(false);
       }
-     
+      useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          event.preventDefault();
+          // Prompt user before leaving
+        //   event.returnValue = ''
+        }
+    
+        const handleUnload = () => {
+          navigate(-1)
+        }
+    
+        window.addEventListener('beforeunload', handleBeforeUnload)
+        window.addEventListener('unload', handleUnload)
+    
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload)
+          window.removeEventListener('unload', handleUnload)
+        }
+      }, [navigate])
 
     return (
         <>
             <div class="header text-center">
-                <h4>Find space </h4>
+                <h4> search parking lots</h4>
             </div>
             <div class="card rounded ml-5 " style={{ width: "28rem", display: "flex", justifyContent: "center", alignItems: "center"}} >
                 <div class="card-body text-center m-0">
@@ -252,6 +279,7 @@ export default function Filter(props) {
                             {filterVehicle().map((ele) => (
                                 <option key={ele._id} value={ele._id}>{ele.vehicleName}</option>
                             ))}
+                              
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
                             {bookingError.vehicleType && bookingError.vehicleType}
@@ -275,7 +303,7 @@ export default function Filter(props) {
                 <ModalBody className="d-flex justify-content-center align-items-center">
 
                     <BookingModal id={id} parkingType={parkingType} availableSeat={availableSeat} user={user} toggle={toggle}
-                        startDateTime={startDateTime} endDateTime={endDateTime} vehicleType={vehicleType} totalAmount={totalAmount} />
+                        startDateTime={startDateTime} endDateTime={endDateTime} vehicleType={vehicleType} totalAmount={totalAmount} cancel={cancel} />
 
                 </ModalBody>
             </Modal>

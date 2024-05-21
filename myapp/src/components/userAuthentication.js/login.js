@@ -67,7 +67,7 @@ export default function LoginPage(props) {
             backgroundSize: 'cover',
             paddingTop: "60px"
           }}>
-            <div>
+            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', padding: '20px', borderRadius: '10px' }}>
                 <h2 className="text-center mb-4 mt-4">Login</h2>
                 {/* {error && <Alert variant="danger">{error}</Alert>} */}
                 <Form onSubmit={formik.handleSubmit}>

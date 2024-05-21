@@ -7,6 +7,7 @@ import { startSetUser } from '../../actions/users'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHomeUser, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import logo from '../../images/logo.avif'
+import logo1 from '../../images/logo1.jpg'
 export default function Header() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -21,8 +22,16 @@ export default function Header() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark navbar-custom flex-wrap fixed-top">
             <div className="container">
-                <a className="navbar-brand" href="#">
-                {/* <img src={logo} alt="Logo" className="logo" /> */}
+                <a className="navbar-brand ml-0">
+                    {/* <img src={logo} alt="Logo" className="logo" /> */}
+                    <img
+                        src={logo}
+                        alt="logo"
+                        width="55"
+                        height="35"
+                        className="d-inline-block shadow-sm align-text-top"
+                        style={{ borderRadius: '50%' }}
+                    />
                     PickParkings</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -32,12 +41,12 @@ export default function Header() {
 
                         <li className="nav-item">
                             {!localStorage.getItem('token') && <Link to="/register" className="nav-link">
-                            <FontAwesomeIcon icon={faUserPlus} />Register</Link>}
+                                <FontAwesomeIcon icon={faUserPlus} />Register</Link>}
                         </li>
                         <li className="nav-item">
                             {isEmpty(localStorage.getItem('token')) ? (
                                 <Link className="nav-link" to="/login">
-                                     <FontAwesomeIcon icon={faHomeUser} />Login</Link>
+                                    <FontAwesomeIcon icon={faHomeUser} />Login</Link>
                             ) : (
                                 <>
                                     {Object.keys(user).length !== 0 && user.users.role === 'owner' ? (
@@ -47,7 +56,7 @@ export default function Header() {
                                                 My Account
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link to="/main" className="dropdown-item">My Account</Link>
+                                                <Link to="/main" className="dropdown-item">Dash</Link>
                                                 <Link to="/parkingSpaceBooking" className="dropdown-item">Booking</Link>
                                                 <Link to="/addparking" className="dropdown-item">Add Space</Link>
                                                 <Link to="/myspace" className="dropdown-item">My Space</Link>
@@ -61,11 +70,11 @@ export default function Header() {
                                                 My Account
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link to="/admin" className="dropdown-item" >My Detail</Link>
-                                                <Link  to="/adminCustomers"className="dropdown-item" href="#">Customer</Link>
+                                                <Link to="/admin" className="dropdown-item" >Dash</Link>
+                                                <Link to="/adminCustomers" className="dropdown-item" href="#">Customer</Link>
                                                 <Link to="/bookings" className="dropdown-item">Bookings</Link>
                                                 <Link to="/ownerDetails" className="dropdown-item" href="#">owners</Link>
-                                              
+
                                                 <Link className="dropdown-item" to='/' onClick={handleLogout}>Logout</Link>
                                             </div>
                                         </li>
@@ -76,7 +85,7 @@ export default function Header() {
                                                 My Account
                                             </a>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <Link to="/" className="dropdown-item">Home</Link> {/* New Home Link */}
+                                                <Link to="/" className="dropdown-item">Home</Link> {/* New Home Link */}
                                                 <Link to="/account" className="dropdown-item" href="#"> Account</Link>
                                                 <Link to="/bookings" className="dropdown-item" href="#">My bookings</Link>
                                                 <Link to="/vehicles" className="dropdown-item" href="#">my vehicles</Link>

@@ -69,14 +69,29 @@ const DisableError = (error) => {
   const owners = useSelector((state) => {
     return state.admin.allOwners
   })
+  console.log("owenene",owners)
+  console.log("parkkkinggggg",parkingSpaces)
   const totalSpace = (id) => {
     return parkingSpaces?.reduce((acc, cv) => {
+      console.log(id)
       if (cv.ownerId._id == id) {
         acc = acc + 1
         return acc
       }
     }, 0)
+    
   }
+  const parkingSpaceOwn=(id)=>{
+    return parkingSpaces?.filter((ele)=>{
+    if(ele.ownerId._id == id && ele.approveStatus ==true ){
+        return ele
+    }
+})
+  }
+  // const totalspace=()=>{
+  //   return 
+  // }
+  console.log(totalSpace())
   const searchResult=()=>{
     return owners
   }
@@ -116,7 +131,7 @@ const handlePageChange = (pageNumber) => {
               <td>{i+1}</td>
               <td>{ele.name}</td>
               <td>{ele.phone}</td>
-              <td>{totalSpace(ele._id)}</td>
+              <td>{parkingSpaceOwn(ele._id).length}</td>
               <td>
                 <button  type="button" className='btn btn-info' onClick={()=>{handleMore(ele._id)}}>More</button>
                 <button type='button' onClick={()=>{handleDisable(ele._id,ele.isverified)}} className={ele.isverified ? 'btn btn-success ml-2' : 'btn btn-danger ml-2'}>{ele.isverified ? "active" : "disable"}</button>
